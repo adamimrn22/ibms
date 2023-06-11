@@ -20,16 +20,26 @@ class RolesController extends Controller
 
         $query = User::with('roles');
 
+        // For search filtering ajax
         if ($searchTerm) {
             $query->where('name', 'LIKE', "%{$searchTerm}%");
         }
 
-
+        // For role filtering ajax
         if ($role) {
-            $query->role($role);
+            $query->whereHas('roles', function ($q) use ($role) {
+                if ($role === 'Admin') {
+                    $q->where('name', 'like', '%Admin%')
+                        ->where('name', '!=', 'Super Admin');
+                } else {
+                    $q->where('name', $role);
+                }
+            });
         }
 
         $data = $query->paginate($perPage);
+
+        $startingNumber = ($data->currentPage() - 1) * $data->perPage() + 1;
 
         if ($request->ajax()) {
             return response()->json([
@@ -40,6 +50,7 @@ class RolesController extends Controller
 
         return view('SuperAdmin.view-all-roles', compact('data'));
     }
+
 
 
     /**
