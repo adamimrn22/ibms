@@ -7,7 +7,6 @@ $(document).ready(function () {
     $(document).on('click', '#Pagination a', function (e) {
         e.preventDefault();
         let page = $(this).attr('href').split('page=')[1];
-        console.log(page)
         let searchTerm = $('#searchUserWithRoles').val();
         let isRole = $('#roleFilter').val();
         let recordsPerPage = $('#recordFilter').val();
