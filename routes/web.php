@@ -27,18 +27,20 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 
-Route::middleware(['auth', 'role:Admin UIT|Admin HR|Admin UKW|Super Admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('Admin.dashboard');
-        // return view('admin.view');
-    });
-});
-
 Route::middleware(['auth', 'role:Super Admin'])->prefix('superadmin')->name('superadmin.')->group(function () {
+    Route::get('/permission/lists', [PermissionController::class, 'showRoles']);
     Route::get('/dashboard', [SAHomeController::class, 'index']);
     Route::resource('roles', RolesController::class);
     Route::resource('permission', PermissionController::class);
+    Route::post('/userPermission/{id}', [PermissionController::class, 'storeUserPermission']);
 });
+
+Route::middleware(['auth', 'role:Admin UIT|Admin HR|Admin UKW|Super Admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('Admin.dashboard');
+    });
+});
+
 
 Route::middleware(['auth', 'role:User'])->group(function () {
     Route::get('/user', function () {

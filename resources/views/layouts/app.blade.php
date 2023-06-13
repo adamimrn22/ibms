@@ -6,7 +6,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui">
-    <title>Dashboard</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ env('APP_NAME') }}</title>
+    <meta name="base-url" content="{{ url('/') }}">
+
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600"
         rel="stylesheet">
 
@@ -18,7 +21,9 @@
         href="{{ asset('app-asset/vendors/js/tables/datatable/dataTables.bootstrap5.min.js') }}">
     <link rel="stylesheet" type="text/css"
         href="{{ asset('app-asset/vendors/js/tables/datatable/responsive.bootstrap5.min.js') }}">
-
+    <link rel="stylesheet" type="text/css" href="{{ asset('app-asset/vendors/css/extensions/toastr.min.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('app-asset/css/plugins/extensions/ext-component-toastr.min.css') }}">
     @yield('csslink')
 
     <!-- END: Vendor CSS-->
@@ -95,7 +100,8 @@
 
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -133,14 +139,15 @@
     <!-- END: Theme JS-->
     <!-- BEGIN: Page JS-->
     <!-- END: Page JS-->
-
+    <script src="{{ asset('app-asset/vendors/js/extensions/toastr.min.js') }}"></script>
+    <script src="{{ asset('app-asset/js/scripts/extensions/ext-component-toastr.js') }}"></script>
     @yield('script')
     <script>
         $(window).on('load', function() {
             if (feather) {
                 feather.replace({
-                    width: 14,
-                    height: 14
+                    width: 23,
+                    height: 48
                 });
             }
         })

@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('csslink')
+    <link rel="stylesheet" href="{{ asset('app-asset/vendors/css/forms/select/select2.min.css') }}">
+@endsection
 @section('layout')
     <div class="app-content content ">
         <div class="content-overlay"></div>
@@ -23,9 +26,10 @@
                                         Here is the list of all user permission
                                     </p>
 
-                                    <button class="btn add-new btn-primary mt-50" tabindex="0" type="button"
-                                        data-bs-toggle="modal" data-bs-target="#addPermissionModal"><span>Add New
-                                            Permission</span></button>
+                                    <button class="btn add-new btn-primary mt-50 add-permission-modal" tabindex="0"
+                                        type="button" data-bs-toggle="modal" data-bs-target="#addPermissionModal">
+                                        <span>Add New Permission</span>
+                                    </button>
                                 </div>
                             </div>
 
@@ -36,19 +40,7 @@
 
                                 <div class="col-sm-12 col-md-4">
                                     <div class="input-group">
-                                        <button type="button" class="btn btn-outline-primary dropdown-toggle waves-effect"
-                                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Filter
-                                        </button>
-                                        <div class="dropdown-menu" style="">
-                                            <select id="roleFilter" class="form-select mx-1 px-2">
-                                                <option value="">All</option>
-                                                <option value="User">User</option>
-                                                <option value="Admin">Admin</option>
-                                                <option value="Super Admin">Super Admin</option>
-                                            </select>
-                                        </div>
-                                        <input type="text" id="searchUserWithRoles" placeholder="Search user..."
+                                        <input type="text" id="searchUserWithRoles" placeholder="Search permission..."
                                             class="form-control">
                                     </div>
                                 </div>
@@ -87,40 +79,7 @@
                 </div>
                 <!-- table -->
 
-                <div class="modal fade" id="addPermissionModal" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header bg-transparent">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body px-sm-5 pb-5">
-                                <div class="text-center mb-2">
-                                    <h1 class="mb-1">Add New Permission</h1>
-                                    <p>Permissions you may use and assign to your users.</p>
-                                </div>
-                                <form id="addPermissionForm" class="row" onsubmit="return false" novalidate="novalidate">
-                                    <div class="col-12">
-                                        <label class="form-label" for="modalPermissionName">Permission Name</label>
-                                        <input type="text" id="modalPermissionName" name="modalPermissionName"
-                                            class="form-control" placeholder="Permission Name" autofocus=""
-                                            data-msg="Please enter permission name">
-                                    </div>
-
-                                    <div class="col-12 text-center">
-                                        <button type="submit"
-                                            class="btn btn-primary mt-2 me-1 waves-effect waves-float waves-light">Create
-                                            Permission</button>
-                                        <button type="reset" class="btn btn-outline-secondary mt-2 waves-effect"
-                                            data-bs-dismiss="modal" aria-label="Close">
-                                            Discard
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @include('SuperAdmin.modal.permissionModal')
 
             </div>
         </div>
@@ -129,4 +88,7 @@
 
 @section('script')
     <script src="{{ asset('js/table/viewAllPermissionTable.js') }}"></script>
+    <script src="{{ asset('js/modal/permissionModal.js') }}"></script>
+    <script src="{{ asset('app-asset/vendors/js/forms/select/select2.full.min.js') }}"></script>
+    <script src="{{ asset('app-asset/js/scripts/forms/form-select2.js') }}"></script>
 @endsection
