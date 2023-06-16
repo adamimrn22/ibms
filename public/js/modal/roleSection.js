@@ -78,9 +78,9 @@ $(document).ready(function () {
                 $('#roleContainer').html(response.roleSection);
                 $('#addRoleModal').modal('hide');
                 // Clear the form fields
-                addModal.find('form')[0].reset();
 
                 toastr.success('Role created successfully.', 'Success');
+                addRoleForm[0].reset();
             },
             statusCode: {
                 422: function (xhr) {
@@ -194,7 +194,7 @@ $(document).ready(function () {
                 $('#editRoleModal').modal('hide');
 
                 toastr.success('Role updated successfully.', 'Success');
-                editModal.find('form')[0].reset();
+                editRoleForm[0].reset();
             },
             statusCode: {
                 422: function (xhr) {
@@ -244,4 +244,5 @@ $(document).ready(function () {
             }
         });
     });
+
 });

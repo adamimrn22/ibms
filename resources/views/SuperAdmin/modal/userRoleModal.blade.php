@@ -40,3 +40,25 @@
         </div>
     </div>
 </div>
+
+{{-- for deleting user role and permission --}}
+<div class="modal fade modal-danger role-deleteUserPermission-modal" id="roleUserDeleteModal" tabindex="-1"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel120">Are you sure?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="deleteUserRolePermissionForm">
+                <input type="hidden" id="deleteID">
+                <div class="modal-body">
+                    Are you sure? This will delete the user role and its permission data
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger waves-effect waves-float waves-light">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -43,4 +43,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function position()
+    {
+        return $this->hasOne(Position::class);
+    }
+
+    public function unit()
+    {
+        return $this->hasOne(Unit::class);
+    }
+
 }

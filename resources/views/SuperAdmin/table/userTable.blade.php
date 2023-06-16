@@ -6,8 +6,8 @@
                 <th>Staff ID</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th class="text-center">Role</th>
                 <th class="text-center">Status</th>
+                <th class="text-center"></th>
             </tr>
         </thead>
         <tbody>
@@ -24,15 +24,12 @@
                         {{ $user->email }}
                     </td>
                     <td class="text-center">
-                        @foreach ($user->roles as $role)
-                            @if ($role['name'] === 'Super Admin')
-                                <span class="badge rounded-pill badge-light-warning">{{ $role['name'] }}</span>
-                            @elseif (str_contains($role['name'], 'Admin '))
-                                <span class="badge rounded-pill badge-light-primary">{{ $role['name'] }}</span>
-                            @else
-                                <span class="badge rounded-pill badge-light-info">{{ $role['name'] }}</span>
-                            @endif
-                        @endforeach
+
+                        @if ($user->isActive === 1)
+                            <span class="badge rounded-pill badge-light-primary">Active</span>
+                        @elseif ($user->isActive === 0)
+                            <span class="badge rounded-pill badge-light-dark">Not Active</span>
+                        @endif
                     </td>
 
                     <td>
