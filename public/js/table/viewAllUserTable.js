@@ -1,10 +1,12 @@
 $(document).ready(function () {
+    let baseUrl = $('meta[name="base-url"]').attr('content');
+
     const ajaxSettings = {
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
     };
-
+    let searchTimer;
     const addUserForm = $('#AddUserForm');
 
     // Spinner container
@@ -23,10 +25,16 @@ $(document).ready(function () {
 
     // Event listener for search input (onkeyup event)
     $(document).on('keyup', '#searchUser', function () {
-        let searchTerm = $(this).val();
-        let userStatus = $('#userFilter').val();
-        let recordsPerPage = $('#recordFilter').val();
-        fetch_data(1, searchTerm, userStatus, recordsPerPage);
+        // Clear the previous timer
+        clearTimeout(searchTimer);
+
+        // Start a new timer to delay the AJAX request
+        searchTimer = setTimeout(() => {
+            let searchTerm = $(this).val();
+            let userStatus = $('#userFilter').val();
+            let recordsPerPage = $('#recordFilter').val();
+            fetch_data(1, searchTerm, userStatus, recordsPerPage);
+        }, 500); // Specify the desired delay in milliseconds (e.g., 500ms)
     });
 
     // Event listener for active filter
@@ -113,6 +121,7 @@ $(document).ready(function () {
 
     addUserForm.submit(function (e) {
         e.preventDefault();
+        // let url = baseUrl + `/superadmin/users`;
 
         let form = {
             staffID: $('#addUserID').val(),
@@ -124,12 +133,13 @@ $(document).ready(function () {
             contact: $('#modalAddUserPhone').val()
         };
 
+        console.log(form)
         $.ajax({
+            ...ajaxSettings,
             type: "POST",
-            url: "superadmin/users",
+            url: "/superadmin/users",
             data: JSON.stringify({ user: form }),
             success: function (response) {
-
             }
         });
         // $('#addUserModal').hide('modal');

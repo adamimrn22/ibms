@@ -9,7 +9,7 @@
                     <h1 class="mb-1">Add User</h1>
                     <p>Add the staff information credentials.</p>
                 </div>
-                <form id="AddUserForm" class="row gy-1 pt-75" onsubmit="return false" novalidate="novalidate">
+                <form id="AddUserForm" class="row gy-1 pt-75" novalidate="novalidate">
                     <div class="row">
                         <div class="col-6">
                             <label class="form-label" for="modalAddUserID">STAFF ID</label>

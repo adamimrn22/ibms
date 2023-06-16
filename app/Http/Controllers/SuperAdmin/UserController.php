@@ -70,7 +70,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         try {
-            //code...
+            dd($request->input('user'));
         } catch (\Throwable $th) {
             return response()->json([
                 'error' => $th->getMessage()
