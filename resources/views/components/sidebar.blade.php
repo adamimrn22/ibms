@@ -31,7 +31,7 @@
 
     <div class="main-menu-content ps">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-            <li class="mb-1 nav-item active">
+            <li class="mb-1 nav-item ">
                 <a class="d-flex align-items-center " href="index.html">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -72,28 +72,82 @@
                 </ul>
             </li>
             @role('Super Admin')
-                <li class="nav-item has-sub" style=""><a class="d-flex align-items-center" href="#"><svg
-                            xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" class="feather feather-shield">
+                <li class="nav-item has-sub mt-1" style=""><a class="d-flex align-items-center"
+                        href="#"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-shield">
                             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                         </svg><span class="menu-title text-truncate" data-i18n="Roles &amp; Permission">Roles &amp;
                             Permission</span></a>
                     <ul class="menu-content">
-                        <li><a class="d-flex align-items-center" href="{{ route('superadmin.roles.index') }}"><svg
+                        <li class="{{ Request::routeIs('superadmin.roles.index') ? ' active' : '' }}"><a
+                                class="d-flex align-items-center " href="{{ route('superadmin.roles.index') }}"><svg
                                     xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round" class="feather feather-circle">
                                     <circle cx="12" cy="12" r="10"></circle>
                                 </svg><span class="menu-item text-truncate" data-i18n="Roles">Roles</span></a>
                         </li>
-                        <li><a class="d-flex align-items-center" href="{{ route('superadmin.permission.index') }}"><svg
+                        <li class="{{ Request::routeIs('superadmin.permission.index') ? ' active' : '' }}"><a
+                                class="d-flex align-items-center" href="{{ route('superadmin.permission.index') }}"><svg
                                     xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round" class="feather feather-circle">
                                     <circle cx="12" cy="12" r="10"></circle>
                                 </svg><span class="menu-item text-truncate" data-i18n="Permission">Permission</span></a>
                         </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item has-sub mt-1" style=""><a class="d-flex align-items-center"
+                        href="#"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg><span class="menu-title text-truncate" data-i18n="User">User</span></a>
+                    <ul class="menu-content">
+                        <li class="{{ Request::routeIs('superadmin.users.index') ? ' active' : '' }}"><a
+                                class="d-flex align-items-center" href="{{ route('superadmin.users.index') }}"><svg
+                                    xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-circle">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                </svg><span class="menu-item text-truncate" data-i18n="List">View User</span></a>
+                        </li>
+
+                    </ul>
+                </li>
+
+                <li class="nav-item has-sub mt-1" style=""><a class="d-flex align-items-center" href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-plus-circle">
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="12" y1="8" x2="12" y2="16" />
+                            <line x1="8" y1="12" x2="16" y2="12" />
+                        </svg>
+                        <span class="menu-title text-truncate">Position & Unit</span></a>
+                    <ul class="menu-content">
+                        <li>
+                            <a class="d-flex align-items-center" href="{{ route('superadmin.users.index') }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                </svg>
+                                <span class="menu-item text-truncate" data-i18n="List">View Position</span></a>
+                        </li>
+                        <li>
+                            <a class="d-flex align-items-center" href="{{ route('superadmin.users.index') }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                </svg>
+                                <span class="menu-item text-truncate" data-i18n="List">View Unit</span></a>
+                        </li>
+
                     </ul>
                 </li>
             @endrole

@@ -4,14 +4,14 @@ namespace App\Http\Requests\SuperAdmin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PermissionRequest extends FormRequest
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return auth()->user()->hasRole('Super Admin');
+        return false;
     }
 
     /**
@@ -22,8 +22,7 @@ class PermissionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'permissions' => 'string|min:6|max:24',
-            'role' => 'array'
+            //
         ];
     }
 }

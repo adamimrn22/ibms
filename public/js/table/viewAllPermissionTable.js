@@ -39,8 +39,6 @@ $(document).ready(function () {
 
     // Function to fetch data
     function fetch_data(page, searchTerm = '', isRole = '', recordsPerPage = '') {
-
-
         $.ajax({
             url: "/superadmin/permission",
             type: "GET",

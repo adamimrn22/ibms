@@ -24,7 +24,9 @@ class RolesController extends Controller
 
         // For search filtering ajax
         if ($searchTerm) {
-            $query->where('name', 'LIKE', "%{$searchTerm}%");
+            $query->where('first_name', 'LIKE', "%{$searchTerm}%")
+                ->orWhere('last_name','LIKE', "%{$searchTerm}%" )
+                ->orWhere('email', 'LIKE', "%{$searchTerm}%");
         }
 
         // For role filtering ajax

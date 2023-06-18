@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SuperAdmin\RolesController;
 use App\Http\Controllers\SuperAdmin\SAHomeController;
 use App\Http\Controllers\SuperAdmin\PermissionController;
+use App\Http\Controllers\SuperAdmin\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,9 +31,13 @@ Route::get('/dashboard', function () {
 Route::middleware(['auth', 'role:Super Admin'])->prefix('superadmin')->name('superadmin.')->group(function () {
     Route::get('/permission/lists', [PermissionController::class, 'showRoles']);
     Route::get('/dashboard', [SAHomeController::class, 'index']);
-    Route::resource('roles', RolesController::class);
-    Route::resource('permission', PermissionController::class);
     Route::post('/userPermission/{id}', [PermissionController::class, 'storeUserPermission']);
+    Route::post('/deleteUserPermission/{id}', [PermissionController::class, 'delteUserPermissionRoles']);
+
+    Route::resource('/users', UserController::class);
+    Route::resource('/roles', RolesController::class);
+    Route::resource('/permission', PermissionController::class);
+
 });
 
 Route::middleware(['auth', 'role:Admin UIT|Admin HR|Admin UKW|Super Admin'])->prefix('admin')->name('admin.')->group(function () {

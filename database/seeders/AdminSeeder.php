@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Unit;
 use App\Models\User;
+use App\Models\Position;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -14,52 +16,70 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
 
+        $unitId = Unit::inRandomOrder()->first()->id;
+        $positionId = Position::inRandomOrder()->first()->id;
+
         User::create([
-            'name' => 'ADMIN UIT',
+            'first_name' => 'ADMIN',
+            'last_name' => 'UIT',
             'username' => 'admin',
             'email' => 'admin@admin.com',
             'email_verified_at' => now(),
             'isActive' => true,
             'phone_number' => '111',
+            'unit_id' => $unitId,
+            'position_id' => $positionId,
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         ])->assignRole('Admin IT');
 
         User::create([
-            'name' => 'ADMIN HR',
-            'username' => 'adminHR',
-            'email' => 'adminHR@admin.com',
+            'first_name' => 'ADMIN',
+            'last_name' => 'UPSM',
+            'username' => 'adminUPSM',
+            'email' => 'adminUPSM@admin.com',
             'email_verified_at' => now(),
             'isActive' => true,
             'phone_number' => '111',
+            'unit_id' => $unitId,
+            'position_id' => $positionId,
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         ])->assignRole('Admin HR');
 
         User::create([
-            'name' => 'ADMIN UKW',
+            'first_name' => 'ADMIN',
+            'last_name' => 'UKW',
             'username' => 'adminUKW',
             'email' => 'adminUKW@admin.com',
             'email_verified_at' => now(),
             'isActive' => true,
+            'unit_id' => $unitId,
+            'position_id' => $positionId,
             'phone_number' => '111',
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         ])->assignRole('Admin UKW');
 
         User::create([
-            'name' => 'adam imran',
+            'first_name' => 'System',
+            'last_name' => 'Developer',
             'username' => 'SysDev',
             'email' => 'adam@kolejspace.edu.my',
             'email_verified_at' => now(),
             'isActive' => true,
+            'unit_id' => $unitId,
+            'position_id' => $positionId,
             'phone_number' => '111',
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         ])->assignRole('Super Admin');
 
         User::create([
-            'name' => 'User',
+            'first_name' => 'user',
+            'last_name' => 'first',
             'username' => 'user',
             'email' => 'user@user.com',
             'email_verified_at' => now(),
             'isActive' => true,
+            'unit_id' => $unitId,
+            'position_id' => $positionId,
             'phone_number' => '111',
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         ])->assignRole('User');

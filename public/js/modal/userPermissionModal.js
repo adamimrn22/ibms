@@ -1,5 +1,6 @@
 $(document).ready(function () {
     const addPermissionForm = $('#addPermissionForm');
+    const deleteUserRoleForm = $('#deleteUserRolePermissionForm');
     let userID;
 
     var baseUrl = $('meta[name="base-url"]').attr('content');
@@ -12,6 +13,7 @@ $(document).ready(function () {
         }
     };
 
+    // For User in role page adding their permission
     $(document).on('click', '.add-permission-user-modal', function () {
         let username = $('#userPermissionName');
         userID = $(this).data('user-id');
@@ -87,6 +89,37 @@ $(document).ready(function () {
                 $('#addUserPermissionModal').modal('hide');
                 toastr.success('User permission updated successfully.', 'Success');
                 addPermissionForm.find('form')[0].reset();
+            }
+        });
+    })
+
+    $('.role-deleteUserPermission-modal').on('shown.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var userId = button.data('user-id'); // Extract the data-user-id attribute value
+
+        $('#deleteID').val(userId);
+    });
+
+    deleteUserRoleForm.submit(function (e) {
+        e.preventDefault();
+
+        let id = $('#deleteID').val();
+        let url = baseUrl + `/superadmin/deleteUserPermission/${id}`
+
+        $.ajax({
+            ...ajaxSettings,
+            type: "POST",
+            url: url,
+            success: function (response) {
+                if (response.status === 'success') {
+                    toastr.success(response.message, 'Success');
+                    $('#userListRolesTable').html(response.table)
+                    console.log(response.table)
+                    $('#roleUserDeleteModal').modal('hide');
+                    deleteUserRoleForm[0].reset();
+                } else {
+                    toastr.error('An error occurred. Please try again later.', 'Error');
+                }
             }
         });
     })
