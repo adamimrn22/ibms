@@ -16,7 +16,7 @@
 
                 <div class="row">
 
-                    @include('SuperAdmin.section.RoleSection')
+                    @include('SuperAdmin.role.section.RoleSection')
 
                     {{-- Roles Card --}}
 
@@ -85,7 +85,7 @@
                                 </div>
 
                                 <div class="table-responsive">
-                                    @include('SuperAdmin.table.roleTable')
+                                    @include('SuperAdmin.role.table.roleTable')
 
                                     <div class="d-flex align-items-center justify-content-center">
                                         <div id="roleSpinner" align="center" class="spinner-border text-primary"
@@ -101,9 +101,9 @@
                     </div>
                     <!-- table -->
 
-                    @include('SuperAdmin.modal.roleModal')
+                    @include('SuperAdmin.role.modal.roleModal')
 
-                    @include('SuperAdmin.modal.userRoleModal')
+                    @include('SuperAdmin.role.modal.userRoleModal')
                 </div>
             </div>
         </div>
@@ -111,7 +111,7 @@
 
     @section('script')
         <script src="{{ asset('app-asset/js/custom/modal/addRoleModal.js') }}"></script>
-        <script src="{{ asset('js/modal/roleSection.js') }}"></script>
-        <script src="{{ asset('js/modal/userPermissionModal.js') }}"></script>
-        <script src="{{ asset('js/table/viewAllRoleTable.js') }}"></script>
+        <script src="{{ asset('js/SuperAdmin/role/roleSection.js') }}"></script>
+        <script src="{{ asset('js/SuperAdmin/permission/userPermissionModal.js') }}"></script>
+        <script src="{{ asset('js/SuperAdmin/role/viewAllRoleTable.js') }}"></script>
     @endsection

@@ -64,7 +64,7 @@
                             </div>
 
                             <div class="table-responsive">
-                                @include('SuperAdmin.table.permissionTable')
+                                @include('SuperAdmin.permission.table.permissionTable')
 
                                 <div class="d-flex align-items-center justify-content-center">
                                     <div id="roleSpinner" align="center" class="spinner-border text-primary" role="status">
@@ -79,7 +79,7 @@
                 </div>
                 <!-- table -->
 
-                @include('SuperAdmin.modal.permissionModal')
+                @include('SuperAdmin.permission.modal.permissionModal')
 
             </div>
         </div>

@@ -47,12 +47,12 @@ class RolesController extends Controller
 
         if ($request->ajax()) {
             return response()->json([
-                'table' => view('SuperAdmin.table.roleTable', compact('data'))->render(),
+                'table' => view('SuperAdmin.role.table.roleTable', compact('data'))->render(),
                 'pagination' => view('components.Pagination', compact('data'))->render(),
             ]);
         }
 
-        return view('SuperAdmin.view-all-roles', compact('data', 'roles'));
+        return view('SuperAdmin.role.view-all-roles', compact('data', 'roles'));
     }
 
     /**
@@ -71,7 +71,7 @@ class RolesController extends Controller
             $roles = Role::with('users:id,username')->get();
 
             return response()->json([
-                'roleSection' => view('SuperAdmin.section.RoleSection', compact('roles'))->render(),
+                'roleSection' => view('SuperAdmin.role.section.RoleSection', compact('roles'))->render(),
             ]);
 
         } catch (\Throwable $th) {
@@ -133,7 +133,7 @@ class RolesController extends Controller
             // Add any additional code or response as needed
             $roles = Role::with('users:id,username')->get();
             return response()->json([
-                'roleSection' => view('SuperAdmin.section.RoleSection', compact('roles'))->render(),
+                'roleSection' => view('SuperAdmin.role.section.RoleSection', compact('roles'))->render(),
             ]);}
 
          catch (\Exception $e) {
@@ -155,7 +155,7 @@ class RolesController extends Controller
         $roles = Role::with('users:id,username')->get();
 
         // Render the updated role section HTML
-        $roleSection = view('SuperAdmin.section.RoleSection', compact('roles'))->render();
+        $roleSection = view('SuperAdmin.role.section.RoleSection', compact('roles'))->render();
 
         // Return the updated HTML in the response
         return response()->json([

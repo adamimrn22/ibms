@@ -5,7 +5,6 @@ namespace App\Http\Controllers\SuperAdmin;
 use App\Models\Unit;
 use App\Models\User;
 use App\Models\Position;
-use Laravolt\Avatar\Avatar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -37,15 +36,13 @@ class UserController extends Controller
 
         $data = $this->applyPaginationFilterSearch($query, $perPage, $searchTerm, $status);
 
-        $startingNumber = ($data->currentPage() - 1) * $data->perPage() + 1;
-
         if ($request->ajax()) {
             return response()->json([
-                'userTotal' => view('SuperAdmin.section.UserSection', compact(
+                'userTotal' => view('SuperAdmin.user.section.UserSection', compact(
                                 'totalUserCount', 'userActiveCount',
                                 'userNotActiveCount', 'totalUserWithRoles'
                             )),
-                'table' => view('SuperAdmin.table.userTable', compact('data'))->render(),
+                'table' => view('SuperAdmin.user.table.userTable', compact('data'))->render(),
                 'pagination' => view('components.Pagination', compact('data'))->render(),
             ]);
         }
@@ -91,11 +88,11 @@ class UserController extends Controller
             $totalUserWithRoles = DB::table('model_has_roles')->where('role_id', '5')->count();
 
             return response()->json([
-                'userTotal' => view('SuperAdmin.section.UserSection', compact(
+                'userTotal' => view('SuperAdmin.user.section.UserSection', compact(
                     'totalUserCount', 'userActiveCount',
                     'userNotActiveCount', 'totalUserWithRoles'
                 ))->render(),
-                'table' => view('SuperAdmin.table.userTable', compact('data'))->render(),
+                'table' => view('SuperAdmin.user.table.userTable', compact('data'))->render(),
                 'pagination' => view('components.Pagination', compact('data'))->render(),
                 'success' => 'User Added Succesfully'
             ]);
@@ -157,7 +154,7 @@ class UserController extends Controller
 
             return response()->json([
                 'sucess' => 'User Successfully Updated',
-                'table' => view('SuperAdmin.table.userTable', compact('data'))->render(),
+                'table' => view('SuperAdmin.user.table.userTable', compact('data'))->render(),
                 'pagination' => view('components.Pagination', compact('data'))->render(),
             ]);
         } catch (\Throwable $th) {
@@ -183,11 +180,11 @@ class UserController extends Controller
             $totalUserWithRoles = DB::table('model_has_roles')->where('role_id', '5')->count();
 
             return response()->json([
-                'userTotal' => view('SuperAdmin.section.UserSection', compact(
+                'userTotal' => view('SuperAdmin.user.section.UserSection', compact(
                     'totalUserCount', 'userActiveCount',
                     'userNotActiveCount', 'totalUserWithRoles'
                 ))->render(),
-                'table' => view('SuperAdmin.table.userTable', compact('data'))->render(),
+                'table' => view('SuperAdmin.user.table.userTable', compact('data'))->render(),
                 'pagination' => view('components.Pagination', compact('data'))->render(),
                 'success' => 'User Deleted Succesfully'
             ]);

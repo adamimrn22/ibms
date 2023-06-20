@@ -139,7 +139,7 @@
                                 <span class="menu-item text-truncate" data-i18n="List">View Position</span></a>
                         </li>
                         <li>
-                            <a class="d-flex align-items-center" href="{{ route('superadmin.users.index') }}">
+                            <a class="d-flex align-items-center" href="{{ route('superadmin.unit.index') }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle">

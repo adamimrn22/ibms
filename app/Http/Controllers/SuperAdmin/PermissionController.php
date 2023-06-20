@@ -30,12 +30,12 @@ class PermissionController extends Controller
 
         if ($request->ajax()) {
             return response()->json([
-                'table' => view('SuperAdmin.table.permissionTable', compact('data'))->render(),
+                'table' => view('SuperAdmin.permission.table.permissionTable', compact('data'))->render(),
                 'pagination' => view('components.Pagination', compact('data'))->render()
             ]);
         }
 
-        return view('SuperAdmin.view-all-permission', compact('data'));
+        return view('SuperAdmin.permission.view-all-permission', compact('data'));
     }
 
     /**
@@ -78,7 +78,7 @@ class PermissionController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Permission created and assigned successfully',
-                'table' => view('SuperAdmin.table.permissionTable', compact('data'))->render()
+                'table' => view('SuperAdmin.permission.table.permissionTable', compact('data'))->render()
 
             ]);
 
@@ -161,7 +161,7 @@ class PermissionController extends Controller
             DB::commit();
             return response()->json([
                 'success' => 'Permission name and roles updated ',
-                'table' => view('SuperAdmin.table.permissionTable', compact('data'))->render()
+                'table' => view('SuperAdmin.permission.table.permissionTable', compact('data'))->render()
             ]);
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -182,7 +182,7 @@ class PermissionController extends Controller
 
             return response()->json([
                 'success' => 'Permission name and roles updated ',
-                'table' => view('SuperAdmin.table.permissionTable', compact('data'))->render(),
+                'table' => view('SuperAdmin.permission.table.permissionTable', compact('data'))->render(),
                 'paginate' => view('components.Pagination', compact('data'))->render()
             ]);
 

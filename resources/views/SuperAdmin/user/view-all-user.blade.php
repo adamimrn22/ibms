@@ -16,7 +16,7 @@
                 <!-- users list start -->
                 <section class="app-user-list">
                     <div>
-                        @include('SuperAdmin.section.UserSection')
+                        @include('SuperAdmin.user.section.UserSection')
                     </div>
                     <!-- list and filter start -->
 
@@ -79,7 +79,7 @@
 
                                 <div class="table-responsive">
 
-                                    @include('SuperAdmin.table.userTable')
+                                    @include('SuperAdmin.user.table.userTable')
 
                                     <div class="d-flex align-items-center justify-content-center">
                                         <div id="roleSpinner" align="center" class="spinner-border text-primary"
@@ -96,15 +96,15 @@
                 </section>
                 <!-- users list ends -->
 
-                @include('SuperAdmin.modal.userModal')
+                @include('SuperAdmin.user.modal.userModal')
             </div>
         </div>
     </div>
 @endsection
 
 @section('script')
-    <script src="{{ asset('js/table/viewAllUserTable.js') }}"></script>
-    <script src="{{ asset('js/User/addUser.js') }}"></script>
-    <script src="{{ asset('js/User/editUser.js') }}"></script>
-    <script src="{{ asset('js/User/deleteUser.js') }}"></script>
+    <script src="{{ asset('js/SuperAdmin/User/viewAllUserTable.js') }}"></script>
+    <script src="{{ asset('js/SuperAdmin/User/addUser.js') }}"></script>
+    <script src="{{ asset('js/SuperAdmin/User/editUser.js') }}"></script>
+    <script src="{{ asset('js/SuperAdmin/User/deleteUser.js') }}"></script>
 @endsection

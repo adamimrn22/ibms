@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SuperAdmin\RolesController;
 use App\Http\Controllers\SuperAdmin\SAHomeController;
 use App\Http\Controllers\SuperAdmin\PermissionController;
+use App\Http\Controllers\SuperAdmin\PositionController;
+use App\Http\Controllers\SuperAdmin\UnitController;
 use App\Http\Controllers\SuperAdmin\UserController;
 
 
@@ -43,6 +45,8 @@ Route::middleware(['auth', 'role:Super Admin'])->prefix('superadmin')->name('sup
     Route::resource('/users', UserController::class);
     Route::resource('/roles', RolesController::class);
     Route::resource('/permission', PermissionController::class);
+    Route::resource('/unit', UnitController::class);
+    Route::resource('/position', PositionController::class);
 
 });
 
