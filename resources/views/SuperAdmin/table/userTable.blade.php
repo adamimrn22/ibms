@@ -1,4 +1,4 @@
-<div id="userListRolesTable">
+<div id="userListTable">
     <table class="table">
         <thead>
             <tr>
@@ -47,8 +47,8 @@
                                 </svg>
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item add-permission-user-modal" href="javascript:void(0);"
-                                    data-bs-target="#addUserPermissionModal" data-bs-toggle="modal"
+                                <a class="dropdown-item edit-user-modal" href="javascript:void(0);"
+                                    data-bs-target="#editUserModal" data-bs-toggle="modal"
                                     data-user-id="{{ $user->id }}">
 
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
@@ -61,8 +61,8 @@
 
                                 </a>
 
-                                <a class="dropdown-item role-deleteUserPermission-modal" href="javascript:void(0);"
-                                    data-bs-target="#roleUserDeleteModal" data-bs-toggle="modal"
+                                <a class="dropdown-item delete-user-modal" href="javascript:void(0);"
+                                    data-bs-target="#deleteUserModal" data-bs-toggle="modal"
                                     data-user-id="{{ $user->id }}">
 
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"

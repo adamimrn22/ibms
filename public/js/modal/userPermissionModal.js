@@ -72,7 +72,6 @@ $(document).ready(function () {
         let url = baseUrl + `/superadmin/userPermission/${userID}`
         let permissions = [];
 
-        console.log(userID);
         // check the permission checkbox
         $('.table-responsive input[type="checkbox"]:checked').each(function () {
             permissions.push($(this).attr('id'));
@@ -114,7 +113,6 @@ $(document).ready(function () {
                 if (response.status === 'success') {
                     toastr.success(response.message, 'Success');
                     $('#userListRolesTable').html(response.table)
-                    console.log(response.table)
                     $('#roleUserDeleteModal').modal('hide');
                     deleteUserRoleForm[0].reset();
                 } else {

@@ -230,7 +230,6 @@ $(document).ready(function () {
     deleteModal.submit(function (e) {
         e.preventDefault();
         let id = $('#deleteRoleId').val();
-        console.log(id)
         $.ajax({
             ...ajaxSettings,
             type: 'DELETE',

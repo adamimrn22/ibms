@@ -61,8 +61,8 @@ class AdminSeeder extends Seeder
         User::create([
             'first_name' => 'System',
             'last_name' => 'Developer',
-            'username' => 'SysDev',
-            'email' => 'adam@kolejspace.edu.my',
+            'username' => 'test',
+            'email' => 'test@kolejspace.edu.my',
             'email_verified_at' => now(),
             'isActive' => true,
             'unit_id' => $unitId,

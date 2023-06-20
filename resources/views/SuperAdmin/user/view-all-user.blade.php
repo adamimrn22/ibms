@@ -15,7 +15,7 @@
             <div class="content-body">
                 <!-- users list start -->
                 <section class="app-user-list">
-                    <div class="row">
+                    <div>
                         @include('SuperAdmin.section.UserSection')
                     </div>
                     <!-- list and filter start -->
@@ -104,5 +104,7 @@
 
 @section('script')
     <script src="{{ asset('js/table/viewAllUserTable.js') }}"></script>
-    <script src="{{ asset('app-asset/js/custom/addUser.js') }}"></script>
+    <script src="{{ asset('js/User/addUser.js') }}"></script>
+    <script src="{{ asset('js/User/editUser.js') }}"></script>
+    <script src="{{ asset('js/User/deleteUser.js') }}"></script>
 @endsection

@@ -11,7 +11,7 @@
                 </div>
                 <!-- Add role form -->
                 <form id="addPermissionForm" class="row justify-content-center" method="POST">
-                    <div class="col-8 ">
+                    <div class="col-12 ">
                         <h4 class="mt-2 pt-50">Role Permissions</h4>
                         <!-- Permission table -->
                         <div class="table-responsive">

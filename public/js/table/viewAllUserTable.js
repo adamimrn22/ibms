@@ -6,8 +6,8 @@ $(document).ready(function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
     };
+
     let searchTimer;
-    const addUserForm = $('#AddUserForm');
 
     // Spinner container
     const spinnerContainer = $('#roleSpinner');
@@ -65,14 +65,13 @@ $(document).ready(function () {
                 records: recordsPerPage
             },
             beforeSend: function () {
-                $('#userListRolesTable').hide();
+                $('#userListTable').hide();
                 spinnerContainer.show();
 
             },
             success: function (data) {
                 spinnerContainer.hide();
-                $('#userListRolesTable').html(data.table).show();
-                console.log(data);
+                $('#userListTable').html(data.table).show();
                 $('#Pagination').html(data.pagination);
             },
             error: function (xhr) {
@@ -100,6 +99,64 @@ $(document).ready(function () {
         });
     });
 
+    $('#userListTable').on('click', '.edit-user-modal', function () {
+        let id = $(this).data('user-id');
+
+        let dropdownPosition = $('#editModalUserPosition');
+        let dropdownUnit = $('#editModalUserUnit');
+
+        let editModalUserID = $('#editModalUserID');
+        let editModalUserFirstName = $('#editModalUserFirstName');
+        let editModalUserLastName = $('#editModalUserLastName');
+        let editModalUserEmail = $('#editModalUserEmail');
+        let editModalUserPhone = $('#editModalUserPhone');
+        let editModalUserStatus = $('#editModalUserStatus');
+
+        disableDropdowns(dropdownPosition, dropdownUnit);
+
+        $.ajax({
+            ...ajaxSettings,
+            type: "GET",
+            url: `/superadmin/users/${id}`,
+            success: function (response) {
+
+                let user = response.user
+
+
+                $('#userEditName').text(user.first_name + ' ' + user.last_name)
+                $('#userID').val(user.id)
+                editModalUserID.val(user.username)
+                editModalUserFirstName.val(user.first_name);
+                editModalUserLastName.val(user.last_name);
+                editModalUserEmail.val(user.email);
+                editModalUserPhone.val(user.phone_number);
+                editModalUserStatus.val(user.isActive);
+
+                let selectedPosition = response.userPositions[1];
+                let selectedPositionText = response.userPositions[0];
+                let selectedUnit = response.userUnit[1];
+                let selectedUnitText = response.userUnit[0];
+
+                populateDropdown(dropdownPosition, response.positions);
+                populateDropdown(dropdownUnit, response.units);
+
+
+                // Select the option and set its text for the selected position
+                dropdownPosition.find('option[value="' + selectedPosition + '"]')
+                    .prop('selected', true)
+                    .text(selectedPositionText);
+
+                // Select the option and set its text for the selected unit
+                dropdownUnit.find('option[value="' + selectedUnit + '"]')
+                    .prop('selected', true)
+                    .text(selectedUnitText);
+
+                enableDropdowns(dropdownPosition, dropdownUnit);
+            }
+        });
+    });
+
+
     function disableDropdowns(...dropdowns) {
         dropdowns.forEach(function (dropdown) {
             dropdown.prop('disabled', true);
@@ -118,32 +175,5 @@ $(document).ready(function () {
             dropdown.append($("<option />").val(this.id).text(this.name));
         });
     }
-
-    addUserForm.submit(function (e) {
-        e.preventDefault();
-        // let url = baseUrl + `/superadmin/users`;
-
-        let form = {
-            staffID: $('#addUserID').val(),
-            firstName: $('#modalAddUserFirstName').val(),
-            lastName: $('#modalAddUserLastName').val(),
-            position: $('#modalUserPosition').val(),
-            unit: $('#modalUserUnit').val(),
-            email: $('#modalAddUserEmail').val(),
-            contact: $('#modalAddUserPhone').val()
-        };
-
-        console.log(form)
-        $.ajax({
-            ...ajaxSettings,
-            type: "POST",
-            url: "/superadmin/users",
-            data: JSON.stringify({ user: form }),
-            success: function (response) {
-            }
-        });
-        // $('#addUserModal').hide('modal');
-        // $('#addUserModal').find('form')[0].reset();
-    });
 
 });

@@ -67,7 +67,6 @@ $(document).ready(function () {
             error: function (xhr) {
                 if (xhr.status === 422) {
                     let errors = xhr.responseJSON.errors;
-                    console.log('Errors:', errors);
 
                     form.find('.is-invalid').removeClass('is-invalid');
 

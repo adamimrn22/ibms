@@ -59,7 +59,6 @@ $(document).ready(function () {
                 $('#Pagination').html(data.pagination);
             },
             error: function (xhr) {
-                console.log(xhr);
                 spinnerContainer.hide();
             }
         });
