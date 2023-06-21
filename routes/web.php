@@ -23,6 +23,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+<<<<<<< Updated upstream
+=======
+Route::middleware(['auth'])->group(function () {
+    Route::resource('/users', UserController::class);
+    Route::resource('/unit', UnitController::class);
+    Route::resource('/position', PositionController::class);
+
+});
+
+>>>>>>> Stashed changes
 Route::get('/dashboard', function () {
     return view('Admin.dashboard');
 })->middleware(['auth'])->name('dashboard');
@@ -34,13 +44,16 @@ Route::middleware(['auth', 'role:Super Admin'])->prefix('superadmin')->name('sup
     Route::post('/userPermission/{id}', [PermissionController::class, 'storeUserPermission']);
     Route::post('/deleteUserPermission/{id}', [PermissionController::class, 'delteUserPermissionRoles']);
 
-    Route::resource('/users', UserController::class);
     Route::resource('/roles', RolesController::class);
     Route::resource('/permission', PermissionController::class);
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 });
 
-Route::middleware(['auth', 'role:Admin UIT|Admin HR|Admin UKW|Super Admin'])->prefix('admin')->name('admin.')->group(function () {
+
+Route::middleware(['auth', 'role:Admin UIT|Admin UPSM|Admin UKW|Super Admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', function () {
         return view('Admin.dashboard');
     });

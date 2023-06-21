@@ -8,7 +8,15 @@ use App\Models\Position;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+<<<<<<< Updated upstream
 use App\Traits\SuperAdmin\UserFilterTraits;
+=======
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use App\Traits\SuperAdmin\Filters\UserFilterTraits;
+use App\Http\Requests\SuperAdmin\User\AddUserRequest;
+use App\Http\Requests\SuperAdmin\User\EditUserRequest;
+>>>>>>> Stashed changes
 
 class UserController extends Controller
 {
@@ -16,6 +24,12 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+     public function __construct()
+    {
+        $this->middleware(['role_or_permission:Super Admin|user.view']);
+    }
+
     public function index(Request $request)
     {
         $perPage = $request->input('records', 7);

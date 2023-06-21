@@ -71,6 +71,8 @@
 
                 </ul>
             </li>
+
+
             @role('Super Admin')
                 <li class="nav-item has-sub mt-1" style=""><a class="d-flex align-items-center"
                         href="#"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
@@ -98,7 +100,9 @@
                         </li>
                     </ul>
                 </li>
+            @endrole
 
+            @can('user.view')
                 <li class="nav-item has-sub mt-1" style=""><a class="d-flex align-items-center"
                         href="#"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -107,8 +111,8 @@
                             <circle cx="12" cy="7" r="4"></circle>
                         </svg><span class="menu-title text-truncate" data-i18n="User">User</span></a>
                     <ul class="menu-content">
-                        <li class="{{ Request::routeIs('superadmin.users.index') ? ' active' : '' }}"><a
-                                class="d-flex align-items-center" href="{{ route('superadmin.users.index') }}"><svg
+                        <li class="{{ Request::routeIs('users.index') ? ' active' : '' }}"><a
+                                class="d-flex align-items-center" href="{{ route('users.index') }}"><svg
                                     xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round" class="feather feather-circle">
@@ -118,7 +122,9 @@
 
                     </ul>
                 </li>
+            @endcan
 
+            @can(['position.view', 'unit.view'])
                 <li class="nav-item has-sub mt-1" style=""><a class="d-flex align-items-center" href="#">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -129,6 +135,7 @@
                         </svg>
                         <span class="menu-title text-truncate">Position & Unit</span></a>
                     <ul class="menu-content">
+<<<<<<< Updated upstream
                         <li>
                             <a class="d-flex align-items-center" href="{{ route('superadmin.users.index') }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
@@ -147,10 +154,34 @@
                                 </svg>
                                 <span class="menu-item text-truncate" data-i18n="List">View Unit</span></a>
                         </li>
+=======
+                        @can('position.view')
+                            <li class="{{ Request::routeIs('position.index') ? ' active' : '' }}">
+                                <a class="d-flex align-items-center" href="{{ route('position.index') }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                    </svg>
+                                    <span class="menu-item text-truncate" data-i18n="List">View Position</span></a>
+                            </li>
+                        @endcan
+>>>>>>> Stashed changes
 
+                        @can('unit.view')
+                            <li class="{{ Request::routeIs('unit.index') ? ' active' : '' }}">
+                                <a class="d-flex align-items-center" href="{{ route('unit.index') }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                    </svg>
+                                    <span class="menu-item text-truncate" data-i18n="List">View Unit</span></a>
+                            </li>
+                        @endcan
                     </ul>
                 </li>
-            @endrole
+            @endcan
         </ul>
         <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
             <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>

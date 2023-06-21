@@ -47,9 +47,15 @@
                                 </svg>
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">
+<<<<<<< Updated upstream:resources/views/SuperAdmin/table/userTable.blade.php
                                 <a class="dropdown-item add-permission-user-modal" href="javascript:void(0);"
                                     data-bs-target="#addUserPermissionModal" data-bs-toggle="modal"
                                     data-user-id="{{ $user->id }}">
+=======
+                                <a class="dropdown-item edit-unit-modal" href="javascript:void(0);"
+                                    data-bs-target="#editUnitModal" data-bs-toggle="modal"
+                                    data-unit-id="{{ $unit->id }}">
+>>>>>>> Stashed changes:resources/views/SuperAdmin/unit/table/unitTable.blade.php
 
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -61,9 +67,15 @@
 
                                 </a>
 
+<<<<<<< Updated upstream:resources/views/SuperAdmin/table/userTable.blade.php
                                 <a class="dropdown-item role-deleteUserPermission-modal" href="javascript:void(0);"
                                     data-bs-target="#roleUserDeleteModal" data-bs-toggle="modal"
                                     data-user-id="{{ $user->id }}">
+=======
+                                <a class="dropdown-item delete-unit-modal" href="javascript:void(0);"
+                                    data-bs-target="#deleteUnitModal" data-bs-toggle="modal"
+                                    data-unit-id="{{ $unit->id }}">
+>>>>>>> Stashed changes:resources/views/SuperAdmin/unit/table/unitTable.blade.php
 
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
