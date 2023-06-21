@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('csslink')
-    <link rel="stylesheet" href="{{ asset('app-asset/vendors/css/forms/select/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('app-asset/css/style.css') }}">
 @endsection
 @section('layout')
     <div class="app-content content ">
@@ -11,24 +11,23 @@
             <div class="content-header row">
             </div>
             <div class="content-body">
-                <h3>Permissions List</h3>
+                <h3>Positions List</h3>
 
                 <!-- table -->
                 <div class="row mt-1" id="basic-table">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">List of all permission</h4>
+                                <h4 class="card-title">List of all positions</h4>
                             </div>
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-baseline">
                                     <p class="card-text">
-                                        Here is the list of all user permission
-                                    </p>
+                                        Here is the list of all positions </p>
 
-                                    <button class="btn add-new btn-primary mt-50 add-permission-modal" tabindex="0"
-                                        type="button" data-bs-toggle="modal" data-bs-target="#addPermissionModal">
-                                        <span>Add New Permission</span>
+                                    <button class="btn add-new btn-primary mt-50" tabindex="0" type="button"
+                                        data-bs-toggle="modal" data-bs-target="#addPositionModal">
+                                        <span>Add New Positions</span>
                                     </button>
                                 </div>
                             </div>
@@ -40,7 +39,7 @@
 
                                 <div class="col-sm-12 col-md-4">
                                     <div class="input-group">
-                                        <input type="text" id="searchUserWithRoles" placeholder="Search permission..."
+                                        <input type="text" id="searchPosition" placeholder="Search permission..."
                                             class="form-control">
                                     </div>
                                 </div>
@@ -64,7 +63,7 @@
                             </div>
 
                             <div class="table-responsive">
-                                @include('SuperAdmin.table.permissionTable')
+                                @include('SuperAdmin.position.table.positionTable')
 
                                 <div class="d-flex align-items-center justify-content-center">
                                     <div id="roleSpinner" align="center" class="spinner-border text-primary" role="status">
@@ -79,7 +78,7 @@
                 </div>
                 <!-- table -->
 
-                @include('SuperAdmin.modal.permissionModal')
+                @include('SuperAdmin.position.modal.positionModal')
 
             </div>
         </div>
@@ -87,8 +86,8 @@
 @endsection
 
 @section('script')
-    <script src="{{ asset('js/SuperAdmin/permission/viewAllPermissionTable.js') }}"></script>
-    <script src="{{ asset('js/SuperAdmin/permission/permissionModal.js') }}"></script>
-    <script src="{{ asset('app-asset/vendors/js/forms/select/select2.full.min.js') }}"></script>
-    <script src="{{ asset('app-asset/js/scripts/forms/form-select2.js') }}"></script>
+    <script src="{{ asset('js/SuperAdmin/position/viewAllPositions.js') }}"></script>
+    <script src="{{ asset('js/SuperAdmin/position/addPosition.js') }}"></script>
+    <script src="{{ asset('js/SuperAdmin/position/editPosition.js') }}"></script>
+    <script src="{{ asset('js/SuperAdmin/position/deletePosition.js') }}"></script>
 @endsection

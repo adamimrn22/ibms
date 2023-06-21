@@ -56,7 +56,7 @@ $(document).ready(function () {
     // Function to fetch data
     function fetch_data(page, searchTerm = '', userStatus = '', recordsPerPage = '') {
         $.ajax({
-            url: "/superadmin/users",
+            url: "/users",
             type: "GET",
             data: {
                 page: page,
@@ -90,7 +90,7 @@ $(document).ready(function () {
         $.ajax({
             ...ajaxSettings,
             type: "GET",
-            url: '/superadmin/users/create',
+            url: '/users/create',
             success: function (response) {
                 populateDropdown(dropdownPosition, response.positions);
                 populateDropdown(dropdownUnit, response.unit);
@@ -100,6 +100,67 @@ $(document).ready(function () {
         });
     });
 
+<<<<<<< Updated upstream:public/js/table/viewAllUserTable.js
+=======
+    $('#userListTable').on('click', '.edit-user-modal', function () {
+        let id = $(this).data('user-id');
+
+        let dropdownPosition = $('#editModalUserPosition');
+        let dropdownUnit = $('#editModalUserUnit');
+
+        let editModalUserID = $('#editModalUserID');
+        let editModalUserFirstName = $('#editModalUserFirstName');
+        let editModalUserLastName = $('#editModalUserLastName');
+        let editModalUserEmail = $('#editModalUserEmail');
+        let editModalUserPhone = $('#editModalUserPhone');
+        let editModalUserStatus = $('#editModalUserStatus');
+
+        disableDropdowns(dropdownPosition, dropdownUnit);
+
+        $.ajax({
+            ...ajaxSettings,
+            type: "GET",
+            url: `/users/${id}`,
+            success: function (response) {
+
+                let user = response.user
+
+
+                $('#userEditName').text(user.first_name + ' ' + user.last_name)
+                $('#userID').val(user.id)
+                editModalUserID.val(user.username)
+                editModalUserFirstName.val(user.first_name);
+                editModalUserLastName.val(user.last_name);
+                editModalUserEmail.val(user.email);
+                editModalUserPhone.val(user.phone_number);
+                editModalUserStatus.val(user.isActive);
+
+                let selectedPosition = response.userPositions[1];
+                let selectedPositionText = response.userPositions[0];
+                let selectedUnit = response.userUnit[1];
+                let selectedUnitText = response.userUnit[0];
+
+                populateDropdown(dropdownPosition, response.positions);
+                populateDropdown(dropdownUnit, response.units);
+
+
+                // Select the option and set its text for the selected position
+                dropdownPosition.find('option[value="' + selectedPosition + '"]')
+                    .prop('selected', true)
+                    .text(selectedPositionText);
+
+                // Select the option and set its text for the selected unit
+                dropdownUnit.find('option[value="' + selectedUnit + '"]')
+                    .prop('selected', true)
+                    .text(selectedUnitText);
+
+                enableDropdowns(dropdownPosition, dropdownUnit);
+            }
+        });
+    });
+
+
+>>>>>>> Stashed changes:public/js/SuperAdmin/User/viewAllUserTable.js
     function disableDropdowns(...dropdowns) {
         dropdowns.forEach(function (dropdown) {
             dropdown.prop('disabled', true);

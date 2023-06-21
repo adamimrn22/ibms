@@ -15,76 +15,63 @@ $(document).ready(function () {
     $(document).on('click', '#Pagination a', function (e) {
         e.preventDefault();
         let page = $(this).attr('href').split('page=')[1];
-        let searchTerm = $('#searchUserWithRoles').val();
-        let isRole = $('#roleFilter').val();
+        let searchTerm = $('#searchPosition').val();
         let recordsPerPage = $('#recordFilter').val();
-        fetch_data(page, searchTerm, isRole, recordsPerPage);
+        fetch_data(page, searchTerm, recordsPerPage);
     });
 
     // Event listener for search input (onkeyup event)
-    $(document).on('keyup', '#searchUserWithRoles', function () {
+    $(document).on('keyup', '#searchPosition', function () {
         let searchTerm = $(this).val();
-        let isRole = $('#roleFilter').val();
         let recordsPerPage = $('#recordFilter').val();
-        fetch_data(1, searchTerm, isRole, recordsPerPage);
+        fetch_data(1, searchTerm, recordsPerPage);
     });
 
-    // Event listener for active filter
-    $(document).on('change', '#roleFilter', function (e) {
-        let isRole = $(this).val();
-        let searchTerm = $('#searchInput').val();
-        let recordsPerPage = $('#recordFilter').val();
-        fetch_data(1, searchTerm, isRole, recordsPerPage);
-    });
 
     // Event listener for record filter
     $(document).on('change', '#recordFilter', function () {
         let recordsPerPage = $(this).val();
-        let searchTerm = $('#searchInput').val();
-        let isRole = $('#roleFilter').val();
-        fetch_data(1, searchTerm, isRole, recordsPerPage);
+        let searchTerm = $('#searchPosition').val();
+        fetch_data(1, searchTerm, recordsPerPage);
     });
 
     // Function to fetch data
-    function fetch_data(page, searchTerm = '', isRole = '', recordsPerPage = '') {
+    function fetch_data(page, searchTerm = '', recordsPerPage = '') {
         $.ajax({
-            url: "/superadmin/permission",
+            url: "/superadmin/position",
             type: "GET",
             data: {
                 page: page,
                 search: searchTerm,
-                role: isRole,
                 records: recordsPerPage
             },
             beforeSend: function () {
-                $('#permissionTable').hide();
+                $('#positionTable').hide();
                 spinnerContainer.show();
 
             },
             success: function (data) {
                 spinnerContainer.hide();
-                $('#permissionTable').html(data.table).show();
+                $('#positionTable').html(data.table).show();
                 $('#Pagination').html(data.pagination);
             },
             error: function (xhr) {
-                console.log(xhr);
                 spinnerContainer.hide();
             }
         });
     }
 
-    $('#unitTable').on('click', '.edit-unit-modal', function () {
-        let id = $(this).data('unit-id');
-        $('#unitID').val(id)
-        let name = $('#modalEditUnitName');
+    $('#positionTable').on('click', '.edit-position-modal', function () {
+        let id = $(this).data('position-id');
+        $('#positionID').val(id);
+        let name = $('#modalEditPositionName');
 
         $.ajax({
             ...ajaxSettings,
             type: "GET",
-            url: `${baseUrl}/superadmin/unit/${id}`,
+            url: `${baseUrl}/superadmin/position/${id}`,
             success: function (response) {
-
-                name.val(response.unit)
+                name.val(response.position)
             }
         });
     });

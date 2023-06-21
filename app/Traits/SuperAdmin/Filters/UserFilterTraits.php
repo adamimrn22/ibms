@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\SuperAdmin;
+namespace App\Traits\SuperAdmin\Filters;
 
 trait UserFilterTraits
 {

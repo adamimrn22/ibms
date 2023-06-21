@@ -21,9 +21,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call(RoleSeeder::class);
         $this->call(AdminSeeder::class);
-        $this->call(PermissionSeeder::class);
+        // $this->call(PermissionSeeder::class);
 
-        $role = Role::findByName('User');
+        // $role = Role::findByName('User');
 
 
         User::factory(50)->create()->each(function ($user) use ($role) {
