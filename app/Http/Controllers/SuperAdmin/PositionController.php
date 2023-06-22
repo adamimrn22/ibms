@@ -6,13 +6,9 @@ use App\Models\Position;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Traits\SuperAdmin\Filters\PositionFilterTraits;
-use Illuminate\Contracts\Pagination\Paginator;
 
 class PositionController extends Controller
 {
-<<<<<<< Updated upstream
-    //
-=======
     use PositionFilterTraits;
 
     public function index(Request $request)
@@ -95,5 +91,4 @@ class PositionController extends Controller
     }
 
 
->>>>>>> Stashed changes
 }

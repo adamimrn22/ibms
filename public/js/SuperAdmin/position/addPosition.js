@@ -1,4 +1,7 @@
 $(document).ready(function () {
+
+    let baseUrl = $('meta[name="base-url"]').attr('content');
+
     const ajaxSettings = {
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -30,7 +33,7 @@ $(document).ready(function () {
                 $.ajax({
                     ...ajaxSettings,
                     type: "POST",
-                    url: "/superadmin/position",
+                    url: `${baseUrl}/position`,
                     data: {
                         name: modalAddPositionName
                     },

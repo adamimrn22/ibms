@@ -26,8 +26,8 @@ class DatabaseSeeder extends Seeder
         // $role = Role::findByName('User');
 
 
-        User::factory(50)->create()->each(function ($user) use ($role) {
-            $user->assignRole($role);
-        });
+        // User::factory(50)->create()->each(function ($user) use ($role) {
+        //     $user->assignRole($role);
+        // });
     }
 }

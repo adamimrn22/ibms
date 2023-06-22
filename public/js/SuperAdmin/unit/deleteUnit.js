@@ -1,7 +1,7 @@
 $(document).ready(function () {
     let baseUrl = $('meta[name="base-url"]').attr('content');
 
-    let deletePositionForm = $('#deletePositionForm');
+    let deleteUnitForm = $('#deleteUnitForm');
 
     const ajaxSettings = {
         headers: {
@@ -9,29 +9,27 @@ $(document).ready(function () {
         },
     };
 
-    $('#positionTable').on('click', '.delete-position-modal', function () {
-        let id = $(this).data('position-id')
+    $('#unitTable').on('click', '.delete-unit-modal', function () {
+        let id = $(this).data('unit-id')
         $('#deleteID').val(id);
     });
 
-    deletePositionForm.submit(function (e) {
+    deleteUnitForm.submit(function (e) {
         e.preventDefault();
         let id = $('#deleteID').val();
+
         $.ajax({
             ...ajaxSettings,
             type: "DELETE",
-            url: `${baseUrl}/position/${id}`,
+            url: `${baseUrl}/unit/${id}`,
             success: function (response) {
-                $('#positionTable').html(response.table);
+                $('#unitTable').html(response.table);
                 $('#Pagination').html(response.pagination);
                 // Hide the modal
-                $('#deletePositionModal').modal('hide');
+                $('#deleteUnitModal').modal('hide');
 
                 // Handle the success response from the server
                 toastr.success(response.success, 'Success');
-            },
-            error: function (response) {
-                toastr.error(response)
             }
         });
     });

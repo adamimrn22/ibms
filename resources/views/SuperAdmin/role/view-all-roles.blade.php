@@ -1,10 +1,5 @@
 @extends('layouts.app')
 
-@section('csslink')
-    <link rel="stylesheet" href="{{ asset('app-asset/vendors/css/forms/select/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('app-asset/css/style.css') }}">
-@endsection
-
 @section('layout')
     <div class="app-content content ">
         <div class="content-overlay"></div>
@@ -13,33 +8,44 @@
             <div class="content-header row">
             </div>
             <div class="content-body">
-                <!-- users list start -->
-                <section class="app-user-list">
-                    <div class="row">
-                        @include('SuperAdmin.user.section.UserSection')
-                    </div>
-                    <!-- list and filter start -->
+                <h3>Roles List</h3>
+                <p class="mb-2">
+                    A role provided access to predefined menus and features so that depending <br>
+                    on assigned role
+                </p>
 
-                    <div class="row mt-1" id="basic-table">
+                <div class="row">
+
+                    @include('SuperAdmin.role.section.RoleSection')
+
+                    {{-- Roles Card --}}
+
+
+                    <!-- table -->
+                    <div class="row" id="basic-table">
                         <div class="col-12">
                             <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Total active users with their roles</h4>
+                                </div>
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-baseline">
                                         <p class="card-text">
-                                            Here is the list of all users
+                                            Here is the list of all active user with their assigned roles
                                         </p>
 
-                                        <button class="btn add-new btn-primary mt-50 add-permission-modal" tabindex="0"
-                                            type="button" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                                            <span>Add New User</span>
-                                        </button>
+                                        <a href="javascript:void(0)" class="role-add-modal" data-bs-target="#addRoleModal"
+                                            data-bs-toggle="modal">
+                                            <span class="btn btn-primary waves-effect waves-float waves-light">Add New
+                                                Role</span>
+                                        </a>
                                     </div>
                                 </div>
 
                                 <hr>
 
-                                <div class="d-flex justify-content-between align-items-center mx-0 mb-2 row">
 
+                                <div class="d-flex justify-content-between align-items-center mx-0 mb-2 row">
                                     <div class="col-sm-12 col-md-4">
                                         <div class="input-group">
                                             <button type="button"
@@ -48,13 +54,14 @@
                                                 Filter
                                             </button>
                                             <div class="dropdown-menu" style="">
-                                                <select id="userFilter" class="form-select mx-1 px-2">
-                                                    <option selected value="All">All</option>
-                                                    <option value="1">Active</option>
-                                                    <option value="0">Not Active</option>
+                                                <select id="roleFilter" class="form-select mx-1 px-2">
+                                                    <option value="">All</option>
+                                                    <option value="User">User</option>
+                                                    <option value="Admin">Admin</option>
+                                                    <option value="Super Admin">Super Admin</option>
                                                 </select>
                                             </div>
-                                            <input type="text" id="searchUser" placeholder="Search user..."
+                                            <input type="text" id="searchUserWithRoles" placeholder="Search user..."
                                                 class="form-control">
                                         </div>
                                     </div>
@@ -78,8 +85,7 @@
                                 </div>
 
                                 <div class="table-responsive">
-
-                                    @include('SuperAdmin.user.table.userTable')
+                                    @include('SuperAdmin.role.table.roleTable')
 
                                     <div class="d-flex align-items-center justify-content-center">
                                         <div id="roleSpinner" align="center" class="spinner-border text-primary"
@@ -93,18 +99,19 @@
                             </div>
                         </div>
                     </div>
-                </section>
-                <!-- users list ends -->
+                    <!-- table -->
 
-                @include('SuperAdmin.user.modal.userModal')
+                    @include('SuperAdmin.role.modal.roleModal')
+
+                    @include('SuperAdmin.role.modal.userRoleModal')
+                </div>
             </div>
         </div>
-    </div>
-@endsection
+    @endsection
 
-@section('script')
-    <script src="{{ asset('js/SuperAdmin/User/viewAllUserTable.js') }}"></script>
-    <script src="{{ asset('js/SuperAdmin/User/addUser.js') }}"></script>
-    <script src="{{asset('js/SuperAdmin/User/editUser.js')}}"></script>
-    <script src="{{asset('js/SuperAdmin/User/deleteUser.js')}}"></script>
-@endsection
+    @section('script')
+        <script src="{{ asset('app-asset/js/custom/modal/addRoleModal.js') }}"></script>
+        <script src="{{ asset('js/modal/roleSection.js') }}"></script>
+        <script src="{{ asset('js/modal/userPermissionModal.js') }}"></script>
+        <script src="{{ asset('js/table/viewAllRoleTable.js') }}"></script>
+    @endsection

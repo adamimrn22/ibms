@@ -7,9 +7,9 @@ $(document).ready(function () {
         },
     };
 
-    let editPositionForm = $('#editPositionForm');
-    if (editPositionForm.length) {
-        editPositionForm.validate({
+    let editUnitForm = $('#editUnitForm');
+    if (editUnitForm.length) {
+        editUnitForm.validate({
             rules: {
                 name: {
                     required: true,
@@ -17,7 +17,7 @@ $(document).ready(function () {
                 },
             },
             messages: {
-                name: {
+                modalEditUnitName: {
                     required: "Please enter the unit name",
                     minlength: "The unit name must be at least 5 characters long"
                 },
@@ -26,32 +26,32 @@ $(document).ready(function () {
             submitHandler: function (form, event) {
                 // This function will be triggered when the form is valid
                 // You can perform the AJAX request or other form handling logic here
-                let modalEditPositionName = $('#modalEditPositionName').val();
-                let positionID = $('#positionID').val()
+                let modalEditUnitName = $('#modalEditUnitName').val();
+                let unitID = $('#unitID').val()
 
                 // Perform your AJAX request using the updated requestData
                 $.ajax({
                     ...ajaxSettings,
                     type: "PUT",
-                    url: `${baseUrl}/position/${positionID}`,
+                    url: `${baseUrl}/unit/${unitID}`,
                     data: {
-                        name: modalEditPositionName
+                        name: modalEditUnitName
                     },
                     success: function (response) {
                         // Reset form validation
-                        let editPositionForm = $('#editPositionForm');
-                        editPositionForm.validate().resetForm();
-                        editPositionForm.find('.is-invalid').removeClass('is-invalid');
-                        editPositionForm.find('.error').empty();
+                        let editUnitForm = $('#editUnitForm');
+                        editUnitForm.validate().resetForm();
+                        editUnitForm.find('.is-invalid').removeClass('is-invalid');
+                        editUnitForm.find('.error').empty();
 
                         // Clear input values
-                        editPositionForm.find('input').val('');
+                        editUnitForm.find('input').val('');
 
-                        $('#positionTable').html(response.table).show();
+                        $('#unitTable').html(response.table).show();
                         $('#Pagination').html(response.pagination);
 
                         // Hide the modal
-                        $('#editPositionModal').modal('hide');
+                        $('#editUnitModal').modal('hide');
 
                         // Handle the success response from the server
                         toastr.success(response.success, 'Success');
@@ -63,13 +63,14 @@ $(document).ready(function () {
                             if (response && response.errors) {
                                 toastr.error('Invalid Validation Error', 'error')
                                 // Clear any previous error messages and remove the red border
-                                $('#editPositionForm .is-invalid').empty();
-                                $('#editPositionForm input').removeClass('is-invalid');
+                                $('#editUnitForm .is-invalid').empty();
+                                $('#editUnitForm input').removeClass('is-invalid');
 
                                 // Map the field names in the response to the corresponding input field ids
                                 let fieldMap = {
                                     'name': 'name',
                                 };
+
 
                                 // Iterate over each error field and its messages
                                 $.each(response.errors, function (field, messages) {
@@ -78,10 +79,10 @@ $(document).ready(function () {
 
                                     // Display each error message next to its corresponding input field
                                     let errorMessage = messages[0];
-                                    $('#editPositionForm .' + field + '-error').html('<p>' + errorMessage + '</p>');
+                                    $('#editUnitForm .' + field + '-error').html('<p>' + errorMessage + '</p>');
 
                                     // Add error border to the input field
-                                    $('#editPositionForm #' + inputId).addClass('is-invalid');
+                                    $('#editUnitForm #' + inputId).addClass('is-invalid');
                                 });
                             }
                         } else {

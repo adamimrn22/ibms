@@ -8,15 +8,11 @@ use App\Models\Position;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-<<<<<<< Updated upstream
-use App\Traits\SuperAdmin\UserFilterTraits;
-=======
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Traits\SuperAdmin\Filters\UserFilterTraits;
 use App\Http\Requests\SuperAdmin\User\AddUserRequest;
 use App\Http\Requests\SuperAdmin\User\EditUserRequest;
->>>>>>> Stashed changes
 
 class UserController extends Controller
 {
@@ -50,11 +46,11 @@ class UserController extends Controller
 
         if ($request->ajax()) {
             return response()->json([
-                'userTotal' => view('SuperAdmin.section.UserSection', compact(
+                'userTotal' => view('SuperAdmin.user.section.UserSection', compact(
                                 'totalUserCount', 'userActiveCount',
                                 'userNotActiveCount', 'totalUserWithRoles'
                             )),
-                'table' => view('SuperAdmin.table.userTable', compact('data'))->render(),
+                'table' => view('SuperAdmin.user.table.userTable', compact('data'))->render(),
                 'pagination' => view('components.Pagination', compact('data'))->render(),
             ]);
         }

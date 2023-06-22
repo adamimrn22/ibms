@@ -30,7 +30,7 @@ $(document).ready(function () {
                 $.ajax({
                     ...ajaxSettings,
                     type: "POST",
-                    url: "/superadmin/unit",
+                    url: "/unit",
                     data: {
                         name: modalAddUnitName
                     },

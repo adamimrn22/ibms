@@ -3,10 +3,12 @@
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SuperAdmin\UnitController;
+use App\Http\Controllers\SuperAdmin\UserController;
 use App\Http\Controllers\SuperAdmin\RolesController;
 use App\Http\Controllers\SuperAdmin\SAHomeController;
+use App\Http\Controllers\SuperAdmin\PositionController;
 use App\Http\Controllers\SuperAdmin\PermissionController;
-use App\Http\Controllers\SuperAdmin\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,8 +25,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-<<<<<<< Updated upstream
-=======
 Route::middleware(['auth'])->group(function () {
     Route::resource('/users', UserController::class);
     Route::resource('/unit', UnitController::class);
@@ -32,7 +32,6 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
->>>>>>> Stashed changes
 Route::get('/dashboard', function () {
     return view('Admin.dashboard');
 })->middleware(['auth'])->name('dashboard');
@@ -46,10 +45,6 @@ Route::middleware(['auth', 'role:Super Admin'])->prefix('superadmin')->name('sup
 
     Route::resource('/roles', RolesController::class);
     Route::resource('/permission', PermissionController::class);
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 });
 
 

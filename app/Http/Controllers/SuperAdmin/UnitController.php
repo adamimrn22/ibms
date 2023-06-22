@@ -4,17 +4,14 @@ namespace App\Http\Controllers\SuperAdmin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-<<<<<<< Updated upstream
-=======
 use App\Models\Unit;
 use App\Traits\SuperAdmin\Filters\UnitFilterTraits;
->>>>>>> Stashed changes
 
 class UnitController extends Controller
 {
 
-<<<<<<< Updated upstream
-=======
+    use UnitFilterTraits;
+
     public function index(Request $request)
     {
         $perPage = $request->input('records', 7);
@@ -96,5 +93,4 @@ class UnitController extends Controller
         ]);
     }
 
->>>>>>> Stashed changes
 }
