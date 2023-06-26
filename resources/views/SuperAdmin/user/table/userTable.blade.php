@@ -1,4 +1,4 @@
-<div id="userListRolesTable">
+<div id="userListTable">
     <table class="table">
         <thead>
             <tr>
@@ -47,7 +47,7 @@
                                 </svg>
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item edit-unit-modal" href="javascript:void(0);"
+                                <a class="dropdown-item edit-user-modal" href="javascript:void(0);"
                                     data-bs-target="#editUserModal" data-bs-toggle="modal"
                                     data-user-id="{{ $user->id }}">
 
@@ -61,7 +61,7 @@
 
                                 </a>
 
-                                <a class="dropdown-item delete-unit-modal" href="javascript:void(0);"
+                                <a class="dropdown-item delete-user-modal" href="javascript:void(0);"
                                     data-bs-target="#deleteUserModal" data-bs-toggle="modal"
                                     data-user-id="{{ $user->id }}">
 

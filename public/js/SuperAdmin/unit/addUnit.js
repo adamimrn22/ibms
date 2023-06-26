@@ -45,7 +45,6 @@ $(document).ready(function () {
                         addUnitForm.find('input').val('');
 
                         $('#unitTable').html(response.table).show();
-                        console.log(response)
                         $('#Pagination').html(response.pagination);
 
                         // Hide the modal

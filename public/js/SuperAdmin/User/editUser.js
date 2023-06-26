@@ -50,7 +50,6 @@ $(document).ready(function () {
                 // This function will be triggered when the form is valid
                 // You can perform the AJAX request or other form handling logic here
                 let userID = $('#userID').val();
-                let editUserID = $('#editModalUserID').val();
                 let modalEditUserFirstName = $('#editModalUserFirstName').val();
                 let modalEditUserLastName = $('#editModalUserLastName').val();
                 let modalUserPosition = $('#editModalUserPosition').val();
@@ -66,11 +65,11 @@ $(document).ready(function () {
                     type: "PUT",
                     url: `/users/${userID}`,
                     data: {
-                        isActive: modalEditUserStatus,
                         first_name: modalEditUserFirstName,
                         last_name: modalEditUserLastName,
                         position_id: modalUserPosition,
                         unit_id: modalUserUnit,
+                        isActive: modalEditUserStatus,
                         email: modalEditUserEmail,
                         phone_number: modalEditUserPhone
                     },

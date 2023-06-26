@@ -21,7 +21,7 @@ class UserController extends Controller
      * Display a listing of the resource.
      */
 
-     public function __construct()
+    public function __construct()
     {
         $this->middleware(['role_or_permission:Super Admin|user.view']);
     }
@@ -31,33 +31,18 @@ class UserController extends Controller
         $perPage = $request->input('records', 7);
         $searchTerm = $request->input('search');
         $status = $request->input('status');
-        // $roles = Role::with('users:id,username')->get();
         $query = User::query();
 
-        $totalUserCount = User::count();
-        $userActiveCount = User::where('isActive', 1)->count();
-        $userNotActiveCount = $totalUserCount - $userActiveCount;
-        $totalUserWithRoles = DB::table('model_has_roles')->where('role_id', '5')->count();
-
-
         $data = $this->applyPaginationFilterSearch($query, $perPage, $searchTerm, $status);
-
-        $startingNumber = ($data->currentPage() - 1) * $data->perPage() + 1;
+        $userCounts = $this->getUserCounts();
 
         if ($request->ajax()) {
             return response()->json([
-                'userTotal' => view('SuperAdmin.user.section.UserSection', compact(
-                                'totalUserCount', 'userActiveCount',
-                                'userNotActiveCount', 'totalUserWithRoles'
-                            )),
                 'table' => view('SuperAdmin.user.table.userTable', compact('data'))->render(),
                 'pagination' => view('components.Pagination', compact('data'))->render(),
             ]);
         }
-        return view('SuperAdmin.user.view-all-user',
-            compact('data', 'totalUserCount', 'userActiveCount',
-                'userNotActiveCount', 'totalUserWithRoles')
-        );
+        return view('SuperAdmin.user.view-all-user', compact('data') + $userCounts);
     }
 
     /**
@@ -77,10 +62,27 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AddUserRequest $request)
     {
         try {
-            dd($request->input('user'));
+
+            $validatedData = $request->validated();
+            $validatedData['password'] = Hash::make($validatedData['username']);
+            $validatedData['created_at'] = now();
+
+            $user = User::create($validatedData);
+            $user->assignRole('User');
+            $user->syncPermissions();
+
+            $userCounts = $this->getUserCounts();
+            $data = User::paginate(7);
+
+            return response()->json([
+                'sucess' => 'User successfully created',
+                'userTotal' => view('SuperAdmin.user.section.UserSection', $userCounts)->render(),
+                'table' => view('SuperAdmin.user.table.userTable', compact('data'))->render(),
+                'pagination' => view('components.Pagination', compact('data'))->render(),
+            ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'error' => $th->getMessage()
@@ -89,27 +91,46 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $positions = Position::all();
+        $units = Unit::all();
+
+        return response()->json([
+            'user' => $user,
+            'positions' => $positions,
+            'units' => $units
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(EditUserRequest $request, string $id)
     {
-        //
+        try {
+            $validatedData = $request->validated();
+            $validatedData['updated_at'] = now();
+
+            User::where('id', $id)->update($validatedData);
+
+            $userCounts = $this->getUserCounts();
+            $data = User::paginate(7);
+
+            return response()->json([
+                'success' => 'User Succesfully Updated',
+                'userTotal' => view('SuperAdmin.user.section.UserSection', $userCounts)->render(),
+                'table' => view('SuperAdmin.user.table.userTable', compact('data'))->render(),
+                'pagination' => view('components.Pagination', compact('data'))->render(),
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error' => $th->getMessage()
+            ]);
+        }
     }
 
     /**
@@ -117,6 +138,31 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        User::destroy($id);
+
+        $userCounts = $this->getUserCounts();
+        $data = User::paginate(7);
+
+        return response()->json([
+            'success' => 'User Succesfully Deleted',
+            'userTotal' => view('SuperAdmin.user.section.UserSection', $userCounts)->render(),
+            'table' => view('SuperAdmin.user.table.userTable', compact('data'))->render(),
+            'pagination' => view('components.Pagination', compact('data'))->render(),
+        ]);
+    }
+
+    /**
+     * Get The User Count
+     */
+   private function getUserCounts()
+    {
+        $totalUserCount = User::count();
+        $userActiveCount = User::where('isActive', 1)->count();
+        $userNotActiveCount = $totalUserCount - $userActiveCount;
+        $totalUserWithRoles = User::whereHas('roles', function ($query) {
+            $query->where('id', 5);
+        })->count();
+
+        return compact('totalUserCount', 'userActiveCount', 'userNotActiveCount', 'totalUserWithRoles');
     }
 }

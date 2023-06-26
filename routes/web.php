@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SuperAdmin\CategoryController;
 use App\Http\Controllers\SuperAdmin\UnitController;
 use App\Http\Controllers\SuperAdmin\UserController;
 use App\Http\Controllers\SuperAdmin\RolesController;
@@ -29,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/users', UserController::class);
     Route::resource('/unit', UnitController::class);
     Route::resource('/position', PositionController::class);
+    Route::resource('/category', CategoryController::class);
 
 });
 

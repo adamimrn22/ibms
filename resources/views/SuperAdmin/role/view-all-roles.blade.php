@@ -107,11 +107,13 @@
                 </div>
             </div>
         </div>
-    @endsection
+    </div>
+@endsection
 
-    @section('script')
-        <script src="{{ asset('app-asset/js/custom/modal/addRoleModal.js') }}"></script>
-        <script src="{{ asset('js/modal/roleSection.js') }}"></script>
-        <script src="{{ asset('js/modal/userPermissionModal.js') }}"></script>
-        <script src="{{ asset('js/table/viewAllRoleTable.js') }}"></script>
-    @endsection
+@section('script')
+    <script src="{{ asset('app-asset/js/custom/modal/addRoleModal.js') }}"></script>
+    <script src="{{ asset('js/SuperAdmin/role/roleSection.js') }}"></script>
+    <script src="{{ asset('js/SuperAdmin/permission/permissionModal.js') }}"></script>
+    <script src="{{ asset('js/SuperAdmin/role/viewAllRoleTable.js') }}"></script>
+    <script src="{{ asset('js/SuperAdmin/permission/userPermissionModal.js') }}"></script>
+@endsection

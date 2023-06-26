@@ -11,6 +11,11 @@ class PositionController extends Controller
 {
     use PositionFilterTraits;
 
+    public function __construct()
+    {
+        $this->middleware(['role_or_permission:Super Admin|position.view']);
+    }
+
     public function index(Request $request)
     {
         $perPage = $request->input('records', 7);

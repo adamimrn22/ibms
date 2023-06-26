@@ -114,7 +114,6 @@ $(document).ready(function () {
                 if (response.status === 'success') {
                     toastr.success(response.message, 'Success');
                     $('#userListRolesTable').html(response.table)
-                    console.log(response.table)
                     $('#roleUserDeleteModal').modal('hide');
                     deleteUserRoleForm[0].reset();
                 } else {

@@ -65,14 +65,13 @@ $(document).ready(function () {
                 records: recordsPerPage
             },
             beforeSend: function () {
-                $('#userListRolesTable').hide();
+                $('#userListTable').hide();
                 spinnerContainer.show();
 
             },
             success: function (data) {
                 spinnerContainer.hide();
-                $('#userListRolesTable').html(data.table).show();
-                console.log(data);
+                $('#userListTable').html(data.table).show();
                 $('#Pagination').html(data.pagination);
             },
             error: function (xhr) {
@@ -94,7 +93,6 @@ $(document).ready(function () {
             success: function (response) {
                 populateDropdown(dropdownPosition, response.positions);
                 populateDropdown(dropdownUnit, response.unit);
-
                 enableDropdowns(dropdownPosition, dropdownUnit);
             }
         });
@@ -102,7 +100,6 @@ $(document).ready(function () {
 
     $('#userListTable').on('click', '.edit-user-modal', function () {
         let id = $(this).data('user-id');
-
         let dropdownPosition = $('#editModalUserPosition');
         let dropdownUnit = $('#editModalUserUnit');
 
@@ -112,17 +109,29 @@ $(document).ready(function () {
         let editModalUserEmail = $('#editModalUserEmail');
         let editModalUserPhone = $('#editModalUserPhone');
         let editModalUserStatus = $('#editModalUserStatus');
+        let editModalUserPosition = $('#editModalUserPosition');
+        let editModalUserUnit = $('#editModalUserUnit');
 
         disableDropdowns(dropdownPosition, dropdownUnit);
 
         $.ajax({
             ...ajaxSettings,
             type: "GET",
-            url: `/users/${id}`,
+            url: `/users/${id}/edit`,
             success: function (response) {
+                let editUserForm = $('#editUserForm');
+                editUserForm.validate().resetForm();
+                editUserForm.find('.is-invalid').removeClass('is-invalid');
+                editUserForm.find('.error').empty();
+
+                // Clear input values
+                editUserForm.find('input').val('');
 
                 let user = response.user
 
+                populateDropdown(dropdownPosition, response.positions);
+                populateDropdown(dropdownUnit, response.units);
+                enableDropdowns(dropdownPosition, dropdownUnit);
 
                 $('#userEditName').text(user.first_name + ' ' + user.last_name)
                 $('#userID').val(user.id)
@@ -133,26 +142,8 @@ $(document).ready(function () {
                 editModalUserPhone.val(user.phone_number);
                 editModalUserStatus.val(user.isActive);
 
-                let selectedPosition = response.userPositions[1];
-                let selectedPositionText = response.userPositions[0];
-                let selectedUnit = response.userUnit[1];
-                let selectedUnitText = response.userUnit[0];
-
-                populateDropdown(dropdownPosition, response.positions);
-                populateDropdown(dropdownUnit, response.units);
-
-
-                // Select the option and set its text for the selected position
-                dropdownPosition.find('option[value="' + selectedPosition + '"]')
-                    .prop('selected', true)
-                    .text(selectedPositionText);
-
-                // Select the option and set its text for the selected unit
-                dropdownUnit.find('option[value="' + selectedUnit + '"]')
-                    .prop('selected', true)
-                    .text(selectedUnitText);
-
-                enableDropdowns(dropdownPosition, dropdownUnit);
+                editModalUserPosition.val(user.position_id)
+                editModalUserUnit.val(user.unit_id)
             }
         });
     });
@@ -176,32 +167,5 @@ $(document).ready(function () {
             dropdown.append($("<option />").val(this.id).text(this.name));
         });
     }
-
-    addUserForm.submit(function (e) {
-        e.preventDefault();
-        // let url = baseUrl + `/superadmin/users`;
-
-        let form = {
-            staffID: $('#addUserID').val(),
-            firstName: $('#modalAddUserFirstName').val(),
-            lastName: $('#modalAddUserLastName').val(),
-            position: $('#modalUserPosition').val(),
-            unit: $('#modalUserUnit').val(),
-            email: $('#modalAddUserEmail').val(),
-            contact: $('#modalAddUserPhone').val()
-        };
-
-        console.log(form)
-        $.ajax({
-            ...ajaxSettings,
-            type: "POST",
-            url: "/superadmin/users",
-            data: JSON.stringify({ user: form }),
-            success: function (response) {
-            }
-        });
-        // $('#addUserModal').hide('modal');
-        // $('#addUserModal').find('form')[0].reset();
-    });
 
 });

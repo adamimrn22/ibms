@@ -9,8 +9,13 @@ use App\Traits\SuperAdmin\Filters\UnitFilterTraits;
 
 class UnitController extends Controller
 {
-
     use UnitFilterTraits;
+
+    public function __construct()
+    {
+        $this->middleware(['role_or_permission:Super Admin|unit.view']);
+    }
+
 
     public function index(Request $request)
     {
@@ -36,7 +41,7 @@ class UnitController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|min:5|regex:/^[^0-9]+$/'
+            'name' => 'required|min:5|regex:/^[^0-9]+$/|unique:units,name'
         ]);
 
         $validatedData['created_at'] = now();

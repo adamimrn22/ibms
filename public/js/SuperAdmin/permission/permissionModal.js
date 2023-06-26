@@ -65,13 +65,12 @@ $(document).ready(function () {
                 form.find('input').val('');
 
                 form[0].reset();
-                    // Clear input values
+                // Clear input values
             },
             error: function (xhr) {
                 if (xhr.status === 422) {
                     form[0].reset();
                     let errors = xhr.responseJSON.errors;
-                    console.log('Errors:', errors);
 
                     form.find('.is-invalid').removeClass('is-invalid');
 
