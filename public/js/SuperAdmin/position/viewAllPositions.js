@@ -1,7 +1,10 @@
+$('#positionTable').hide();
+
 $(document).ready(function () {
     // Spinner container
     const spinnerContainer = $('#roleSpinner');
     spinnerContainer.hide();
+    $('#positionTable').show();
 
     let baseUrl = $('meta[name="base-url"]').attr('content');
 

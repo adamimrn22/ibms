@@ -1,10 +1,7 @@
-$('#unitTable').hide();
-
 $(document).ready(function () {
     // Spinner container
     const spinnerContainer = $('#roleSpinner');
     spinnerContainer.hide();
-    $('#unitTable').show();
 
     let baseUrl = $('meta[name="base-url"]').attr('content');
 

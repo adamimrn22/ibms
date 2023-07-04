@@ -45,6 +45,8 @@
         href="{{ asset('app-asset/css/plugins/extensions/ext-component-toastr.css') }}">
     {{-- <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/app-invoice-list.css"> --}}
     <!-- END: Page CSS-->
+
+    @vite('resources/js/app.js')
 </head>
 
 <!-- BEGIN: Body-->

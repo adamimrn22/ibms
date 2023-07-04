@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\Inventory\UPSM\ClassroomController;
+use App\Http\Controllers\Admin\UpsmInventoryController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SuperAdmin\CategoryController;
@@ -29,7 +31,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/users', UserController::class);
     Route::resource('/unit', UnitController::class);
     Route::resource('/position', PositionController::class);
-    Route::resource('/category', CategoryController::class);
 
 });
 
@@ -53,7 +54,17 @@ Route::middleware(['auth', 'role:Admin UIT|Admin UPSM|Admin UKW|Super Admin'])->
     Route::get('/dashboard', function () {
         return view('Admin.dashboard');
     });
+
 });
+
+
+Route::middleware(['auth', 'role:Admin UPSM|Super Admin'])->prefix('Inventory/UPSM')->name('upsm.')->group(function () {
+    Route::resource('/Classroom', ClassroomController::class);
+});
+
+// Route::middleware(['auth', 'role:Admin UIT|Super Admin'])->prefix('Inventory')->name('uit.')->group(function () {
+//     Route::resource('/UIT', UitInventoryController::class);
+// });
 
 
 Route::middleware(['auth', 'role:User'])->group(function () {

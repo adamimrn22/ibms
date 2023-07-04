@@ -3,32 +3,55 @@
 @section('csslink')
     <link rel="stylesheet" href="{{ asset('app-asset/css/style.css') }}">
 @endsection
-
 @section('layout')
     <div class="app-content content ">
         <div class="content-overlay"></div>
         <div class="header-navbar-shadow"></div>
         <div class="content-wrapper container-xxl p-0">
-            <div class="content-header row">
-            </div>
+            <div class="content-header row"></div>
             <div class="content-body">
-                <h3>Category List</h3>
+
+                <div class="row">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Ruang Kelas</h4>
+                                <a class="btn btn-outline-primary waves-effect active">View</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Ruang Pejabat</h4>
+                                <a href="#" class="btn btn-outline-primary waves-effect">View</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Makmal</h4>
+                                <a href="#" class="btn btn-outline-primary waves-effect">View</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <h3>Ruang Kelas List</h3>
 
                 <!-- table -->
                 <div class="row mt-1" id="basic-table">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">List of all categories</h4>
+                                <h4 class="card-title">List of all Ruang Kelas</h4>
                             </div>
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-baseline">
-                                    <p class="card-text">
-                                        Here is the list of all categories</p>
-
-                                    <button class="btn add-new btn-primary mt-50 add-unit-modal" tabindex="0"
-                                        type="button" data-bs-toggle="modal" data-bs-target="#addUnitModal">
-                                        <span>Add New Category</span>
+                                    <button class="btn add-new btn-primary mt-50 add-permission-modal" tabindex="0"
+                                        type="button" data-bs-toggle="modal" data-bs-target="#addRuangKelas">
+                                        <span>Add New Classroom</span>
                                     </button>
                                 </div>
                             </div>
@@ -40,7 +63,7 @@
 
                                 <div class="col-sm-12 col-md-4">
                                     <div class="input-group">
-                                        <input type="text" id="searchCategory" placeholder="Search category..."
+                                        <input type="text" id="searchClassroom" placeholder="Search permission..."
                                             class="form-control">
                                     </div>
                                 </div>
@@ -64,7 +87,7 @@
                             </div>
 
                             <div class="table-responsive">
-                                {{-- @include('SuperAdmin.unit.table.unitTable') --}}
+                                @include('Admin.AdminUPSM.table.classroomTable')
 
                                 <div class="d-flex align-items-center justify-content-center">
                                     <div id="roleSpinner" align="center" class="spinner-border text-primary" role="status">
@@ -72,16 +95,23 @@
                                     </div>
                                 </div>
 
-                                @include('components.Pagination');
+                                @include('components.Pagination')
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- table -->
 
-                {{-- @include('SuperAdmin.unit.modal.unitModal') --}}
-
+                @include('Admin.AdminUPSM.modal.classroomModal')
             </div>
         </div>
     </div>
+@endsection
+
+@section('script')
+    <script src="{{ asset('js/Admin/Inventory/UPSM/Classroom/ViewAllClass.js') }}"></script>
+    <script src="{{ asset('js/Admin/Inventory/UPSM/Classroom/AddClass.js') }}"></script>
+    {{-- <script src="{{ asset('js/SuperAdmin/permission/permissionModal.js') }}"></script>
+    <script src="{{ asset('app-asset/vendors/js/forms/select/select2.full.min.js') }}"></script>
+    <script src="{{ asset('app-asset/js/scripts/forms/form-select2.js') }}"></script> --}}
 @endsection

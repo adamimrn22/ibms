@@ -5,20 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Unit extends Model
+class Inventory extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    protected $table = 'inventory';
 
-    public function category()
+    public function Subcategory()
     {
-        return $this->belongsTo(Category::class);
+        return $this->hasMany(Subcategory::class);
     }
-
 }

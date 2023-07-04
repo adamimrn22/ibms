@@ -55,19 +55,54 @@
                 </a>
                 <ul class="menu-content">
 
-                    <li>
-                        <a class="d-flex align-items-center" href="layout-collapsed-menu.html">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle">
-                                <circle cx="12" cy="12" r="10"></circle>
-                            </svg>
+                    @hasanyrole(['Admin UIT', 'Super Admin'])
+                        <li>
+                            <a class="d-flex align-items-center" href="layout-collapsed-menu.html">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                </svg>
 
-                            <span class="menu-item text-truncate" data-i18n="Collapsed Menu">
-                                IT Asset Menu
-                            </span>
-                        </a>
-                    </li>
+                                <span class="menu-item text-truncate" data-i18n="Collapsed Menu">
+                                    IT Asset Menu
+                                </span>
+                            </a>
+                        </li>
+                    @endhasrole
+
+                    @hasanyrole(['Admin UPSM', 'Super Admin'])
+                        <li>
+                            <a class="d-flex align-items-center" href="{{ route('upsm.Classroom.index') }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                </svg>
+
+                                <span class="menu-item text-truncate" data-i18n="Collapsed Menu">
+                                    UPSM Asset Menu
+                                </span>
+                            </a>
+                        </li>
+                    @endhasrole
+
+                    @hasanyrole(['Admin UKW', 'Super Admin'])
+                        <li>
+                            <a class="d-flex align-items-center" href="layout-collapsed-menu.html">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                </svg>
+
+                                <span class="menu-item text-truncate" data-i18n="Collapsed Menu">
+                                    UKW Asset Menu
+                                </span>
+                            </a>
+                        </li>
+                    @endhasrole
+
 
                 </ul>
             </li>
@@ -161,45 +196,6 @@
                     </ul>
                 </li>
             @endcan
-
-            @can(['category.view', 'subcategory.view'])
-                <li class="nav-item has-sub mt-1" style=""><a class="d-flex align-items-center" href="#">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
-                        </svg>
-
-                        <span class="menu-title text-truncate">Categories</span></a>
-                    <ul class="menu-content">
-                        @can('category.view')
-                            <li class="{{ Request::routeIs('category.index') ? ' active' : '' }}">
-                                <a class="d-flex align-items-center" href="{{ route('category.index') }}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle">
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                    </svg>
-                                    <span class="menu-item text-truncate" data-i18n="List">View Category</span></a>
-                            </li>
-                        @endcan
-
-                        @can('subcategory.view')
-                            <li class="{{ Request::routeIs('unit.index') ? ' active' : '' }}">
-                                <a class="d-flex align-items-center" href="{{ route('unit.index') }}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle">
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                    </svg>
-                                    <span class="menu-item text-truncate" data-i18n="List">View Sub Category</span></a>
-                            </li>
-                        @endcan
-                    </ul>
-                </li>
-            @endcan
-
 
         </ul>
         <div class="ps__rail-x" style="left: 0px; bottom: 0px;">

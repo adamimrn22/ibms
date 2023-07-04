@@ -1,11 +1,5 @@
-$('#unitTable').hide();
-
+$('#classroomTable').hide();
 $(document).ready(function () {
-    // Spinner container
-    const spinnerContainer = $('#roleSpinner');
-    spinnerContainer.hide();
-    $('#unitTable').show();
-
     let baseUrl = $('meta[name="base-url"]').attr('content');
 
     const ajaxSettings = {
@@ -13,35 +7,47 @@ $(document).ready(function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
     };
+    let searchTimer;
+
+    // Spinner container
+    const spinnerContainer = $('#roleSpinner');
+    spinnerContainer.hide();
+    $('#classroomTable').show();
 
     // Event listener for pagination links
     $(document).on('click', '#Pagination a', function (e) {
         e.preventDefault();
         let page = $(this).attr('href').split('page=')[1];
-        let searchTerm = $('#searchUnit').val();
+        let searchTerm = $('#searchClassroom').val();
+        let userStatus = $('#userFilter').val();
         let recordsPerPage = $('#recordFilter').val();
-        fetch_data(page, searchTerm, recordsPerPage);
+        fetch_data(page, searchTerm, userStatus, recordsPerPage);
     });
 
     // Event listener for search input (onkeyup event)
-    $(document).on('keyup', '#searchUnit', function () {
-        let searchTerm = $(this).val();
-        let recordsPerPage = $('#recordFilter').val();
-        fetch_data(1, searchTerm, recordsPerPage);
-    });
+    $(document).on('keyup', '#searchClassroom', function () {
+        // Clear the previous timer
+        clearTimeout(searchTimer);
 
+        // Start a new timer to delay the AJAX request
+        searchTimer = setTimeout(() => {
+            let searchTerm = $(this).val();
+            let recordsPerPage = $('#recordFilter').val();
+            fetch_data(1, searchTerm, recordsPerPage);
+        }, 500); // Specify the desired delay in milliseconds (e.g., 500ms)
+    });
 
     // Event listener for record filter
     $(document).on('change', '#recordFilter', function () {
         let recordsPerPage = $(this).val();
-        let searchTerm = $('#searchUnit').val();
+        let searchTerm = $('#searchClassroom').val();
         fetch_data(1, searchTerm, recordsPerPage);
     });
 
     // Function to fetch data
     function fetch_data(page, searchTerm = '', recordsPerPage = '') {
         $.ajax({
-            url: `${baseUrl}/unit`,
+            url: `${baseUrl}/Inventory/UPSM/Classroom`,
             type: "GET",
             data: {
                 page: page,
@@ -49,13 +55,13 @@ $(document).ready(function () {
                 records: recordsPerPage
             },
             beforeSend: function () {
-                $('#unitTable').hide();
+                $('#classroomTable').hide();
                 spinnerContainer.show();
 
             },
             success: function (data) {
                 spinnerContainer.hide();
-                $('#unitTable').html(data.table).show();
+                $('#classroomTable').html(data.table).show();
                 $('#Pagination').html(data.pagination);
             },
             error: function (xhr) {
@@ -64,18 +70,4 @@ $(document).ready(function () {
         });
     }
 
-    $('#unitTable').on('click', '.edit-unit-modal', function () {
-        let id = $(this).data('unit-id');
-        $('#unitID').val(id);
-        let name = $('#modalEditUnitName');
-
-        $.ajax({
-            ...ajaxSettings,
-            type: "GET",
-            url: `${baseUrl}/unit/${id}`,
-            success: function (response) {
-                name.val(response.unit)
-            }
-        });
-    });
 });

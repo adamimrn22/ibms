@@ -1,10 +1,7 @@
-$('#unitTable').hide();
-
 $(document).ready(function () {
     // Spinner container
     const spinnerContainer = $('#roleSpinner');
     spinnerContainer.hide();
-    $('#unitTable').show();
 
     let baseUrl = $('meta[name="base-url"]').attr('content');
 
@@ -18,13 +15,13 @@ $(document).ready(function () {
     $(document).on('click', '#Pagination a', function (e) {
         e.preventDefault();
         let page = $(this).attr('href').split('page=')[1];
-        let searchTerm = $('#searchUnit').val();
+        let searchTerm = $('#searchPosition').val();
         let recordsPerPage = $('#recordFilter').val();
         fetch_data(page, searchTerm, recordsPerPage);
     });
 
     // Event listener for search input (onkeyup event)
-    $(document).on('keyup', '#searchUnit', function () {
+    $(document).on('keyup', '#searchPosition', function () {
         let searchTerm = $(this).val();
         let recordsPerPage = $('#recordFilter').val();
         fetch_data(1, searchTerm, recordsPerPage);
@@ -34,14 +31,14 @@ $(document).ready(function () {
     // Event listener for record filter
     $(document).on('change', '#recordFilter', function () {
         let recordsPerPage = $(this).val();
-        let searchTerm = $('#searchUnit').val();
+        let searchTerm = $('#searchPosition').val();
         fetch_data(1, searchTerm, recordsPerPage);
     });
 
     // Function to fetch data
     function fetch_data(page, searchTerm = '', recordsPerPage = '') {
         $.ajax({
-            url: `${baseUrl}/unit`,
+            url: `${baseUrl}/position`,
             type: "GET",
             data: {
                 page: page,
@@ -49,13 +46,13 @@ $(document).ready(function () {
                 records: recordsPerPage
             },
             beforeSend: function () {
-                $('#unitTable').hide();
+                $('#positionTable').hide();
                 spinnerContainer.show();
 
             },
             success: function (data) {
                 spinnerContainer.hide();
-                $('#unitTable').html(data.table).show();
+                $('#positionTable').html(data.table).show();
                 $('#Pagination').html(data.pagination);
             },
             error: function (xhr) {
@@ -64,17 +61,17 @@ $(document).ready(function () {
         });
     }
 
-    $('#unitTable').on('click', '.edit-unit-modal', function () {
-        let id = $(this).data('unit-id');
-        $('#unitID').val(id);
-        let name = $('#modalEditUnitName');
+    $('#positionTable').on('click', '.edit-position-modal', function () {
+        let id = $(this).data('position-id');
+        $('#positionID').val(id);
+        let name = $('#modalEditPositionName');
 
         $.ajax({
             ...ajaxSettings,
             type: "GET",
-            url: `${baseUrl}/unit/${id}`,
+            url: `${baseUrl}/position/${id}`,
             success: function (response) {
-                name.val(response.unit)
+                name.val(response.position)
             }
         });
     });

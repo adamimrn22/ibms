@@ -1,4 +1,3 @@
-$('#userListTable').hide();
 $(document).ready(function () {
     let baseUrl = $('meta[name="base-url"]').attr('content');
 
@@ -8,11 +7,12 @@ $(document).ready(function () {
         },
     };
     let searchTimer;
+    const addUserForm = $('#AddUserForm');
 
     // Spinner container
     const spinnerContainer = $('#roleSpinner');
     spinnerContainer.hide();
-    $('#userListTable').show();
+
     // Event listener for pagination links
     $(document).on('click', '#Pagination a', function (e) {
         e.preventDefault();
