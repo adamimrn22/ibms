@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\Inventory\UPSM\ClassroomController;
+use App\Http\Controllers\Admin\Inventory\UPSM\OfficeRoomController;
 use App\Http\Controllers\Admin\UpsmInventoryController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -60,6 +61,7 @@ Route::middleware(['auth', 'role:Admin UIT|Admin UPSM|Admin UKW|Super Admin'])->
 
 Route::middleware(['auth', 'role:Admin UPSM|Super Admin'])->prefix('Inventory/UPSM')->name('upsm.')->group(function () {
     Route::resource('/Classroom', ClassroomController::class);
+    Route::resource('/Office', OfficeRoomController::class);
 });
 
 // Route::middleware(['auth', 'role:Admin UIT|Super Admin'])->prefix('Inventory')->name('uit.')->group(function () {

@@ -1,4 +1,6 @@
 $('#classroomTable').hide();
+$('#Pagination').hide();
+
 $(document).ready(function () {
     let baseUrl = $('meta[name="base-url"]').attr('content');
 
@@ -12,16 +14,17 @@ $(document).ready(function () {
     // Spinner container
     const spinnerContainer = $('#roleSpinner');
     spinnerContainer.hide();
+
     $('#classroomTable').show();
+    $('#Pagination').show();
 
     // Event listener for pagination links
     $(document).on('click', '#Pagination a', function (e) {
         e.preventDefault();
         let page = $(this).attr('href').split('page=')[1];
         let searchTerm = $('#searchClassroom').val();
-        let userStatus = $('#userFilter').val();
         let recordsPerPage = $('#recordFilter').val();
-        fetch_data(page, searchTerm, userStatus, recordsPerPage);
+        fetch_data(page, searchTerm, recordsPerPage);
     });
 
     // Event listener for search input (onkeyup event)
@@ -47,6 +50,7 @@ $(document).ready(function () {
     // Function to fetch data
     function fetch_data(page, searchTerm = '', recordsPerPage = '') {
         $.ajax({
+            ...ajaxSettings,
             url: `${baseUrl}/Inventory/UPSM/Classroom`,
             type: "GET",
             data: {

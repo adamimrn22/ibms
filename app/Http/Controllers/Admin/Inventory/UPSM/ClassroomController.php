@@ -5,24 +5,30 @@ namespace App\Http\Controllers\Admin\Inventory\UPSM;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Traits\Admin\Filters\UPSM\ClassroomFilterTraits;
 use App\Http\Requests\Admin\Inventory\UPSM\addClassroomRequest;
-use Illuminate\Auth\Events\Validated;
-use Illuminate\Contracts\Support\ValidatedData;
+use App\Http\Requests\Admin\Inventory\UPSM\editClassroomRequest;
 
 class ClassroomController extends Controller
 {
-    public function index()
-    {
-        $data = Inventory::where('subcategory_id', 5)->paginate(7);
-        return view('Admin.AdminUPSM.view-all-classroom', compact('data'));
-    }
+    use ClassroomFilterTraits;
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function index(Request $request)
     {
-        //
+        $perPage = $request->input('records', 7);
+        $searchTerm = $request->input('search');
+        $status = $request->input('status');
+        $query = Inventory::query();
+
+        $data = $this->applyPaginationFilterSearch($query, $perPage, $searchTerm, $status);
+        if ($request->ajax()) {
+            return response()->json([
+                'table' => view('Admin.AdminUPSM.table.classroomTable', compact('data'))->render(),
+                'pagination' => view('components.Pagination', compact('data'))->render(),
+            ]);
+        }
+
+        return view('Admin.AdminUPSM.view-all-classroom', compact('data'));
     }
 
     /**
@@ -53,6 +59,7 @@ class ClassroomController extends Controller
 
         return response()->json([
             'table' => view('Admin.AdminUPSM.table.classroomTable', compact('data'))->render(),
+            'pagination' => view('components.Pagination', compact('data'))->render(),
             'success' => 'Classroom Added Successfully'
         ]);
     }
@@ -62,23 +69,43 @@ class ClassroomController extends Controller
      */
     public function show(string $id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        $classroom = Inventory::where('id', $id)->where('subcategory_id', 5)->first();
+        $classroom->attribute = json_decode($classroom->attribute);
+        return response([
+            'classroom' => $classroom
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(editClassroomRequest $request, string $id)
     {
-        //
+
+        $validatedData = $request->validated();
+
+        $attribute = [
+            'Chair' => $validatedData['classChair'],
+            'Foldable_Chair' => $validatedData['classFoldableChair'],
+            'Table' => $validatedData['classTable'],
+            'Whiteboard' => $validatedData['classChair'],
+            'Duster' => $validatedData['classChair'],
+        ];
+
+        Inventory::where('id', $id)->update([
+            'name' => $validatedData['classname'],
+            'attribute' => json_encode($attribute),
+            'location' => $validatedData['classLocation'],
+            'subcategory_id' => 5
+        ]);
+
+        $data = Inventory::where('subcategory_id', 5)->paginate(7);
+
+        return response()->json([
+            'table' => view('Admin.AdminUPSM.table.classroomTable', compact('data'))->render(),
+            'pagination' => view('components.Pagination', compact('data'))->render(),
+            'success' => 'Classroom Updated Successfully'
+        ]);
     }
 
     /**
@@ -86,6 +113,13 @@ class ClassroomController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Inventory::destroy($id);
+        $data = Inventory::where('subcategory_id', '=', 5)->paginate(7);
+
+        return response()->json([
+            'table' => view('Admin.AdminUPSM.table.classroomTable', compact('data'))->render(),
+            'pagination' => view('components.Pagination', compact('data'))->render(),
+            'success' => 'Classroom Deleted Successfully'
+        ]);
     }
 }

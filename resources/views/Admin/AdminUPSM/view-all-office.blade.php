@@ -14,20 +14,20 @@
                 <x-upsmRoomSection />
 
                 <hr>
-                <h3>Ruang Kelas List</h3>
+                <h3>Ruang Office List</h3>
 
                 <!-- table -->
                 <div class="row mt-1" id="basic-table">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">List of all Ruang Kelas</h4>
+                                <h4 class="card-title">List of all Ruang Office</h4>
                             </div>
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-baseline">
                                     <button class="btn add-new btn-primary mt-50 add-permission-modal" tabindex="0"
                                         type="button" data-bs-toggle="modal" data-bs-target="#addRuangKelas">
-                                        <span>Add New Classroom</span>
+                                        <span>Add New Office Room</span>
                                     </button>
                                 </div>
                             </div>
@@ -63,7 +63,7 @@
                             </div>
 
                             <div class="table-responsive">
-                                @include('Admin.AdminUPSM.table.classroomTable')
+                                @include('Admin.AdminUPSM.table.officeTable')
 
                                 <div class="d-flex align-items-center justify-content-center">
                                     <div id="roleSpinner" align="center" class="spinner-border text-primary" role="status">
@@ -78,7 +78,7 @@
                 </div>
                 <!-- table -->
 
-                @include('Admin.AdminUPSM.modal.classroomModal')
+                @include('Admin.AdminUPSM.modal.officeModal')
             </div>
         </div>
     </div>

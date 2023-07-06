@@ -27,7 +27,6 @@ class UnitController extends Controller
 
         $data = $this->applyPaginationFilterSearch($query, $perPage, $searchTerm, $status);
 
-
         if ($request->ajax()) {
             return response()->json([
                 'table' => view('SuperAdmin.unit.table.unitTable', compact('data'))->render(),

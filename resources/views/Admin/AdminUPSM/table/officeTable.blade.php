@@ -4,27 +4,30 @@
             <tr>
                 <th>No.</th>
                 <th>Name</th>
-                <th>Chair</th>
-                <th>Foldable Chair</th>
-                <th>Table</th>
-                <th>Whiteboard</th>
-                <th>Duster</th>
+                <th>Location</th>
+                <th>Details</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @forelse ($data as $index => $classroom)
+            @forelse ($data as $index => $office)
                 <tr>
                     <td>
                         {{ $data->firstItem() + $index }}
                     </td>
                     <td>
-                        {{ $classroom->name }}
+                        {{ $office->name }}
                     </td>
-
+                    <td>
+                        {{ $office->location }}
+                    </td>
+                    <td>
+                        <a href="">View</a>
+                    </td>
+                    {{--
                     @foreach (json_decode($classroom->attribute) as $key => $value)
                         <td>{{ $value }}</td>
-                    @endforeach
+                    @endforeach --}}
 
                     <td>
                         <div class="dropdown">
@@ -42,7 +45,7 @@
                             <div class="dropdown-menu dropdown-menu-end">
                                 <a class="dropdown-item edit-classroom-modal" href="javascript:void(0);"
                                     data-bs-target="#editRuangKelas" data-bs-toggle="modal"
-                                    data-classroom-id="{{ $classroom->id }}">
+                                    data-office-id="{{ $office->id }}">
 
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -56,7 +59,7 @@
 
                                 <a class="dropdown-item delete-classroom-modal" href="javascript:void(0);"
                                     data-bs-target="#deleteRuangKelas" data-bs-toggle="modal"
-                                    data-classroom-id="{{ $classroom->id }}">
+                                    data-office-id="{{ $office->id }}">
 
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"

@@ -72,7 +72,8 @@
                     @endhasrole
 
                     @hasanyrole(['Admin UPSM', 'Super Admin'])
-                        <li>
+                        <li
+                            class="{{ Request::routeIs('upsm.Classroom.index') || Request::routeIs('upsm.Office.index') ? ' active' : '' }}">
                             <a class="d-flex align-items-center" href="{{ route('upsm.Classroom.index') }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
