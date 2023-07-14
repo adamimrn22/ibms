@@ -73,7 +73,6 @@ $(document).ready(function () {
                 let editClassWhiteboard = $('#editClassWhiteboard');
                 let editClassDuster = $('#editClassDuster');
                 let id = $('#classID').val();
-                console.log(id)
                 // Perform your AJAX request using the updated requestData
                 $.ajax({
                     ...ajaxSettings,
@@ -90,8 +89,6 @@ $(document).ready(function () {
                     },
 
                     success: function (response) {
-
-                        console.log(response.table)
                         $('#classroomTable').html(response.table).show();
                         $('Pagination').html(response.pagination).show()
 

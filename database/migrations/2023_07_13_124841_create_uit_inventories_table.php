@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('inventory', function (Blueprint $table) {
+        Schema::create('uit_inventories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('attribute');
-            $table->string('quantity');
-            $table->string('stock');
+            $table->longText('attribute');
             $table->string('location');
+            $table->string('status')->nullable();
+            $table->bigInteger('price')->nullable();
             $table->unsignedBigInteger('subcategory_id')->nullable();
+            $table->unsignedBigInteger('parent_id')->nullable();
             $table->timestamps();
 
             $table->foreign('subcategory_id')
@@ -34,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('inventory');
+        Schema::dropIfExists('uit_inventories');
     }
 };

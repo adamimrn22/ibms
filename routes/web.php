@@ -1,17 +1,22 @@
 <?php
 
-use App\Http\Controllers\Admin\Inventory\UPSM\ClassroomController;
-use App\Http\Controllers\Admin\Inventory\UPSM\OfficeRoomController;
-use App\Http\Controllers\Admin\UpsmInventoryController;
+use App\Models\Booking;
+use App\Models\Inventory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SuperAdmin\CategoryController;
 use App\Http\Controllers\SuperAdmin\UnitController;
 use App\Http\Controllers\SuperAdmin\UserController;
 use App\Http\Controllers\SuperAdmin\RolesController;
 use App\Http\Controllers\SuperAdmin\SAHomeController;
 use App\Http\Controllers\SuperAdmin\PositionController;
 use App\Http\Controllers\SuperAdmin\PermissionController;
+use App\Http\Controllers\Admin\Inventory\UIT\CableController;
+use App\Http\Controllers\Admin\Inventory\UPSM\ClassroomController;
+use App\Http\Controllers\Admin\Inventory\UPSM\OfficeRoomController;
+use App\Http\Controllers\Admin\Inventory\UIT\Hardware\LaptopController;
+use App\Http\Controllers\Admin\Inventory\UIT\Hardware\DesktopController;
+use App\Http\Controllers\Admin\Inventory\UIT\Hardware\MonitorController;
+use App\Http\Controllers\Admin\Inventory\UIT\Hardware\MouseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,25 +64,58 @@ Route::middleware(['auth', 'role:Admin UIT|Admin UPSM|Admin UKW|Super Admin'])->
 });
 
 
+Route::middleware(['auth', 'role:Admin UIT|Super Admin'])->prefix('Inventory/UIT')->name('uit.')->group(function () {
+    Route::prefix('/Hardware')->group(function() {
+        Route::resource('/Desktop', DesktopController::class);
+        Route::resource('/Laptop', LaptopController::class);
+        Route::resource('/Monitor', MonitorController::class);
+        Route::resource('/Mouse', MouseController::class);
+        Route::resource('/Keyboard', MouseController::class);
+        Route::resource('/Projector', MouseController::class);
+    });
+    Route::resource('/Cable', CableController::class);
+    Route::resource('/Others', CableController::class);
+});
+
 Route::middleware(['auth', 'role:Admin UPSM|Super Admin'])->prefix('Inventory/UPSM')->name('upsm.')->group(function () {
     Route::resource('/Classroom', ClassroomController::class);
     Route::resource('/Office', OfficeRoomController::class);
 });
 
-// Route::middleware(['auth', 'role:Admin UIT|Super Admin'])->prefix('Inventory')->name('uit.')->group(function () {
-//     Route::resource('/UIT', UitInventoryController::class);
-// });
-
 
 Route::middleware(['auth', 'role:User'])->group(function () {
     Route::get('/user', function () {
         dd(Auth::user()->isActive);
-        // dd();
-
-        // dd(Auth::user()->roles->pluck('name')[0]);
-        // return view('admin.view');
     });
 });
 
+
+Route::get('/test', function(){
+    $booking = Booking::with('inventory', 'staff')->where('inventory_id', 10)->get();
+    $desktop = Inventory::with('bookings', 'staff')->findOrFail(10);
+    $desktop->attribute = json_decode($desktop->attribute);
+    // dd($booking);
+    return view('test', compact('booking', 'desktop'));
+});
+
+Route::post('/test', function(){
+    $staffId = 2; // Staff ID
+
+    $locationId = 10; // The desired location ID
+
+    $booking = new Booking();
+    $booking->start_date = '2023-07-15'; // Example start date
+    $booking->end_date = '2023-07-20'; // Example end date
+    $booking->end_date = '2023-07-20'; // Example end date
+
+    $booking->user_id = $staffId;
+    $booking->inventory_id = $locationId;
+    // Save the booking
+    $booking->save();
+
+    // Set the location on the related inventory model
+    $booking->inventory->location = $staffId;
+    $booking->inventory->save();
+});
 
 require __DIR__ . '/auth.php';

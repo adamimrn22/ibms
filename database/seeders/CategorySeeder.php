@@ -16,14 +16,7 @@ class CategorySeeder extends Seeder
             'category_name' => 'Hardware',
             'unit_id' => '1'
         ]);
-        Category::create([
-            'category_name' => 'Software',
-            'unit_id' => '1'
-        ]);
-        Category::create([
-            'category_name' => 'Projector',
-            'unit_id' => '1'
-        ]);
+
         Category::create([
             'category_name' => 'Cable',
             'unit_id' => '1'
@@ -40,6 +33,7 @@ class CategorySeeder extends Seeder
             'category_name' => 'Ruang Kelas',
             'unit_id' => '5'
         ]);
+
         Category::create([
             'category_name' => 'Alat Tulis',
             'unit_id' => '3'

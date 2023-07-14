@@ -62,7 +62,6 @@ $(document).ready(function () {
 
                     success: function (response) {
 
-                        console.log(response.table)
                         $('#classroomTable').html(response.table).show();
                         $('#Pagination').html(response.pagination);
 

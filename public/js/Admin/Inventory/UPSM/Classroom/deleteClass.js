@@ -9,7 +9,6 @@ $(document).ready(function () {
     $('#classroomTable').on('click', '.delete-classroom-modal', function () {
         let id = $(this).data('classroom-id');
         $('#deleteID').val(id);
-        console.log(id)
     });
 
     let deleteRuangKelasForm = $('#deleteRuangKelasForm');
@@ -18,13 +17,11 @@ $(document).ready(function () {
         e.preventDefault();
 
         let id = $('#deleteID').val();
-        console.log(id)
         $.ajax({
             ...ajaxSettings,
             type: "DELETE",
             url: `${baseUrl}/Inventory/UPSM/Classroom/${id}`,
             success: function (response) {
-                console.log(response.table)
                 $('#classroomTable').html(response.table).show();
                 $('#Pagination').html(response.pagination).show()
 

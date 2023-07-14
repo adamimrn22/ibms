@@ -17,4 +17,15 @@ class Inventory extends Model
     {
         return $this->hasMany(Subcategory::class);
     }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class, 'inventory_id');
+    }
+
+    public function staff()
+    {
+        return $this->belongsTo(User::class, 'location', 'id');
+    }
+
 }

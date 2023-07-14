@@ -11,12 +11,12 @@ class SubCategory extends Model
 
     protected $table = 'subcategory';
 
-    public function Category()
+    public function category()
     {
-        return $this->hasMany(Category::class);
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
-    public function Inventory()
+    public function inventories()
     {
         return $this->belongsTo(Inventory::class);
     }

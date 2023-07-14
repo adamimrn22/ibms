@@ -27,7 +27,7 @@
                     @endforeach
 
                     <td>
-                        <div class="dropdown">
+                        <div class="dropdown ">
                             <button type="button"
                                 class="btn btn-sm dropdown-toggle hide-arrow py-0 waves-effect waves-float waves-light"
                                 data-bs-toggle="dropdown">

@@ -13,13 +13,19 @@ class SubCategorySeeder extends Seeder
      */
     public function run(): void
     {
+
+        SubCategory::create([
+            'subcategory_name' => 'Desktop',
+            'category_id' => '1'
+        ]);
+
         SubCategory::create([
             'subcategory_name' => 'Laptop',
             'category_id' => '1'
         ]);
 
         SubCategory::create([
-            'subcategory_name' => 'Desktop',
+            'subcategory_name' => 'Monitor',
             'category_id' => '1'
         ]);
 
@@ -34,28 +40,63 @@ class SubCategorySeeder extends Seeder
         ]);
 
         SubCategory::create([
+            'subcategory_name' => 'Projector',
+            'category_id' => '1'
+        ]);
+
+        SubCategory::create([
+            'subcategory_name' => 'HDMI',
+            'category_id' => '3'
+        ]);
+
+        SubCategory::create([
+            'subcategory_name' => 'VGA',
+            'category_id' => '3'
+        ]);
+
+        SubCategory::create([
+            'subcategory_name' => 'Ethernet',
+            'category_id' => '3'
+        ]);
+
+        SubCategory::create([
+            'subcategory_name' => 'DVI',
+            'category_id' => '3'
+        ]);
+
+        SubCategory::create([
+            'subcategory_name' => 'USB',
+            'category_id' => '3'
+        ]);
+
+        SubCategory::create([
             'subcategory_name' => 'Bilik',
-            'category_id' => '7'
+            'category_id' => '5'
         ]);
 
         SubCategory::create([
             'subcategory_name' => 'Pejabat',
-            'category_id' => '6'
+            'category_id' => '4'
+        ]);
+
+        SubCategory::create([
+            'subcategory_name' => 'Makmal',
+            'category_id' => '5'
         ]);
 
         SubCategory::create([
             'subcategory_name' => 'File',
-            'category_id' => '8'
+            'category_id' => '6'
         ]);
 
         SubCategory::create([
             'subcategory_name' => 'PAPER',
-            'category_id' => '8'
+            'category_id' => '6'
         ]);
 
         SubCategory::create([
             'subcategory_name' => 'Stationery',
-            'category_id' => '8'
+            'category_id' => '6'
         ]);
 
 
