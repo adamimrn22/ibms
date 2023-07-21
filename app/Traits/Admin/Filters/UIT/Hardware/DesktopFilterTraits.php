@@ -21,11 +21,11 @@ trait DesktopFilterTraits
         }
 
         if ($status && $status !== 'ALL') {
-            $query->where('status', '=', "$status");
+            $query->where('status_id', '=', "$status");
         }
 
         // Apply pagination
-        $results = $query->select('name', DB::raw("JSON_UNQUOTE(JSON_EXTRACT(attribute, '$.model')) AS model"), 'location', 'status', 'id')->paginate($perPage);
+        $results = $query->select('name', DB::raw("JSON_UNQUOTE(JSON_EXTRACT(attribute, '$.model')) AS model"), 'location', 'status_id', 'id')->paginate($perPage);
 
         return $results;
     }

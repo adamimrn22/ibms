@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use NunoMaduro\Collision\Adapters\Phpunit\State;
 
 class UitInventory extends Model
 {
@@ -26,13 +27,18 @@ class UitInventory extends Model
         return $this->belongsTo(User::class, 'location', 'id');
     }
 
+    public function status()
+    {
+        return $this->hasOne(Status::class, 'id', 'status_id');
+    }
+
     public function children()
     {
-        return $this->hasMany(Inventory::class, 'parent_id');
+        return $this->hasMany(UitInventory::class, 'parent_id');
     }
 
     public function parent()
     {
-        return $this->belongsTo(Inventory::class, 'parent_id');
+        return $this->belongsTo(UitInventory::class, 'parent_id');
     }
 }

@@ -46,6 +46,10 @@ $(document).ready(function () {
                 laptopBrand: {
                     required: true,
                 },
+                price: {
+                    required: true,
+                    number: true
+                },
                 laptopModel: {
                     required: true,
                 },

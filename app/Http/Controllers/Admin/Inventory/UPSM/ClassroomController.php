@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Traits\Admin\Filters\UPSM\ClassroomFilterTraits;
 use App\Http\Requests\Admin\Inventory\UPSM\addClassroomRequest;
 use App\Http\Requests\Admin\Inventory\UPSM\editClassroomRequest;
+use App\Models\UpsmInventory;
 
 class ClassroomController extends Controller
 {
@@ -18,7 +19,7 @@ class ClassroomController extends Controller
         $perPage = $request->input('records', 7);
         $searchTerm = $request->input('search');
         $status = $request->input('status');
-        $query = Inventory::query();
+        $query = UpsmInventory::query();
 
         $data = $this->applyPaginationFilterSearch($query, $perPage, $searchTerm, $status);
         if ($request->ajax()) {

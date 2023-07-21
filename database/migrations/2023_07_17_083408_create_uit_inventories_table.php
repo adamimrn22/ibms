@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->longText('attribute');
             $table->string('location');
-            $table->string('status')->nullable();
+            $table->unsignedBigInteger('status_id')->nullable();
             $table->bigInteger('price')->nullable();
             $table->unsignedBigInteger('subcategory_id')->nullable();
             $table->unsignedBigInteger('parent_id')->nullable();
@@ -25,6 +25,12 @@ return new class extends Migration
             $table->foreign('subcategory_id')
             ->references('id')
             ->on('subcategory')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+
+            $table->foreign('status_id')
+            ->references('id')
+            ->on('statuses')
             ->onUpdate('cascade')
             ->onDelete('cascade');
         });

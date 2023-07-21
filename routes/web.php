@@ -15,8 +15,10 @@ use App\Http\Controllers\Admin\Inventory\UPSM\ClassroomController;
 use App\Http\Controllers\Admin\Inventory\UPSM\OfficeRoomController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\LaptopController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\DesktopController;
+use App\Http\Controllers\Admin\Inventory\UIT\Hardware\KeyboardController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\MonitorController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\MouseController;
+use App\Http\Controllers\Admin\Inventory\UIT\Hardware\ProjectorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,8 +72,8 @@ Route::middleware(['auth', 'role:Admin UIT|Super Admin'])->prefix('Inventory/UIT
         Route::resource('/Laptop', LaptopController::class);
         Route::resource('/Monitor', MonitorController::class);
         Route::resource('/Mouse', MouseController::class);
-        Route::resource('/Keyboard', MouseController::class);
-        Route::resource('/Projector', MouseController::class);
+        Route::resource('/Keyboard', KeyboardController::class);
+        Route::resource('/Projector', ProjectorController::class);
     });
     Route::resource('/Cable', CableController::class);
     Route::resource('/Others', CableController::class);

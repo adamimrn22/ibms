@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Admin\Inventory\UIT\Hardware;
 
 use App\Models\Status;
-use App\Models\Inventory;
 use App\Models\UitInventory;
 use Illuminate\Http\Request;
+use App\Traits\Admin\StatusTraits;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
 use App\Traits\Admin\Filters\UIT\Hardware\LaptopFilterTraits;
 
 class LaptopController extends Controller
 {
-    use LaptopFilterTraits;
+    use LaptopFilterTraits, StatusTraits;
     /**
      * Display a listing of the resource.
      */
@@ -21,7 +21,7 @@ class LaptopController extends Controller
         $perPage = $request->input('records', 7);
         $searchTerm = $request->input('search');
         $status = $request->input('status');
-        $query = UitInventory::query();
+        $query = UitInventory::query()->with('status');
 
         $data = $this->applyPaginationFilterSearch($query, $perPage, $searchTerm, $status);
         if ($request->ajax()) {
@@ -39,7 +39,8 @@ class LaptopController extends Controller
      */
     public function create()
     {
-        return view('Admin.AdminUIT.crud.hardware.laptop.create-laptop');
+        $statuses = $this->status(1);
+        return view('Admin.AdminUIT.crud.hardware.laptop.create-laptop', compact('statuses'));
     }
 
     /**
@@ -47,12 +48,11 @@ class LaptopController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->price);
         $validatedData =  $request->validate([
             'laptopID' => 'required|unique:uit_inventories,name',
             'laptopBrand' => 'required',
             'laptopModel' => 'required',
-            'price' => 'required',
+            'price' => 'required|between:0,99.99',
             'location' => 'required',
             'display' => 'required',
             'processor' => 'required',
@@ -61,6 +61,7 @@ class LaptopController extends Controller
             'gpu' => 'required',
             'storage' => 'required',
             'DOP' => 'required',
+            'status' => 'required',
         ]);
 
         $validatedData['storage'] = json_encode(array_filter($validatedData['storage']));
@@ -82,7 +83,7 @@ class LaptopController extends Controller
             'attribute' => json_encode($attribute),
             'location' => $validatedData['location'],
             'subcategory_id' => 2,
-            'status' => 'AVAILABLE',
+            'status_id' => $validatedData['status'],
             'price' => $validatedData['price'],
             'created_at' => now()
         ]);
@@ -94,9 +95,14 @@ class LaptopController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $encryptedId)
     {
-        //
+        $id = Crypt::decrypt($encryptedId);
+        $laptop = UitInventory::findOrFail($id);
+        $laptop->attribute = json_decode($laptop->attribute);
+        $laptop->attribute->storage = json_decode($laptop->attribute->storage);
+
+        return view('Admin.AdminUIT.crud.hardware.laptop.laptop-details', compact('laptop'));
     }
 
     /**
@@ -119,7 +125,46 @@ class LaptopController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validatedData =  $request->validate([
+            'laptopID' => 'required|unique:uit_inventories,name,' . $id,
+            'laptopBrand' => 'required',
+            'laptopModel' => 'required',
+            'price' => 'required|between:0,99.99',
+            'location' => 'required',
+            'display' => 'required',
+            'processor' => 'required',
+            'ram' => 'required',
+            'OS' => 'required',
+            'gpu' => 'required',
+            'storage' => 'required',
+            'DOP' => 'required',
+            'status' => 'required',
+        ]);
+        $validatedData['storage'] = json_encode(array_filter($validatedData['storage']));
+
+        $attribute = [
+            'brand' => $validatedData['laptopBrand'],
+            'model' => $validatedData['laptopModel'],
+            'display' => $validatedData['display'],
+            'processor' => $validatedData['processor'],
+            'ram' => $validatedData['ram'],
+            'OS' => $validatedData['OS'],
+            'gpu' => $validatedData['gpu'],
+            'storage' => $validatedData['storage'],
+            'DOP' => $validatedData['DOP'],
+        ];
+
+        UitInventory::where('id', $id)->update([
+            'name' => $validatedData['laptopID'],
+            'attribute' => json_encode($attribute),
+            'location' => $validatedData['location'],
+            'price' => $validatedData['price'],
+            'status_id' => $validatedData['status'],
+            'updated_at' => now()
+        ]);
+
+        return redirect()->route('uit.Laptop.index')
+        ->with('success', 'Laptop updated successfully!');
     }
 
     /**

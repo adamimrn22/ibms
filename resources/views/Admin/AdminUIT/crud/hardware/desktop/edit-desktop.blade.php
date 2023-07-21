@@ -22,6 +22,14 @@
                 </x-form.form-group>
 
                 <x-form.form-group>
+                    <x-form.label :for="'price'" :title="'Price (RM)'">
+                        <span class="text-error">without decimal
+                            point</span>
+                    </x-form.label>
+                    <x-form.input id="price" :value="$desktop->price" :type="'number'" />
+                </x-form.form-group>
+
+                <x-form.form-group>
                     <x-form.label :for="'location'" :title="'Location'" />
                     <x-form.input id="location" :value="$desktop->location" />
                 </x-form.form-group>
@@ -100,23 +108,49 @@
 
                 <x-form.form-group>
                     <x-form.label :for="'keyboard'" :title="'Keyboard'" />
-                    <x-form.input id="keyboard" :value="$desktop->attribute->keyboard" />
+                    <select style="overflow:hidden" id="keyboard" name="keyboard" class="select2 form-select form-select ">
+                        <option value="">No Keyboard</option>
+                        @foreach ($keyboards as $keyboard)
+                            <option value="{{ $keyboard->id }}"
+                                {{ $desktop->attribute->keyboard == $keyboard ? 'selected' : '' }}>
+                                {{ $keyboard->name . ' - ' . $keyboard->model }}
+                            </option>
+                        @endforeach
+                    </select>
                 </x-form.form-group>
 
                 <x-form.form-group>
                     <x-form.label :for="'mouse'" :title="'Mouse'" />
-                    <x-form.input id="mouse" :value="$desktop->attribute->mouse" />
+                    <select style="overflow:hidden" id="mouse" name="mouse" class="select2 form-select form-select ">
+                        <option value="">No Mouse</option>
+                        @foreach ($mice as $mouse)
+                            <option value="{{ $mouse->id }}"
+                                {{ $desktop->attribute->mouse == $mouse ? 'selected' : '' }}>
+                                {{ $mouse->name . ' - ' . $mouse->model }}
+                            </option>
+                        @endforeach
+                    </select>
+
                 </x-form.form-group>
 
                 <x-form.label :for="'monitorName'" :title="'Monitor Name'" />
 
                 <div>
                     <div id="inputMonitorContainer">
-                        @foreach ($desktop->attribute->monitor as $monitor)
+                        @foreach ($desktop->attribute->monitor as $desktopMonitor)
                             <div class="row d-flex align-items-center mb-1">
                                 <div class="col-md-6 col-12">
-                                    <input type="text" class="form-control" id="monitorName" name="monitor[]"
-                                        placeholder="HDD SEAGATE 1 TB" value="{{ $monitor }}">
+                                    <select style="overflow:hidden" id="monitor[]" name="monitor[]"
+                                        class="select2 form-select form-select ">
+                                        <option value="">No Monitor</option>
+                                        @foreach ($monitors as $monitor)
+                                            <option value="{{ $monitor->id }}"
+                                                {{ $desktopMonitor->id == $monitor->id ? 'selected' : '' }}>
+                                                {{ $monitor->name . ' - ' . $monitor->model }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
                                 </div>
                                 <div class="col-md-2 col-12 m-0 pl-2">
                                     <button class="btn btn-outline-danger text-nowrap px-1 waves-effect deleteMonitorBtn"
@@ -124,10 +158,8 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round" class="feather feather-x me-25">
-                                            <line x1="18" y1="6" x2="6" y2="18">
-                                            </line>
-                                            <line x1="6" y1="6" x2="18" y2="18">
-                                            </line>
+                                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                                            <line x1="6" y1="6" x2="18" y2="18"></line>
                                         </svg>
                                         <span>Delete</span>
                                     </button>
@@ -154,18 +186,15 @@
                 </div>
 
                 <hr>
-                @php
-                    $status = ['AVAILABLE', 'BOOKED', 'MISSING', 'DISPOSE', 'DAMAGED'];
-                @endphp
 
                 <div class="col-md-6 col-12">
                     <div class="mb-1">
                         <x-form.label :for="'status'" :title="'Status'" />
                         <select style="overflow:hidden" id="status" name="status"
                             class="select2 form-select form-select ">
-                            @foreach ($status as $status)
-                                <option value="{{ $status }}" {{ $desktop->status == $status ? 'selected' : '' }}>
-                                    {{ $status }}
+                            @foreach ($statuses as $status)
+                                <option value="{{ $status->id }}">
+                                    {{ $status->name }}
                                 </option>
                             @endforeach
                         </select>
@@ -192,6 +221,9 @@
         </script>
     @endif
 
+    <script>
+        var monitorsData = @json($monitors);
+    </script>
     <script src="{{ asset('js/Admin/Inventory/UIT/Hardware/Desktop/editDesktop.js') }}"></script>
 
     <script src="{{ asset('app-asset/vendors/js/forms/select/select2.full.min.js') }}"></script>

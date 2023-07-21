@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin\Inventory\UIT\Hardware;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Traits\Admin\StatusTraits;
+use App\Http\Controllers\Controller;
 
 class ProjectorController extends Controller
 {
+    use StatusTraits;
     /**
      * Display a listing of the resource.
      */
@@ -20,7 +22,7 @@ class ProjectorController extends Controller
      */
     public function create()
     {
-        //
+        $statuses = $this->status(1);
     }
 
     /**

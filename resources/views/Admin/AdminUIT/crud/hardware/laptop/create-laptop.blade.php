@@ -15,23 +15,18 @@
             <x-form :id="'createLaptopForm'" :action="route('uit.Laptop.store')" :method="'POST'">
                 <x-form.form-group>
                     <x-form.label :for="'laptopID'" :title="'Laptop ID'" />
-                    <x-form.input id="laptopID" :placeholder="'UIT/USSB-XXX-00-XXX'" />
+                    <x-form.input id="laptopID" :placeholder="'UIT/USSB-XXX-00-LPT'" />
                 </x-form.form-group>
 
                 <x-form.form-group>
-                    <x-form.label :for="'laptopModel'" :title="'Laptop Model'" />
-                    <x-form.input id="laptopModel" :placeholder="'HP-000'" />
-                </x-form.form-group>
-
-                <x-form.form-group>
-                    <label class="form-label" for="price">Price (RM)</label>
-                    <x-form.input id="price" :placeholder="'1800.00'" :type="'number'" />
+                    <x-form.label :for="'price'" :title="'Price (RM)'" />
+                    <x-form.input id="price" :placeholder="'1200.20'" :type="'number'" />
                 </x-form.form-group>
 
                 <x-form.form-group>
                     <x-form.label :for="'laptopBrand'" :title="'Laptop Brand'" />
                     @php
-                        $brands = ['Asus', 'HP', 'Lenovo', 'Acer', 'MSI', 'LG', 'Samsung', 'Gigabyte', 'Dell', 'Microsoft', 'Medion', 'Chuwi', 'Teclast', 'Razer', 'Apple', 'Huawei', 'Primux', 'Jumper', 'Bmax', 'Winnovo', 'Alienware', 'VANT', 'Innjoo', 'KUU', 'HONOR', 'Toshiba', 'OMEN', 'XIDU', 'PRIXTON', 'Evoo', 'DeepGaming', 'Schneider', 'TOPOSH', 'Xiaomi', 'Ubrand', 'Panasonic', 'IProda', 'AWOW', 'Mytrix', 'JETWING', 'VUCATIMES', 'Schenker', 'BiTECOOL', 'ACEPC', 'Gateway', 'MAINGEAR', 'Google', 'Fancy Cherry', 'GPD', 'DaySky', 'Jepssen'];
+                        $brands = ['ASUS', 'HP', 'LENOVO', 'ACER', 'MSI', 'LG', 'SAMSUNG', 'GIGABYTE', 'DELL', 'MICROSOFT', 'MEDION', 'CHUWI', 'TECLAST', 'RAZER', 'APPLE', 'HUAWEI', 'PRIMUX', 'JUMPER', 'BMAX', 'WINNOVO', 'ALIENWARE', 'VANT', 'INNJOO', 'KUU', 'HONOR', 'TOSHIBA', 'OMEN', 'XIDU', 'PRIXTON', 'EVOO', 'DEEPGAMING', 'SCHNEIDER', 'TOPOSH', 'XIAOMI', 'UBRAND', 'PANASONIC', 'IPRODA', 'AWOW', 'MYTRIX', 'JETWING', 'VUCATIMES', 'SCHENKER', 'BITECOOL', 'ACEPC', 'GATEWAY', 'MAINGEAR', 'GOOGLE', 'FANCY CHERRY', 'GPD', 'DAYSKY', 'JEPSSEN'];
                     @endphp
                     <select style="overflow:hidden" id="laptopBrand" name="laptopBrand"
                         class="select2 form-select form-select ">
@@ -44,6 +39,11 @@
                     @error('brand')
                         <label class="error">{{ $message }}</label>
                     @enderror
+                </x-form.form-group>
+
+                <x-form.form-group>
+                    <x-form.label :for="'laptopModel'" :title="'Laptop Model'" />
+                    <x-form.input id="laptopModel" :placeholder="'HP-000'" />
                 </x-form.form-group>
 
                 <x-form.form-group>
@@ -84,6 +84,9 @@
                     <x-form.label :for="'datepicker'" :title="'Date Of Purchase'" />
                     <input type="text" id="datepicker" name="DOP" value="{{ old('DOP') }}"
                         class="form-control flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD">
+                    @error('DOP')
+                        <label class="error">{{ $message }}</label>
+                    @enderror
                 </x-form.form-group>
 
 
@@ -123,6 +126,24 @@
                 </div>
 
                 <hr>
+
+
+                <div class="col-md-6 col-12">
+                    <div class="mb-1">
+                        <x-form.label :for="'status'" :title="'Status'" />
+                        <select style="overflow:hidden" id="status" name="status"
+                            class="select2 form-select form-select ">
+                            @foreach ($statuses as $status)
+                                <option value="{{ $status->id }}">
+                                    {{ $status->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('status')
+                            <label class="error">{{ $message }}</label>
+                        @enderror
+                    </div>
+                </div>
 
                 <div class="col-12">
                     <x-form.btn class="btn-primary waves-float waves-light" :title="'Submit'" :type="'submit'" />

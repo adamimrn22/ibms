@@ -9,11 +9,9 @@
         <div class="dropdown-menu" style="">
             <select id="statusFilter" class="form-select mx-1 px-2">
                 <option value="ALL">All</option>
-                <option value="AVAILABLE">Available</option>
-                <option value="BOOKED">Booked</option>
-                <option value="MISSING">Missing</option>
-                <option value="DAMAGED">Damaged</option>
-                <option value="DISPOSED">Disposed</option>
+                @foreach ($statuses as $status)
+                    <option value="{{ $status->id }}">{{ $status->name }}</option>
+                @endforeach
             </select>
         </div>
         <input type="text" id="{{ $id }}" placeholder="{{ $placeholder }}" class="form-control">

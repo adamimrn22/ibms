@@ -37,16 +37,6 @@ $(document).ready(function () {
     toggleDeleteButton();
 
     let createLaptopForm = $('#createLaptopForm');
-
-    $.validator.addMethod('stepMultiple', function (value, element, param) {
-        if (this.optional(element)) {
-            return true;
-        }
-
-        var num = parseFloat(value);
-        return /^\d+(\.\d{2})?$/.test(value) && num % param === 0;
-    }, 'Please enter a price with a decimal of two eg: 100.20 .');
-
     if (createLaptopForm.length) {
         createLaptopForm.validate({
             rules: {
@@ -60,7 +50,8 @@ $(document).ready(function () {
                     required: true,
                 },
                 price: {
-                    stepMultiple: 0.01
+                    required: true,
+                    number: true
                 },
                 location: {
                     required: true,

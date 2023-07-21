@@ -13,12 +13,17 @@
             <x-form :id="'createDesktopForm'" :action="route('uit.Desktop.store')" :method="'POST'">
                 <x-form.form-group>
                     <x-form.label :for="'desktopID'" :title="'Desktop ID'" />
-                    <x-form.input :id="'desktopID'" :placeholder="'UIT/USSB-XXX-00-XXX'" />
+                    <x-form.input :id="'desktopID'" :placeholder="'UIT/USSB-XXX-00-DSKPT'" />
                 </x-form.form-group>
 
                 <x-form.form-group>
                     <x-form.label :for="'desktopModel'" :title="'Desktop Model'" />
                     <x-form.input :id="'desktopModel'" :placeholder="'HP-000'" />
+                </x-form.form-group>
+
+                <x-form.form-group>
+                    <x-form.label :for="'price'" :title="'Price (RM)'" />
+                    <x-form.input id="price" :placeholder="'4000.00'" :type="'number'" />
                 </x-form.form-group>
 
                 <x-form.form-group>
@@ -91,12 +96,26 @@
 
                 <x-form.form-group>
                     <x-form.label :for="'keyboard'" :title="'Keyboard'" />
-                    <x-form.input :id="'keyboard'" :placeholder="'HP 330'" />
+                    <select style="overflow:hidden" id="keyboard" name="keyboard" class="select2 form-select form-select ">
+                        <option value="">No Keyboard</option>
+                        @foreach ($keyboards as $keyboard)
+                            <option value="{{ $keyboard->id }}">
+                                {{ $keyboard->name . ' - ' . $keyboard->model }}
+                            </option>
+                        @endforeach
+                    </select>
                 </x-form.form-group>
 
                 <x-form.form-group>
                     <x-form.label :for="'mouse'" :title="'Mouse'" />
-                    <x-form.input :id="'mouse'" :placeholder="'HP 150'" />
+                    <select style="overflow:hidden" id="mouse" name="mouse" class="select2 form-select form-select ">
+                        <option value="">No Mouse</option>
+                        @foreach ($mice as $mouse)
+                            <option value="{{ $mouse->id }}">
+                                {{ $mouse->name . ' - ' . $mouse->model }}
+                            </option>
+                        @endforeach
+                    </select>
                 </x-form.form-group>
 
                 <x-form.label :for="'monitorName'" :title="'Monitor Name'" />
@@ -107,8 +126,9 @@
                             <div class="col-md-6 col-12">
                                 <select style="overflow:hidden" id="monitor[]" name="monitor[]"
                                     class="select2 form-select form-select ">
-                                    @foreach ($monitors as $monitor)
-                                        <option value="{{ $monitor->name }}">
+                                    <option value="">No Monitor</option>
+                                    @foreach ($monitors as $key => $monitor)
+                                        <option value="{{ $monitor->id }}">
                                             {{ $monitor->name . ' - ' . $monitor->model }}
                                         </option>
                                     @endforeach
@@ -168,5 +188,9 @@
 
     <script src="{{ asset('app-asset/vendors/js/forms/select/select2.full.min.js') }}"></script>
     <script src="{{ asset('app-asset/js/scripts/forms/form-select2.js') }}"></script>
+
+    <script>
+        var monitorsData = @json($monitors);
+    </script>
     <script src="{{ asset('js/Admin/Inventory/UIT/Hardware/Desktop/createDesktop.js') }}"></script>
 @endsection

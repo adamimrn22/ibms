@@ -9,7 +9,7 @@ use Illuminate\View\Component;
 
 class hardwareSection extends Component
 {
-    protected $hardware;
+    private $hardware;
     /**
      * Create a new component instance.
      */

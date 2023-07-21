@@ -31,12 +31,12 @@
                         {{ $desktop->location }}
                     </td>
                     <td>
-                        @if ($desktop->status === 'AVAILABLE')
-                            <span class="badge rounded-pill badge-glow bg-info"> {{ $desktop->status }}</span>
-                        @elseif ($desktop->status === 'BOOKED')
-                            <span class="badge rounded-pill badge-glow bg-primary">{{ $desktop->status }}</span>
+                        @if ($desktop->status->name === 'AVAILABLE')
+                            <span class="badge rounded-pill badge-glow bg-info"> {{ $desktop->status->name }}</span>
+                        @elseif ($desktop->status->name === 'BOOKED')
+                            <span class="badge rounded-pill badge-glow bg-primary">{{ $desktop->status->name }}</span>
                         @else
-                            <span class="badge rounded-pill badge-glow bg-warning">{{ $desktop->status }}</span>
+                            <span class="badge rounded-pill badge-glow bg-warning">{{ $desktop->status->name }}</span>
                         @endif
                     </td>
 

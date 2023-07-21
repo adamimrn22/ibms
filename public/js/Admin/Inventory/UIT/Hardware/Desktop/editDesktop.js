@@ -34,9 +34,21 @@ $(document).ready(function () {
     }
 
     $("#addMonitorBtn").click(function () {
-        var newInput = '<div class="row d-flex align-items-center mb-1">' +
+        var newSelect =
+            '<div class="row d-flex align-items-center mb-1">' +
             '<div class="col-md-6 col-12">' +
-            '<input type="text" class="form-control" name="monitor[]" placeholder="HP LV1911">' +
+            '<select style="overflow:hidden" name="monitor[]" class="select2 form-select form-select ">' +
+            '<option value="" disabled selected>Select Monitor</option>';
+
+        // Loop through the monitors data and generate the option tags
+        for (var i = 0; i < monitorsData.length; i++) {
+            var monitor = monitorsData[i];
+            if (!isMonitorSelected(monitor.id)) { // Check if the monitor is not selected before
+                newSelect += '<option value="' + monitor.id + '">' + monitor.name + '</option>';
+            }
+        }
+
+        newSelect += '</select>' +
             '</div>' +
             '<div class="col-md-2 col-12 m-0 pl-2">' +
             '<button class="btn btn-outline-danger text-nowrap px-1 waves-effect deleteMonitorBtn" type="button">' +
@@ -49,9 +61,21 @@ $(document).ready(function () {
             '</div>' +
             '</div>';
 
-        $("#inputMonitorContainer").append(newInput);
+        $("#inputMonitorContainer").append(newSelect);
         toggleDeleteMonitorButton();
     });
+
+    function isMonitorSelected(monitorId) {
+        // Loop through the selected monitors to check if monitorId is present
+        var selectedMonitors = [];
+        $("#inputMonitorContainer select[name='monitor[]']").each(function () {
+            var selectedValue = $(this).val();
+            if (selectedValue !== '') {
+                selectedMonitors.push(parseInt(selectedValue));
+            }
+        });
+        return selectedMonitors.includes(monitorId);
+    }
 
     $("#inputMonitorContainer").on("click", ".deleteMonitorBtn", function () {
         $(this).closest(".row").remove();
@@ -94,15 +118,6 @@ $(document).ready(function () {
                     required: true,
                 },
                 'storage[]': {
-                    required: true,
-                },
-                keyboard: {
-                    required: true,
-                },
-                mouse: {
-                    required: true,
-                },
-                'monitor[]': {
                     required: true,
                 },
             },

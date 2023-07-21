@@ -9,18 +9,20 @@
 @section('layout')
     <x-app-content>
 
-        {{ Breadcrumbs::render('laptop.create') }}
+        {{ Breadcrumbs::render('laptop.edit', $laptop) }}
 
-        <x-uit.card title="Add New Laptop">
-            <x-form :id="'editLaptopForm'" :action="route('uit.Laptop.store')" :method="'POST'">
+        <x-uit.card title="Edit Laptop">
+            <x-form :id="'editLaptopForm'" :action="route('uit.Laptop.update', ['Laptop' => $laptop->id])" :method="'POST'">
+                @method('PUT')
+
                 <x-form.form-group>
                     <x-form.label :for="'laptopID'" :title="'Laptop ID'" />
                     <x-form.input id="laptopID" :value="$laptop->name" />
                 </x-form.form-group>
 
                 <x-form.form-group>
-                    <x-form.label :for="'laptopModel'" :title="'Laptop Model'" />
-                    <x-form.input id="laptopModel" :value="$laptop->attribute->model" />
+                    <x-form.label :for="'price'" :title="'Price (RM)'" />
+                    <x-form.input id="price" :value="$laptop->price" :type="'number'" />
                 </x-form.form-group>
 
                 <x-form.form-group>
@@ -39,6 +41,11 @@
                     @error('brand')
                         <label class="error">{{ $message }}</label>
                     @enderror
+                </x-form.form-group>
+
+                <x-form.form-group>
+                    <x-form.label :for="'laptopModel'" :title="'Laptop Model'" />
+                    <x-form.input id="laptopModel" :value="$laptop->attribute->model" />
                 </x-form.form-group>
 
                 <x-form.form-group>
