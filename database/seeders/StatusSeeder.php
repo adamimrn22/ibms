@@ -13,12 +13,20 @@ class StatusSeeder extends Seeder
      */
     public function run(): void
     {
-        $status = ['AVAILABLE', 'BOOKED', 'MISSING', 'DISPOSE', 'DAMAGED'];
+        $statusUIT = ['AVAILABLE', 'BOOKED', 'MISSING', 'DISPOSE', 'DAMAGED'];
+        $statusUPSM = ['AVAILABLE', 'RENOVATE', 'EVENT'];
 
-        foreach ($status as $status) {
+        foreach ($statusUIT as $status) {
             Status::create([
                 'name' => $status,
                 'category_id' => 1
+            ]);
+        }
+
+        foreach ($statusUPSM as $status) {
+            Status::create([
+                'name' => $status,
+                'category_id' => 5
             ]);
         }
     }

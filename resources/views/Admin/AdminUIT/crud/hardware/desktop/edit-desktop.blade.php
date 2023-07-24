@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('csslink')
-    <link rel="stylesheet" href="{{ asset('app-asset/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('app-asset/vendors/css/forms/select/select2.min.css') }}">
 @endsection
 @section('layout')

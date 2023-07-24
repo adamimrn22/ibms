@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('csslink')
-    <link rel="stylesheet" href="{{ asset('app-asset/css/style.css') }}">
 @endsection
 @section('layout')
     <x-app-content>

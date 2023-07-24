@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('csslink')
-    <link rel="stylesheet" href="{{ asset('app-asset/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('app-asset/vendors/css/forms/select/select2.min.css') }}">
 @endsection
 @section('layout')
@@ -65,9 +64,9 @@
 
                             <div class="col-md-2 col-12 m-0 pl-2 ">
                                 <x-form.btn :title="'Delete'" class="btn-outline-danger text-nowrap deleteStorageBtn">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-x me-25">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="feather feather-x me-25">
                                         <line x1="18" y1="6" x2="6" y2="18"></line>
                                         <line x1="6" y1="6" x2="18" y2="18"></line>
                                     </svg>

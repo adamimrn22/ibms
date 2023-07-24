@@ -10,4 +10,18 @@ class UpsmInventory extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function images()
+    {
+        return $this->hasMany(ClassroomImage::class, 'classroom_id', 'id');
+    }
+
+    public function subcategory()
+    {
+        return $this->belongsTo(Subcategory::class, 'subcategory_id', 'id');
+    }
+
+    public function status(){
+        return $this->hasOne(Status::class,  'id' ,'status_id',);
+    }
 }

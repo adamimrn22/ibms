@@ -20,10 +20,9 @@
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-baseline">
-                            <button class="btn add-new btn-primary mt-50 add-permission-modal" tabindex="0" type="button"
-                                data-bs-toggle="modal" data-bs-target="#addRuangKelas">
+                            <a href="{{ route('upsm.Classroom.create') }}" class="btn add-new btn-primary ">
                                 <span>Add New Classroom</span>
-                            </button>
+                            </a>
                         </div>
                     </div>
 
@@ -73,15 +72,25 @@
         </div>
         <!-- table -->
 
-        @include('Admin.AdminUPSM.modal.classroomModal')
-        </div>
+
+        <x-uit.delete-modal :modalID="'deleteRuangKelas'" :deleteFormId="'deleteRuangKelasForm'" />
+
 
     </x-app-content>
 @endsection
 
 @section('script')
+    @if (session('error'))
+        <script>
+            toastr.danger('{{ session('error') }}', 'Error');
+        </script>
+    @endif
+    @if (session('success'))
+        <script>
+            toastr.success('{{ session('success') }}', 'Success');
+        </script>
+    @endif
+
     <script src="{{ asset('js/Admin/Inventory/UPSM/Classroom/ViewAllClass.js') }}"></script>
-    <script src="{{ asset('js/Admin/Inventory/UPSM/Classroom/AddClass.js') }}"></script>
-    <script src="{{ asset('js/Admin/Inventory/UPSM/Classroom/editClass.js') }}"></script>
     <script src="{{ asset('js/Admin/Inventory/UPSM/Classroom/deleteClass.js') }}"></script>
 @endsection

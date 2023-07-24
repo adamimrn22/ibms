@@ -16,8 +16,4 @@ class SubCategory extends Model
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
-    public function inventories()
-    {
-        return $this->belongsTo(Inventory::class);
-    }
 }

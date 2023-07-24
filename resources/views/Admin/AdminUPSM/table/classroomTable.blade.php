@@ -19,7 +19,9 @@
                         {{ $data->firstItem() + $index }}
                     </td>
                     <td>
-                        {{ $classroom->name }}
+                        <a href="{{ route('upsm.Classroom.show', ['Classroom' => Crypt::encrypt($classroom->id)]) }}">
+                            {{ $classroom->name }}
+                        </a>
                     </td>
 
                     @foreach (json_decode($classroom->attribute) as $key => $value)
@@ -40,10 +42,8 @@
                                 </svg>
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item edit-classroom-modal" href="javascript:void(0);"
-                                    data-bs-target="#editRuangKelas" data-bs-toggle="modal"
-                                    data-classroom-id="{{ $classroom->id }}">
-
+                                <a class="dropdown-item"
+                                    href="{{ route('upsm.Classroom.edit', ['Classroom' => Crypt::encrypt($classroom->id)]) }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                         stroke-linecap="round" stroke-linejoin="round"

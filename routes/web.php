@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\Inventory\UIT\Hardware\KeyboardController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\MonitorController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\MouseController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\ProjectorController;
+use App\Models\ClassroomImage;
 
 /*
 |--------------------------------------------------------------------------
@@ -82,6 +83,9 @@ Route::middleware(['auth', 'role:Admin UIT|Super Admin'])->prefix('Inventory/UIT
 Route::middleware(['auth', 'role:Admin UPSM|Super Admin'])->prefix('Inventory/UPSM')->name('upsm.')->group(function () {
     Route::resource('/Classroom', ClassroomController::class);
     Route::resource('/Office', OfficeRoomController::class);
+
+    Route::post('/tmp-upload', [ClassroomController::class, 'tmpUpload'])->name('classroom-tmp-upload');
+     Route::delete('/tmp-delete', [ClassroomController::class, 'tmpDelete'])->name('classroom-tmp-delete');
 });
 
 
@@ -99,6 +103,8 @@ Route::get('/test', function(){
     // dd($booking);
     return view('test', compact('booking', 'desktop'));
 });
+
+
 
 Route::post('/test', function(){
     $staffId = 2; // Staff ID
