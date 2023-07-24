@@ -25,7 +25,7 @@
 
 @section('layout')
     <x-app-content>
-        {{-- {{ Breadcrumbs::render('desktop.edit', $desktop) }} --}}
+        {{ Breadcrumbs::render('clasroom.edit', $classroom) }}
 
         <div class="row mt-1">
             <div class="col-12">

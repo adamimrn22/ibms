@@ -75,7 +75,6 @@
 
         <x-uit.delete-modal :modalID="'deleteRuangKelas'" :deleteFormId="'deleteRuangKelasForm'" />
 
-
     </x-app-content>
 @endsection
 

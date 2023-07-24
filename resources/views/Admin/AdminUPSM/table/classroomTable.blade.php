@@ -4,11 +4,8 @@
             <tr>
                 <th>No.</th>
                 <th>Name</th>
-                <th>Chair</th>
-                <th>Foldable Chair</th>
-                <th>Table</th>
-                <th>Whiteboard</th>
-                <th>Duster</th>
+                <th>Status</th>
+                <th>Location</th>
                 <th></th>
             </tr>
         </thead>
@@ -23,10 +20,17 @@
                             {{ $classroom->name }}
                         </a>
                     </td>
+                    <td>
+                        <span>
+                            {{ $classroom->Status->name }}
+                        </span>
+                    </td>
+                    <td>
+                        <span>
+                            {{ $classroom->location }}
+                        </span>
+                    </td>
 
-                    @foreach (json_decode($classroom->attribute) as $key => $value)
-                        <td>{{ $value }}</td>
-                    @endforeach
 
                     <td>
                         <div class="dropdown ">

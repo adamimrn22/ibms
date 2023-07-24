@@ -1,4 +1,4 @@
-<div id="classroomTable">
+<div id="officeTable">
     <table class="table">
         <thead>
             <tr>
@@ -22,12 +22,8 @@
                         {{ $office->location }}
                     </td>
                     <td>
-                        <a href="">View</a>
+                        <a href="{{ route('upsm.Office.show', ['Office' => Crypt::encrypt($office->id)]) }}">View</a>
                     </td>
-                    {{--
-                    @foreach (json_decode($classroom->attribute) as $key => $value)
-                        <td>{{ $value }}</td>
-                    @endforeach --}}
 
                     <td>
                         <div class="dropdown">
@@ -43,9 +39,8 @@
                                 </svg>
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item edit-classroom-modal" href="javascript:void(0);"
-                                    data-bs-target="#editRuangKelas" data-bs-toggle="modal"
-                                    data-office-id="{{ $office->id }}">
+                                <a class="dropdown-item"
+                                    href="{{ route('upsm.Office.edit', ['Office' => Crypt::encrypt($office->id)]) }}">
 
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -57,8 +52,8 @@
 
                                 </a>
 
-                                <a class="dropdown-item delete-classroom-modal" href="javascript:void(0);"
-                                    data-bs-target="#deleteRuangKelas" data-bs-toggle="modal"
+                                <a class="dropdown-item delete-office-modal" href="javascript:void(0);"
+                                    data-bs-target="#deleteOffice" data-bs-toggle="modal"
                                     data-office-id="{{ $office->id }}">
 
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"

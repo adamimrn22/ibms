@@ -7,6 +7,7 @@
 @section('layout')
     <x-app-content>
 
+        {{ Breadcrumbs::render('clasroom.create') }}
 
         <div class="row mt-1">
             <div class="col-12">

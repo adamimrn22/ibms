@@ -14,21 +14,20 @@
                 <x-upsmRoomSection />
 
                 <hr>
-                <h3>Ruang Kelas List</h3>
+                <h3>Ruang Office List</h3>
 
                 <!-- table -->
                 <div class="row mt-1" id="basic-table">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">List of all Ruang Kelas</h4>
+                                <h4 class="card-title">List of all Ruang Pejabat</h4>
                             </div>
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-baseline">
-                                    <button class="btn add-new btn-primary mt-50 add-permission-modal" tabindex="0"
-                                        type="button" data-bs-toggle="modal" data-bs-target="#addRuangKelas">
-                                        <span>Add New Classroom</span>
-                                    </button>
+                                    <a class="btn add-new btn-primary" href="{{ route('upsm.Office.create') }}">
+                                        <span>Add New Office Room</span>
+                                    </a>
                                 </div>
                             </div>
 
@@ -39,7 +38,7 @@
 
                                 <div class="col-sm-12 col-md-4">
                                     <div class="input-group">
-                                        <input type="text" id="searchClassroom" placeholder="Search classroom..."
+                                        <input type="text" id="searchOffice" placeholder="Search Ruang Office..."
                                             class="form-control">
                                     </div>
                                 </div>
@@ -63,7 +62,7 @@
                             </div>
 
                             <div class="table-responsive">
-                                @include('Admin.AdminUPSM.table.classroomTable')
+                                @include('Admin.AdminUPSM.table.officeTable')
 
                                 <div class="d-flex align-items-center justify-content-center">
                                     <div id="roleSpinner" align="center" class="spinner-border text-primary" role="status">
@@ -78,15 +77,23 @@
                 </div>
                 <!-- table -->
 
-                @include('Admin.AdminUPSM.modal.classroomModal')
             </div>
+
+            <x-uit.delete-modal :modalID="'deleteOffice'" :deleteFormId="'deleteOfficeForm'" />
+
         </div>
+
+
     </div>
 @endsection
 
 @section('script')
-    <script src="{{ asset('js/Admin/Inventory/UPSM/Classroom/ViewAllClass.js') }}"></script>
-    <script src="{{ asset('js/Admin/Inventory/UPSM/Classroom/AddClass.js') }}"></script>
-    <script src="{{ asset('js/Admin/Inventory/UPSM/Classroom/editClass.js') }}"></script>
-    <script src="{{ asset('js/Admin/Inventory/UPSM/Classroom/deleteClass.js') }}"></script>
+    @if (session('success'))
+        <script>
+            toastr.success('{{ session('success') }}', 'Success');
+        </script>
+    @endif
+
+    <script src="{{ asset('js/Admin/Inventory/UPSM/Office/viewAllOffice.js') }}"></script>
+    <script src="{{ asset('js/Admin/Inventory/UPSM/Office/deleteOffice.js') }}"></script>
 @endsection

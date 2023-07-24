@@ -24,7 +24,7 @@ class ClassroomController extends Controller
         $perPage = $request->input('records', 7);
         $searchTerm = $request->input('search');
         $status = $request->input('status');
-        $query = UpsmInventory::query();
+        $query = UpsmInventory::query()->with('status');
 
         $data = $this->applyPaginationFilterSearch($query, $perPage, $searchTerm, $status);
         if ($request->ajax()) {
@@ -65,8 +65,8 @@ class ClassroomController extends Controller
                 'Chair' => $validatedData['classChair'],
                 'Foldable_Chair' => $validatedData['classFoldableChair'],
                 'Table' => $validatedData['classTable'],
-                'Whiteboard' => $validatedData['classChair'],
-                'Duster' => $validatedData['classChair'],
+                'Whiteboard' => $validatedData['classWhiteboard'],
+                'Duster' => $validatedData['classDuster'],
             ];
 
             $classroom = UpsmInventory::create([
