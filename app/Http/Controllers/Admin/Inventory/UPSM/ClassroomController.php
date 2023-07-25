@@ -202,7 +202,6 @@ class ClassroomController extends Controller
         } catch (\Throwable $th) {
             return response($th->getMessage());
         }
-
     }
 
     public function tmpUpload(Request $request)
@@ -225,11 +224,6 @@ class ClassroomController extends Controller
         }
 
         return '';
-    }
-
-    public function deleteImage(Request $request)
-    {
-        $id = $request->input('id');
     }
 
     public function tmpDelete(Request $request)

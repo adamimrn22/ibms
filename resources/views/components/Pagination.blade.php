@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-between align-items-baseline mx-0 row" id="Pagination">
+<div class="d-flex justify-content-between align-items-baseline mx-0 row mb-1 p-1" id="Pagination">
     <div class="col-sm-12 col-md-6">
         <div role="status" aria-live="polite">Showing
             {{ $data->firstItem() }} to {{ $data->lastItem() }} of {{ $data->total() }} entries</div>

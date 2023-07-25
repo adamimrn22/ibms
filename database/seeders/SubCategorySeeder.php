@@ -46,32 +46,32 @@ class SubCategorySeeder extends Seeder
 
         SubCategory::create([
             'subcategory_name' => 'HDMI',
-            'category_id' => '3'
+            'category_id' => '2'
         ]);
 
         SubCategory::create([
             'subcategory_name' => 'VGA',
-            'category_id' => '3'
+            'category_id' => '2'
         ]);
 
         SubCategory::create([
             'subcategory_name' => 'Ethernet',
-            'category_id' => '3'
+            'category_id' => '2'
         ]);
 
         SubCategory::create([
             'subcategory_name' => 'DVI',
-            'category_id' => '3'
+            'category_id' => '2'
         ]);
 
         SubCategory::create([
             'subcategory_name' => 'USB',
-            'category_id' => '3'
+            'category_id' => '2'
         ]);
 
         SubCategory::create([
-            'subcategory_name' => 'Bilik',
-            'category_id' => '5'
+            'subcategory_name' => 'Miscellaneous',
+            'category_id' => '2'
         ]);
 
         SubCategory::create([
@@ -80,17 +80,18 @@ class SubCategorySeeder extends Seeder
         ]);
 
         SubCategory::create([
-            'subcategory_name' => 'Makmal',
+            'subcategory_name' => 'Bilik',
             'category_id' => '5'
         ]);
 
+
         SubCategory::create([
-            'subcategory_name' => 'File',
+            'subcategory_name' => 'Paper',
             'category_id' => '6'
         ]);
 
         SubCategory::create([
-            'subcategory_name' => 'PAPER',
+            'subcategory_name' => 'File',
             'category_id' => '6'
         ]);
 

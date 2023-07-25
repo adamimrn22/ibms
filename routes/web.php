@@ -19,6 +19,11 @@ use App\Http\Controllers\Admin\Inventory\UIT\Hardware\KeyboardController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\MonitorController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\MouseController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\ProjectorController;
+use App\Http\Controllers\Admin\Inventory\UKW\FileController;
+use App\Http\Controllers\Admin\Inventory\UKW\PaperController;
+use App\Http\Controllers\Admin\Inventory\UKW\StationeryController;
+use App\Http\Controllers\Admin\Inventory\UKW\SuppliesController;
+use App\Http\Controllers\TempfileController;
 use App\Models\ClassroomImage;
 
 /*
@@ -85,7 +90,19 @@ Route::middleware(['auth', 'role:Admin UPSM|Super Admin'])->prefix('Inventory/UP
     Route::resource('/Office', OfficeRoomController::class);
 
     Route::post('/tmp-upload', [ClassroomController::class, 'tmpUpload'])->name('classroom-tmp-upload');
-     Route::delete('/tmp-delete', [ClassroomController::class, 'tmpDelete'])->name('classroom-tmp-delete');
+    Route::delete('/tmp-delete', [ClassroomController::class, 'tmpDelete'])->name('classroom-tmp-delete');
+});
+
+Route::middleware(['auth', 'role:Admin UKW|Super Admin'])->prefix('Inventory/UKW')->name('ukw.')->group(function () {
+   Route::resource('/File', FileController::class);
+   Route::resource('/Paper', PaperController::class);
+   Route::resource('/Stationery', StationeryController::class);
+
+   Route::resource('/Supply', SuppliesController::class);
+
+   Route::post('/tmp-upload', [TempfileController::class, 'tmpSupplyUpload'])->name('supply-tmp-upload');
+   Route::delete('/tmp-delete', [TempfileController::class, 'tmpSupplyDelete'])->name('supply-tmp-delete');
+
 });
 
 

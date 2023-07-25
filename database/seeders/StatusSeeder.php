@@ -15,6 +15,7 @@ class StatusSeeder extends Seeder
     {
         $statusUIT = ['AVAILABLE', 'BOOKED', 'MISSING', 'DISPOSE', 'DAMAGED'];
         $statusUPSM = ['AVAILABLE', 'RENOVATE', 'EVENT'];
+        $statusUKW = ['AVAILABLE', 'DISABLE', 'OUT OF STOCK'];
 
         foreach ($statusUIT as $status) {
             Status::create([
@@ -27,6 +28,13 @@ class StatusSeeder extends Seeder
             Status::create([
                 'name' => $status,
                 'category_id' => 5
+            ]);
+        }
+
+        foreach ($statusUKW as $status) {
+            Status::create([
+                'name' => $status,
+                'category_id' => 6
             ]);
         }
     }

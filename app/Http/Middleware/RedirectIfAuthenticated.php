@@ -22,9 +22,9 @@ class RedirectIfAuthenticated
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
                 if(Auth::user()->roles->pluck('name')[0] === 'Super Admin'){
-                    return redirect()->intended('/superadmin');
+                    return redirect()->intended('/superadmin/dashboard');
                  }else if(Auth::user()->roles->pluck('name')[0] === 'Admin') {
-                   return redirect()->intended('/admin');
+                   return redirect()->intended('/admin/dashboard');
                  }else if(Auth::user()->roles->pluck('name')[0] === 'User') {
                     return redirect()->intended('/user');
                  }else {

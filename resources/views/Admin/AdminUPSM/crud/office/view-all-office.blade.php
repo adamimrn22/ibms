@@ -12,7 +12,6 @@
             <div class="content-body">
 
                 <x-upsmRoomSection />
-
                 <hr>
                 <h3>Ruang Office List</h3>
 
@@ -30,10 +29,7 @@
                                     </a>
                                 </div>
                             </div>
-
                             <hr>
-
-
                             <div class="d-flex justify-content-between align-items-center mx-0 mb-2 row">
 
                                 <div class="col-sm-12 col-md-4">
@@ -76,14 +72,10 @@
                     </div>
                 </div>
                 <!-- table -->
-
             </div>
 
             <x-uit.delete-modal :modalID="'deleteOffice'" :deleteFormId="'deleteOfficeForm'" />
-
         </div>
-
-
     </div>
 @endsection
 
