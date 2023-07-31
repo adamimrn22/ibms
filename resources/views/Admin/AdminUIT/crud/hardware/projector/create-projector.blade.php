@@ -7,31 +7,30 @@
 @endsection
 @section('layout')
     <x-app-content>
-        {{ Breadcrumbs::render('printer.edit', $printer) }}
+        {{ Breadcrumbs::render('projector.create') }}
 
-        <x-uit.card title="Edit Printer">
-            <x-form :id="'editPrinterForm'" :action="route('uit.Printer.update', ['Printer' => $printer->id])" :method="'POST'">
-                @method('PUT')
+        <x-uit.card title="Add New Projector">
+            <x-form :id="'createProjectorForm'" :action="route('uit.Projector.store')" :method="'POST'">
+
                 <x-form.form-group>
-                    <x-form.label :for="'printerID'" :title="'Printer ID'" />
-                    <x-form.input id="printerID" :value="$printer->name" />
+                    <x-form.label :for="'projectorID'" :title="'Projector ID'" />
+                    <x-form.input id="projectorID" :placeholder="'UIT/USSB-XXX-00-PJT'" />
                 </x-form.form-group>
 
                 <x-form.form-group>
                     <x-form.label :for="'price'" :title="'Price (RM)'" />
-                    <x-form.input id="price" :value="$printer->price" :type="'number'" />
+                    <x-form.input id="price" :placeholder="'1200.20'" :type="'number'" />
                 </x-form.form-group>
 
                 <x-form.form-group>
-                    <x-form.label :for="'printerBrand'" :title="'Printer Brand'" />
+                    <x-form.label :for="'projectorBrand'" :title="'Projector Brand'" />
                     @php
-                        $brands = ['HP', 'Canon', 'Epson', 'Brother', 'Samsung', 'Dell', 'Lexmark', 'Xerox', 'Ricoh', 'Kyocera', 'Panasonic', 'Toshiba', 'Oki', 'Konica Minolta', 'Fujitsu', 'Zebra', 'Printronix', 'Sharp', 'Pantum', 'Riso', 'Sindoh', 'Olivetti'];
+                        $brands = ['Epson', 'Sony', 'BenQ', 'Optoma', 'LG', 'ViewSonic', 'Acer', 'Panasonic', 'NEC', 'Hitachi', 'JVC', 'Dell', 'Xiaomi', 'Asus', 'Vivitek', 'Christie', 'InFocus', 'Philips', 'Casio', 'Canon'];
                     @endphp
-                    <select style="overflow:hidden" id="printerBrand" name="printerBrand"
+                    <select style="overflow:hidden" id="projectorBrand" name="projectorBrand"
                         class="select2 form-select form-select ">
                         @foreach ($brands as $brand)
-                            <option value="{{ $brand }}"
-                                {{ $printer->attribute->brand == $brand ? 'selected' : '' }}>
+                            <option value="{{ $brand }}">
                                 {{ $brand }}
                             </option>
                         @endforeach
@@ -42,41 +41,32 @@
                 </x-form.form-group>
 
                 <x-form.form-group>
-                    <x-form.label :for="'printerModel'" :title="'Printer Model'" />
-                    <x-form.input id="printerModel" :value="$printer->attribute->model" />
+                    <x-form.label :for="'projectorModel'" :title="'Projector Model'" />
+                    <x-form.input id="projectorModel" :placeholder="'HP-000'" />
                 </x-form.form-group>
 
                 <x-form.form-group>
                     <x-form.label :for="'location'" :title="'Location'" />
-                    <x-form.input id="location" :value="$printer->location" />
+                    <x-form.input id="location" :placeholder="'Location'" />
                 </x-form.form-group>
 
                 <hr>
 
-                <p>Printer Specification</p>
-
-                <x-form.form-group>
-                    <x-form.label :for="'tonerBlack'" :title="'Black Toner Cartridges Name'" />
-                    <x-form.input id="tonerBlack" :value="$printer->attribute->tonerBlack" />
-                </x-form.form-group>
-                <x-form.form-group>
-                    <x-form.label :for="'tonerColor'" :title="'Color Toner Cartridges Name'" />
-                    <x-form.input id="tonerColor" :value="$printer->attribute->tonerColor" />
-                </x-form.form-group>
+                <p>Projector Specification</p>
 
                 <x-form.form-group>
                     <x-form.label :for="'weight'" :title="'Weight (G)'" />
-                    <x-form.input id="weight" :value="$printer->attribute->weight" type="number" />
+                    <x-form.input id="weight" :placeholder="'5'" type="number" />
                 </x-form.form-group>
 
                 <x-form.form-group>
                     <x-form.label :for="'color'" :title="'Colour'" />
-                    <x-form.input id="color" :value="$printer->attribute->color" />
+                    <x-form.input id="color" :placeholder="'Black'" />
                 </x-form.form-group>
 
                 <x-form.form-group>
                     <x-form.label :for="'DOP'" :title="'Date Of Purchase'" />
-                    <input type="text" id="DOP" name="DOP" value="{{ $printer->attribute->DOP }}"
+                    <input type="text" id="DOP" name="DOP" value="{{ old('DOP') }}"
                         class="form-control flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD">
                     @error('DOP')
                         <label class="error">{{ $message }}</label>
@@ -137,5 +127,5 @@
 
     <script src="{{ asset('app-asset/vendors/js/forms/select/select2.full.min.js') }}"></script>
     <script src="{{ asset('app-asset/js/scripts/forms/form-select2.js') }}"></script>
-    <script src="{{ asset('js/Admin/Inventory/UIT/Hardware/Printer/editPrinter.js') }}"></script>
+    <script src="{{ asset('js/Admin/Inventory/UIT/Hardware/Projector/createProjector.js') }}"></script>
 @endsection

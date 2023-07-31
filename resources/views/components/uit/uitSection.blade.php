@@ -12,7 +12,7 @@
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">Cable</h4>
-                <a href="{{ route('uit.Cable.index') }}"
+                <a href="{{ route('uit.Hdmi.index') }}"
                     class="btn btn-outline-primary waves-effect {{ str_contains(request()->path(), 'Cable') ? 'active' : '' }}">View</a>
             </div>
         </div>

@@ -14,6 +14,7 @@ class StatusSeeder extends Seeder
     public function run(): void
     {
         $statusUIT = ['AVAILABLE', 'BOOKED', 'MISSING', 'DISPOSE', 'DAMAGED'];
+        $statusCable = ['AVAILABLE', 'PLUGGED', 'MISSING', 'DISPOSE', 'DAMAGED'];
         $statusUPSM = ['AVAILABLE', 'RENOVATE', 'EVENT'];
         $statusUKW = ['AVAILABLE', 'DISABLE', 'OUT OF STOCK'];
         $statusKenderaan = ['AVAILABLE', 'UNAVAILABLE', 'SERVICE'];
@@ -43,6 +44,12 @@ class StatusSeeder extends Seeder
             Status::create([
                 'name' => $status,
                 'category_id' => 7
+            ]);
+        }
+        foreach ($statusCable as $status) {
+            Status::create([
+                'name' => $status,
+                'category_id' => 2
             ]);
         }
     }

@@ -7,76 +7,61 @@
 @endsection
 @section('layout')
     <x-app-content>
-        {{ Breadcrumbs::render('printer.edit', $printer) }}
 
-        <x-uit.card title="Edit Printer">
-            <x-form :id="'editPrinterForm'" :action="route('uit.Printer.update', ['Printer' => $printer->id])" :method="'POST'">
-                @method('PUT')
+        {{ Breadcrumbs::render('cable.create') }}
+
+        <x-uit.card title="Add New Cable">
+            <x-form :id="'createCableForm'" :action="route('uit.Cable.store')" :method="'POST'">
+
                 <x-form.form-group>
-                    <x-form.label :for="'printerID'" :title="'Printer ID'" />
-                    <x-form.input id="printerID" :value="$printer->name" />
+                    <x-form.label :for="'cableID'" :title="'Cable ID'" />
+                    <x-form.input :id="'cableID'" :placeholder="'UIT/USSB-XXX-00-CBL'" />
                 </x-form.form-group>
 
                 <x-form.form-group>
                     <x-form.label :for="'price'" :title="'Price (RM)'" />
-                    <x-form.input id="price" :value="$printer->price" :type="'number'" />
+                    <x-form.input :id="'price'" :placeholder="'1200.20'" :type="'number'" />
                 </x-form.form-group>
 
                 <x-form.form-group>
-                    <x-form.label :for="'printerBrand'" :title="'Printer Brand'" />
-                    @php
-                        $brands = ['HP', 'Canon', 'Epson', 'Brother', 'Samsung', 'Dell', 'Lexmark', 'Xerox', 'Ricoh', 'Kyocera', 'Panasonic', 'Toshiba', 'Oki', 'Konica Minolta', 'Fujitsu', 'Zebra', 'Printronix', 'Sharp', 'Pantum', 'Riso', 'Sindoh', 'Olivetti'];
-                    @endphp
-                    <select style="overflow:hidden" id="printerBrand" name="printerBrand"
-                        class="select2 form-select form-select ">
-                        @foreach ($brands as $brand)
-                            <option value="{{ $brand }}"
-                                {{ $printer->attribute->brand == $brand ? 'selected' : '' }}>
-                                {{ $brand }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('printerBrand')
-                        <label class="error">{{ $message }}</label>
-                    @enderror
-                </x-form.form-group>
-
-                <x-form.form-group>
-                    <x-form.label :for="'printerModel'" :title="'Printer Model'" />
-                    <x-form.input id="printerModel" :value="$printer->attribute->model" />
+                    <x-form.label :for="'cableName'" :title="'Cable Name'" />
+                    <x-form.input :id="'cableName'" :placeholder="'Cat 5 Lan Cable'" />
                 </x-form.form-group>
 
                 <x-form.form-group>
                     <x-form.label :for="'location'" :title="'Location'" />
-                    <x-form.input id="location" :value="$printer->location" />
+                    <x-form.input :id="'location'" :placeholder="'Location'" />
                 </x-form.form-group>
 
                 <hr>
 
-                <p>Printer Specification</p>
+                <p>Cable Specification</p>
+
+                <div class="col-md-6 col-12">
+                    <div class="mb-1">
+                        <x-form.label :for="'subcategory_id'" :title="'Category'" />
+                        <select style="overflow:hidden" id="subcategory_id" name="subcategory_id"
+                            class="select2 form-select form-select ">
+                            @foreach ($subcategories as $subcategory)
+                                <option value="{{ $subcategory->id . '|' . $subcategory->subcategory_name }}">
+                                    {{ $subcategory->subcategory_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('subcategory_id')
+                            <label class="error">{{ $message }}</label>
+                        @enderror
+                    </div>
+                </div>
 
                 <x-form.form-group>
-                    <x-form.label :for="'tonerBlack'" :title="'Black Toner Cartridges Name'" />
-                    <x-form.input id="tonerBlack" :value="$printer->attribute->tonerBlack" />
-                </x-form.form-group>
-                <x-form.form-group>
-                    <x-form.label :for="'tonerColor'" :title="'Color Toner Cartridges Name'" />
-                    <x-form.input id="tonerColor" :value="$printer->attribute->tonerColor" />
-                </x-form.form-group>
-
-                <x-form.form-group>
-                    <x-form.label :for="'weight'" :title="'Weight (G)'" />
-                    <x-form.input id="weight" :value="$printer->attribute->weight" type="number" />
-                </x-form.form-group>
-
-                <x-form.form-group>
-                    <x-form.label :for="'color'" :title="'Colour'" />
-                    <x-form.input id="color" :value="$printer->attribute->color" />
+                    <x-form.label :for="'meter'" :title="'Length (Meter) '" />
+                    <x-form.input :id="'meter'" :placeholder="'5'" type="number" />
                 </x-form.form-group>
 
                 <x-form.form-group>
                     <x-form.label :for="'DOP'" :title="'Date Of Purchase'" />
-                    <input type="text" id="DOP" name="DOP" value="{{ $printer->attribute->DOP }}"
+                    <input type="text" id="DOP" name="DOP" value="{{ old('DOP') }}"
                         class="form-control flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD">
                     @error('DOP')
                         <label class="error">{{ $message }}</label>
@@ -109,15 +94,19 @@
             </x-form>
         </x-uit.card>
 
-        </div>
     </x-app-content>
 @endsection
-
 
 @section('script')
     @if ($errors->any())
         <script>
             toastr.error('Validation Error', 'Error');
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            toastr.error("{{ session('error') }}", 'Error');
         </script>
     @endif
 
@@ -137,5 +126,5 @@
 
     <script src="{{ asset('app-asset/vendors/js/forms/select/select2.full.min.js') }}"></script>
     <script src="{{ asset('app-asset/js/scripts/forms/form-select2.js') }}"></script>
-    <script src="{{ asset('js/Admin/Inventory/UIT/Hardware/Printer/editPrinter.js') }}"></script>
+    <script src="{{ asset('js/Admin/Inventory/UIT/Cable/createCable.js') }}"></script>
 @endsection

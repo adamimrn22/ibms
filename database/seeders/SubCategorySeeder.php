@@ -114,6 +114,11 @@ class SubCategorySeeder extends Seeder
             'category_id' => '7'
         ]);
 
+        SubCategory::create([
+            'subcategory_name' => 'PSU',
+            'category_id' => '2'
+        ]);
+
 
 
     }

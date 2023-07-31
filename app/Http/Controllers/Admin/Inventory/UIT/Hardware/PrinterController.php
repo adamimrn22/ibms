@@ -68,7 +68,6 @@ class PrinterController extends Controller
             'tonerBlack' => $validatedData['tonerBlack'],
             'tonerColor' => $validatedData['tonerColor'],
             'weight' => $validatedData['weight'],
-            'tonerColor' => $validatedData['tonerColor'],
             'color' => $validatedData['color'],
             'DOP' => $validatedData['DOP'],
         ];

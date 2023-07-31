@@ -2,11 +2,17 @@
 
 use App\Models\Booking;
 use App\Models\Inventory;
-use App\Models\ClassroomImage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TempfileController;
 use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Admin\Inventory\UIT\Cable\CableController as CableCableController;
+use App\Http\Controllers\Admin\Inventory\UIT\Cable\DviController;
+use App\Http\Controllers\Admin\Inventory\UIT\Cable\EthernetController;
+use App\Http\Controllers\Admin\Inventory\UIT\Cable\HdmiController;
+use App\Http\Controllers\Admin\Inventory\UIT\Cable\PsuCableController;
+use App\Http\Controllers\Admin\Inventory\UIT\Cable\UsbController;
+use App\Http\Controllers\Admin\Inventory\UIT\Cable\VgaController;
 use App\Http\Controllers\SuperAdmin\UnitController;
 use App\Http\Controllers\SuperAdmin\UserController;
 use App\Http\Controllers\SuperAdmin\RolesController;
@@ -83,8 +89,16 @@ Route::middleware(['auth', 'role:Admin UIT|Super Admin'])->prefix('Inventory/UIT
         Route::resource('/Printer', PrinterController::class);
         Route::resource('/Projector', ProjectorController::class);
     });
-    Route::resource('/Cable', CableController::class);
-    Route::resource('/Others', CableController::class);
+    Route::prefix('/Cable')->group(function() {
+        Route::resource('/Cable', CableCableController::class);
+        Route::resource('/Hdmi', HdmiController::class);
+        Route::resource('/Vga', VgaController::class);
+        Route::resource('/Ethernet', EthernetController::class);
+        Route::resource('/Dvi', DviController::class);
+        Route::resource('/Usb', UsbController::class);
+        Route::resource('/Psu', PsuCableController::class);
+    });
+    Route::resource('/Others', CableCableController::class);
 });
 
 Route::middleware(['auth', 'role:Admin UPSM|Super Admin'])->prefix('Inventory/UPSM')->name('upsm.')->group(function () {

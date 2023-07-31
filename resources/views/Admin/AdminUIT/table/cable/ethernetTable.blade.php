@@ -1,46 +1,35 @@
-<div id="projectorTable">
+<div id="lanTable">
     <table class="table">
         <thead>
             <tr>
                 <th>No.</th>
                 <th>ID</th>
-                <th>Brand</th>
-                <th>Model</th>
                 <th>Location</th>
                 <th>Status</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @forelse ($data as $index => $projector)
+            @forelse ($data as $index => $lan)
                 <tr>
                     <td>
                         {{ $data->firstItem() + $index }}
                     </td>
                     <td>
-                        <a
-                            href="{{ route('uit.Projector.show', ['Projector' => Crypt::encryptString($projector->id)]) }}">
-                            {{ strtoupper($projector->name) }}
+                        <a href="{{ route('uit.Cable.show', ['Cable' => Crypt::encryptString($lan->id)]) }}">
+                            {{ strtoupper($lan->name) }}
                         </a>
                     </td>
                     <td>
-                        <span class="badge badge-light-primary">
-                            {{ $projector->brand }}</span>
-                        </span>
+                        {{ $lan->location }}
                     </td>
                     <td>
-                        {{ $projector->model }}
-                    </td>
-                    <td>
-                        {{ $projector->location }}
-                    </td>
-                    <td>
-                        @if ($projector->status->name === 'AVAILABLE')
-                            <span class="badge rounded-pill badge-glow bg-info"> {{ $projector->status->name }}</span>
-                        @elseif ($projector->status->name === 'BOOKED')
-                            <span class="badge rounded-pill badge-glow bg-primary">{{ $projector->status->name }}</span>
+                        @if ($lan->status->name === 'AVAILABLE')
+                            <span class="badge rounded-pill badge-glow bg-info"> {{ $lan->status->name }}</span>
+                        @elseif ($lan->status->name === 'PLUGGED')
+                            <span class="badge rounded-pill badge-glow bg-primary">{{ $lan->status->name }}</span>
                         @else
-                            <span class="badge rounded-pill badge-glow bg-warning">{{ $projector->status->name }}</span>
+                            <span class="badge rounded-pill badge-glow bg-warning">{{ $lan->status->name }}</span>
                         @endif
                     </td>
 
@@ -60,7 +49,7 @@
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <a class="dropdown-item"
-                                    href="{{ route('uit.Projector.edit', ['Projector' => Crypt::encryptString($projector->id)]) }}">
+                                    href="{{ route('uit.Cable.edit', ['Cable' => Crypt::encryptString($lan->id)]) }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                         stroke-linecap="round" stroke-linejoin="round"
@@ -70,9 +59,9 @@
                                     <span>Edit</span>
                                 </a>
 
-                                <a class="dropdown-item delete-printer-modal" href="javascript:void(0);"
-                                    data-bs-target="#deleteProjectorModal" data-bs-toggle="modal"
-                                    data-projector-id="{{ $projector->id }}">
+                                <a class="dropdown-item delete-lan-modal" href="javascript:void(0);"
+                                    data-bs-target="#deleteLanModal" data-bs-toggle="modal"
+                                    data-lan-id="{{ $lan->id }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                         class="feather feather-trash-2 me-50">
@@ -93,6 +82,7 @@
                     </td>
                 </tr>
             @endforelse
+
         </tbody>
     </table>
 
