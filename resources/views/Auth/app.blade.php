@@ -45,7 +45,7 @@
             <div class="content-body">
                 <div class="auth-wrapper auth-cover">
                     <div class="auth-inner row m-0">
-                        <a class="brand-logo" href="index.html">
+                        <a class="brand-logo" href="/">
 
                             <div>
                                 <img src="{{ asset('app-asset/images/logo/kolejspace.svg') }}" width="48"

@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-6 col-lg-6">
+    <div class="col-md-6 col-lg-4">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Ruang Kelas</h4>
@@ -8,12 +8,21 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6 col-lg-6">
+    <div class="col-md-6 col-lg-4">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Ruang Pejabat</h4>
                 <a href="{{ route('upsm.Office.index') }}"
                     class="btn btn-outline-primary waves-effect {{ Request::routeIs('upsm.Office.index') ? ' active' : '' }}">View</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Kenderaan</h4>
+                <a href="{{ route('upsm.Kenderaan.index') }}"
+                    class="btn btn-outline-primary waves-effect {{ Request::routeIs('upsm.Kenderaan.index') ? ' active' : '' }}">View</a>
             </div>
         </div>
     </div>

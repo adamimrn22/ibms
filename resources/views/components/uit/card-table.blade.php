@@ -37,6 +37,7 @@
 
             <div class="table-responsive" style="overflow: hidden">
                 {{ $slot }}
+
                 <div class="d-flex align-items-center justify-content-center">
                     <div id="roleSpinner" align="center" class="spinner-border text-primary" role="status">
                         <span class="visually-hidden">Loading...</span>

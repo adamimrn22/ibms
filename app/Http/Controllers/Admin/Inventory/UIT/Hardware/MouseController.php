@@ -21,7 +21,7 @@ class MouseController extends Controller
         $perPage = $request->input('records', 7);
         $searchTerm = $request->input('search');
         $status = $request->input('status');
-        $query = UitInventory::query();
+        $query = UitInventory::query()->with('status');
 
         $data = $this->applyPaginationFilterSearch($query, $perPage, $searchTerm, $status);
         if ($request->ajax()) {
@@ -96,12 +96,16 @@ class MouseController extends Controller
      */
     public function show(string $encryptedId)
     {
-        $id = Crypt::decrypt($encryptedId);
+        $id = Crypt::decryptString($encryptedId);
         $mouse = UitInventory::findOrFail($id);
+
+        // location based name eg desktop name
+        $location = UitInventory::select('name', 'id', 'subcategory_id')->where('name', '=', $mouse->location)->first();
+
         $mouse->attribute = json_decode($mouse->attribute);
         $mouse->attribute->connection = json_decode($mouse->attribute->connection);
 
-        return view('Admin.AdminUIT.crud.hardware.mouse.mouse-details', compact('mouse'));
+        return view('Admin.AdminUIT.crud.hardware.mouse.mouse-details', compact('mouse', 'location'));
     }
 
     /**
@@ -109,12 +113,12 @@ class MouseController extends Controller
      */
     public function edit(string $encryptId)
     {
-        $id = Crypt::decrypt($encryptId);
+        $id = Crypt::decryptString($encryptId);
         $mouse = UitInventory::with('subcategory.category')->findOrFail($id);
         $mouse->attribute = json_decode($mouse->attribute);
         $mouse->attribute->connection = json_decode( $mouse->attribute->connection );
         $category = $mouse->subcategory->category;
-        $statuses = Status::where('category_id', $category->id)->get();
+        $statuses = $this->status($category->id);
         return view('Admin.AdminUIT.crud.hardware.mouse.edit-mouse', compact('mouse', 'statuses'));
     }
 

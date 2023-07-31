@@ -21,7 +21,7 @@ class MonitorController extends Controller
         $perPage = $request->input('records', 7);
         $searchTerm = $request->input('search');
         $status = $request->input('status');
-        $query = UitInventory::query();
+        $query = UitInventory::query()->with('status');
 
         $data = $this->applyPaginationFilterSearch($query, $perPage, $searchTerm, $status);
         if ($request->ajax()) {
@@ -88,11 +88,15 @@ class MonitorController extends Controller
      */
     public function show(string $encryptedId)
     {
-        $id = Crypt::decrypt($encryptedId);
+        $id = Crypt::decryptString($encryptedId);
         $monitor = UitInventory::findOrFail($id);
+
+        // location based name eg desktop name
+        $location = UitInventory::select('name', 'id', 'subcategory_id')->where('name', '=', $monitor->location)->first();
+
         $monitor->attribute = json_decode($monitor->attribute);
 
-        return view('Admin.AdminUIT.crud.hardware.monitor.monitor-details', compact('monitor'));
+        return view('Admin.AdminUIT.crud.hardware.monitor.monitor-details', compact('monitor', 'location'));
     }
 
     /**
@@ -100,12 +104,12 @@ class MonitorController extends Controller
      */
     public function edit(string $encryptId)
     {
-        $id = Crypt::decrypt($encryptId);
+        $id = Crypt::decryptString($encryptId);
         $monitor = UitInventory::with('subcategory.category')->findOrFail($id);
         $monitor->attribute = json_decode($monitor->attribute);
         $category = $monitor->subcategory->category;
 
-        $statuses = Status::where('category_id', $category->id)->get();
+        $statuses = $this->status($category->id);
         return view('Admin.AdminUIT.crud.hardware.monitor.edit-monitor', compact('monitor', 'statuses'));
     }
 

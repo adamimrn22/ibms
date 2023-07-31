@@ -151,7 +151,8 @@ class ClassroomController extends Controller
                 'name' => $validatedData['className'],
                 'attribute' => json_encode($attribute),
                 'location' => $validatedData['classLocation'],
-                'status_id' => $validatedData['status']
+                'status_id' => $validatedData['status'],
+                'updated_at' => now()
             ]);
 
             $tmp_files = TemporaryFile::where('parent_folder', 'classroom')->get();

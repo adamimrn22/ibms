@@ -16,7 +16,9 @@
                         {{ $data->firstItem() + $index }}
                     </td>
                     <td>
-                        {{ $file->name }}
+                        <a href="{{ route('ukw.Supply.show', ['Supply' => Crypt::encryptString($file->id)]) }}">
+                            {{ $file->name }}
+                        </a>
                     </td>
                     <td>
                         {{ $file->current_quantity }}

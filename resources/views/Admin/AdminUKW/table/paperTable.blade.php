@@ -16,7 +16,9 @@
                         {{ $data->firstItem() + $index }}
                     </td>
                     <td>
-                        {{ $paper->name }}
+                        <a href="{{ route('ukw.Supply.show', ['Supply' => Crypt::encryptString($paper->id)]) }}">
+                            {{ strtoupper($paper->name) }}
+                        </a>
                     </td>
                     <td>
                         {{ $paper->current_quantity }}

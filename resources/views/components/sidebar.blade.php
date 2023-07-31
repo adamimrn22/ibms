@@ -31,23 +31,44 @@
 
     <div class="main-menu-content ps">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-            <li class="mb-1 nav-item ">
-                <a class="d-flex align-items-center " href="index.html">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" class="feather feather-home">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                    </svg>
-                    <span class="menu-title text-truncate" data-i18n="Home">Home</span>
-                </a>
-            </li>
+
+
+            @hasanyrole(['Admin UIT', 'Admin UKW', 'Admin UPSM'])
+                <li class="mb-1 nav-item ">
+                    <a class="d-flex align-items-center " href="{{ route('admin.dashboard') }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-home">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        <span class="menu-title text-truncate" data-i18n="Home">Home</span>
+                    </a>
+                </li>
+            @endhasrole
+
+            @hasanyrole(['Super Admin'])
+                <li class="mb-1 nav-item ">
+                    <a class="d-flex align-items-center " href="{{ route('superadmin.dashboard') }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-home">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        <span class="menu-title text-truncate" data-i18n="Home">Home</span>
+                    </a>
+                </li>
+            @endhasrole
+
+
             <li class="nav-item has-sub sidebar-group">
                 <a class="d-flex align-items-center" href="#">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" class="feather feather-layout">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2"
+                            ry="2">
                         </rect>
                         <line x1="3" y1="9" x2="21" y2="9"></line>
                         <line x1="9" y1="21" x2="9" y2="9"></line>

@@ -24,7 +24,25 @@
                                 </tr>
                                 <tr>
                                     <th scope="row" class="text-start">Location</th>
-                                    <td>{{ $monitor->location }}</td>
+                                    @if ($location)
+                                        @if ($location->subcategory_id === 1)
+                                            <td>
+                                                <a
+                                                    href="{{ route('uit.Desktop.show', ['Desktop' => Crypt::encryptString($location->id)]) }}">
+                                                    {{ $monitor->location }}
+                                                </a>
+                                            </td>
+                                        @elseif ($location->subcategory_id === 2)
+                                            <td>
+                                                <a
+                                                    href="{{ route('uit.Laptop.show', ['Laptop' => Crypt::encryptString($location->id)]) }}">
+                                                    {{ $monitor->location }}
+                                                </a>
+                                            </td>
+                                        @endif
+                                    @else
+                                        <td>{{ $monitor->location }}</td>
+                                    @endif
                                 </tr>
                             </tbody>
                         </table>

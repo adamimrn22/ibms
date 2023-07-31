@@ -40,6 +40,11 @@ class SubCategorySeeder extends Seeder
         ]);
 
         SubCategory::create([
+            'subcategory_name' => 'Printer',
+            'category_id' => '1'
+        ]);
+
+        SubCategory::create([
             'subcategory_name' => 'Projector',
             'category_id' => '1'
         ]);
@@ -70,8 +75,13 @@ class SubCategorySeeder extends Seeder
         ]);
 
         SubCategory::create([
+            'subcategory_name' => 'Software',
+            'category_id' => '3'
+        ]);
+
+        SubCategory::create([
             'subcategory_name' => 'Miscellaneous',
-            'category_id' => '2'
+            'category_id' => '3'
         ]);
 
         SubCategory::create([
@@ -84,21 +94,26 @@ class SubCategorySeeder extends Seeder
             'category_id' => '5'
         ]);
 
+        SubCategory::create([
+            'subcategory_name' => 'Kereta',
+            'category_id' => '6'
+        ]);
 
         SubCategory::create([
             'subcategory_name' => 'Paper',
-            'category_id' => '6'
+            'category_id' => '7'
         ]);
 
         SubCategory::create([
             'subcategory_name' => 'File',
-            'category_id' => '6'
+            'category_id' => '7'
         ]);
 
         SubCategory::create([
             'subcategory_name' => 'Stationery',
-            'category_id' => '6'
+            'category_id' => '7'
         ]);
+
 
 
     }

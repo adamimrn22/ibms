@@ -35,9 +35,15 @@ class CategorySeeder extends Seeder
         ]);
 
         Category::create([
+            'category_name' => 'Kenderaan',
+            'unit_id' => '5'
+        ]);
+
+        Category::create([
             'category_name' => 'Alat Tulis',
             'unit_id' => '3'
         ]);
+
 
     }
 }

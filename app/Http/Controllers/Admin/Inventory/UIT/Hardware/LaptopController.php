@@ -97,7 +97,7 @@ class LaptopController extends Controller
      */
     public function show(string $encryptedId)
     {
-        $id = Crypt::decrypt($encryptedId);
+        $id = Crypt::decryptString($encryptedId);
         $laptop = UitInventory::findOrFail($id);
         $laptop->attribute = json_decode($laptop->attribute);
         $laptop->attribute->storage = json_decode($laptop->attribute->storage);
@@ -110,13 +110,13 @@ class LaptopController extends Controller
      */
     public function edit(string $encryptId)
     {
-        $id = Crypt::decrypt($encryptId);
+        $id = Crypt::decryptString($encryptId);
         $laptop = UitInventory::with('subcategory.category')->findOrFail($id);
         $laptop->attribute = json_decode($laptop->attribute);
         $laptop->attribute->storage = json_decode($laptop->attribute->storage);
         $category = $laptop->subcategory->category;
 
-        $statuses = Status::where('category_id', $category->id)->get();
+        $statuses = $this->status($category->id);
         return view('Admin.AdminUIT.crud.hardware.laptop.edit-laptop', compact('laptop', 'statuses'));
     }
 

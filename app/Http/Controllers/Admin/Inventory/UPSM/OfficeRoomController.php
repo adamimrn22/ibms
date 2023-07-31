@@ -88,12 +88,10 @@ class OfficeRoomController extends Controller
     public function show(string $encryptId)
     {
         $id = Crypt::decrypt($encryptId);
-        $office = UpsmInventory::findOrFail($id);
+        $office = UpsmInventory::with('status')->findOrFail($id);
         $office->attribute = json_decode($office->attribute);
-        $category = $office->subcategory->category;
-        $statuses = $this->status($category->id);
 
-        return view('Admin.AdminUPSM.crud.office.office-details', compact('office', 'statuses'));
+        return view('Admin.AdminUPSM.crud.office.office-details', compact('office'));
     }
 
     /**
@@ -142,6 +140,7 @@ class OfficeRoomController extends Controller
             'attribute' => json_encode($attribute),
             'location' => $validatedData['officeLocation'],
             'status_id' => $validatedData['status'],
+            'updated_at' => now()
         ]);
 
         return redirect()->route('upsm.Office.index')->with('success', 'Office Updated');

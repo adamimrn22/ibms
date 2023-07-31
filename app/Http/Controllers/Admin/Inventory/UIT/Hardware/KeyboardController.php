@@ -92,9 +92,17 @@ class KeyboardController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $encryptedId)
     {
-        //
+        $id = Crypt::decryptString($encryptedId);
+        $keyboard = UitInventory::findOrFail($id);
+
+        // location based name eg desktop name
+        $location = UitInventory::select('name', 'id', 'subcategory_id')->where('name', '=', $keyboard->location)->first();
+
+        $keyboard->attribute = json_decode($keyboard->attribute);
+        $keyboard->attribute->connection = json_decode($keyboard->attribute->connection);
+        return view('Admin.AdminUIT.crud.hardware.keyboard.keyboard-details', compact('keyboard', 'location'));
     }
 
     /**
@@ -102,7 +110,7 @@ class KeyboardController extends Controller
      */
     public function edit(string $encryptId)
     {
-        $id = Crypt::decrypt($encryptId);
+        $id = Crypt::decryptString($encryptId);
         $keyboard = UitInventory::with('subcategory.category')->findOrFail($id);
         $keyboard->attribute = json_decode($keyboard->attribute);
         $keyboard->attribute->connection = json_decode( $keyboard->attribute->connection );

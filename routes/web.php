@@ -2,29 +2,32 @@
 
 use App\Models\Booking;
 use App\Models\Inventory;
+use App\Models\ClassroomImage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TempfileController;
+use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\SuperAdmin\UnitController;
 use App\Http\Controllers\SuperAdmin\UserController;
 use App\Http\Controllers\SuperAdmin\RolesController;
 use App\Http\Controllers\SuperAdmin\SAHomeController;
 use App\Http\Controllers\SuperAdmin\PositionController;
 use App\Http\Controllers\SuperAdmin\PermissionController;
+use App\Http\Controllers\Admin\Inventory\UKW\FileController;
+use App\Http\Controllers\Admin\Inventory\UPSM\CarController;
 use App\Http\Controllers\Admin\Inventory\UIT\CableController;
+use App\Http\Controllers\Admin\Inventory\UKW\PaperController;
+use App\Http\Controllers\Admin\Inventory\UKW\SuppliesController;
+use App\Http\Controllers\Admin\Inventory\UKW\StationeryController;
 use App\Http\Controllers\Admin\Inventory\UPSM\ClassroomController;
 use App\Http\Controllers\Admin\Inventory\UPSM\OfficeRoomController;
+use App\Http\Controllers\Admin\Inventory\UIT\Hardware\MouseController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\LaptopController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\DesktopController;
-use App\Http\Controllers\Admin\Inventory\UIT\Hardware\KeyboardController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\MonitorController;
-use App\Http\Controllers\Admin\Inventory\UIT\Hardware\MouseController;
+use App\Http\Controllers\Admin\Inventory\UIT\Hardware\PrinterController;
+use App\Http\Controllers\Admin\Inventory\UIT\Hardware\KeyboardController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\ProjectorController;
-use App\Http\Controllers\Admin\Inventory\UKW\FileController;
-use App\Http\Controllers\Admin\Inventory\UKW\PaperController;
-use App\Http\Controllers\Admin\Inventory\UKW\StationeryController;
-use App\Http\Controllers\Admin\Inventory\UKW\SuppliesController;
-use App\Http\Controllers\TempfileController;
-use App\Models\ClassroomImage;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,7 +58,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware(['auth', 'role:Super Admin'])->prefix('superadmin')->name('superadmin.')->group(function () {
     Route::get('/permission/lists', [PermissionController::class, 'showRoles']);
-    Route::get('/dashboard', [SAHomeController::class, 'index']);
+    Route::get('/dashboard', [SAHomeController::class, 'index'])->name('dashboard');
     Route::post('/userPermission/{id}', [PermissionController::class, 'storeUserPermission']);
     Route::post('/deleteUserPermission/{id}', [PermissionController::class, 'delteUserPermissionRoles']);
 
@@ -65,9 +68,7 @@ Route::middleware(['auth', 'role:Super Admin'])->prefix('superadmin')->name('sup
 
 
 Route::middleware(['auth', 'role:Admin UIT|Admin UPSM|Admin UKW|Super Admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('Admin.dashboard');
-    });
+    Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
 });
 
@@ -79,6 +80,7 @@ Route::middleware(['auth', 'role:Admin UIT|Super Admin'])->prefix('Inventory/UIT
         Route::resource('/Monitor', MonitorController::class);
         Route::resource('/Mouse', MouseController::class);
         Route::resource('/Keyboard', KeyboardController::class);
+        Route::resource('/Printer', PrinterController::class);
         Route::resource('/Projector', ProjectorController::class);
     });
     Route::resource('/Cable', CableController::class);
@@ -88,6 +90,7 @@ Route::middleware(['auth', 'role:Admin UIT|Super Admin'])->prefix('Inventory/UIT
 Route::middleware(['auth', 'role:Admin UPSM|Super Admin'])->prefix('Inventory/UPSM')->name('upsm.')->group(function () {
     Route::resource('/Classroom', ClassroomController::class);
     Route::resource('/Office', OfficeRoomController::class);
+    Route::resource('/Kenderaan', CarController::class);
 
     Route::post('/tmp-upload', [ClassroomController::class, 'tmpUpload'])->name('classroom-tmp-upload');
     Route::delete('/tmp-delete', [ClassroomController::class, 'tmpDelete'])->name('classroom-tmp-delete');

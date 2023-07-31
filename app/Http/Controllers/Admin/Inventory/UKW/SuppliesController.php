@@ -22,7 +22,7 @@ class SuppliesController extends Controller
      */
     public function create()
     {
-        $subcategories = $this->Subcategory(6);
+        $subcategories = $this->Subcategory(7);
         $statuses = $this->status(6);
         return view('Admin.AdminUKW.crud.supply.create-supply', compact('statuses', 'subcategories'));
     }
@@ -71,9 +71,11 @@ class SuppliesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $encryptedId)
     {
-        //
+        $id = Crypt::decryptString($encryptedId);
+        $supply = UkwInventory::with('images', 'status')->findOrFail($id);
+        return view('Admin.AdminUKW.crud.supply.supply-details', compact('supply'));
     }
 
     /**

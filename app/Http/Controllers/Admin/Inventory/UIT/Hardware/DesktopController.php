@@ -21,7 +21,7 @@ class DesktopController extends Controller
         $perPage = $request->input('records', 7);
         $searchTerm = $request->input('search');
         $status = $request->input('status');
-        $query = UitInventory::query();
+        $query = UitInventory::query()->with('status');
 
         $data = $this->applyPaginationFilterSearch($query, $perPage, $searchTerm, $status);
         if ($request->ajax()) {
@@ -102,14 +102,14 @@ class DesktopController extends Controller
         if(isset($validatedData['keyboard'])) {
             UitInventory::where('id', $validatedData['keyboard'])->update([
                 'parent_id' => $desktop->id,
-                'location' => $validatedData['location'],
+                'location' => $validatedData['desktopID'],
             ]);
         }
         // for mouse
         if(isset($validatedData['mouse'])) {
             UitInventory::where('id', $validatedData['mouse'])->update([
                 'parent_id' => $desktop->id,
-                'location' => $validatedData['location'],
+                'location' => $validatedData['desktopID'],
             ]);
         }
 
@@ -120,14 +120,14 @@ class DesktopController extends Controller
                 foreach ($validatedData['monitor'] as $monitorId) {
                     UitInventory::where('id', $monitorId)->update([
                         'parent_id' => $desktop->id,
-                        'location' => $validatedData['location'],
+                        'location' => $validatedData['desktopID'],
                     ]);
                 }
             } else {
                 // If only one monitor is selected, update it
                 UitInventory::where('id', $validatedData['monitor'][0])->update([
                     'parent_id' => $desktop->id,
-                    'location' => $validatedData['location'],
+                    'location' => $validatedData['desktopID'],
                 ]);
             }
         }
@@ -141,7 +141,7 @@ class DesktopController extends Controller
      */
     public function show(string $encryptedId)
     {
-        $id = Crypt::decrypt($encryptedId);
+        $id = Crypt::decryptString($encryptedId);
 
         $desktop = UitInventory::findOrFail($id);
         $desktop->attribute = json_decode($desktop->attribute);
@@ -159,7 +159,7 @@ class DesktopController extends Controller
      */
     public function edit(string $encryptedId)
     {
-        $id = Crypt::decrypt($encryptedId);
+        $id = Crypt::decryptString($encryptedId);
         $desktop = UitInventory::findOrFail($id);
         $desktop->attribute = json_decode($desktop->attribute);
         $desktop->attribute->storage = json_decode($desktop->attribute->storage);
@@ -251,14 +251,14 @@ class DesktopController extends Controller
         if(isset($validatedData['keyboard'])) {
             UitInventory::where('id', $validatedData['keyboard'])->update([
                 'parent_id' => $id,
-                'location' => $validatedData['location'],
+                'location' => $validatedData['desktopID'],
             ]);
         }
         // for mouse
         if(isset($validatedData['mouse'])) {
             UitInventory::where('id', $validatedData['mouse'])->update([
                 'parent_id' => $id,
-                'location' => $validatedData['location'],
+                'location' => $validatedData['desktopID'],
             ]);
         }
 
@@ -269,14 +269,14 @@ class DesktopController extends Controller
                 foreach ($validatedData['monitor'] as $monitorId) {
                     UitInventory::where('id', $monitorId)->update([
                         'parent_id' => $id,
-                        'location' => $validatedData['location'],
+                        'location' => $validatedData['desktopID'],
                     ]);
                 }
             } else {
                 // If only one monitor is selected, update it
                 UitInventory::where('id', $validatedData['monitor'][0])->update([
                     'parent_id' => $id,
-                    'location' => $validatedData['location'],
+                    'location' => $validatedData['desktopID'],
                 ]);
             }
         }

@@ -18,7 +18,7 @@
                         {{ $data->firstItem() + $index }}
                     </td>
                     <td>
-                        <a href="{{ route('uit.Keyboard.show', ['Keyboard' => Crypt::encrypt($keyboard->id)]) }}">
+                        <a href="{{ route('uit.Keyboard.show', ['Keyboard' => Crypt::encryptString($keyboard->id)]) }}">
                             {{ strtoupper($keyboard->name) }}
                         </a>
                     </td>
@@ -59,7 +59,7 @@
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <a class="dropdown-item"
-                                    href="{{ route('uit.Keyboard.edit', ['Keyboard' => Crypt::encrypt($keyboard->id)]) }}">
+                                    href="{{ route('uit.Keyboard.edit', ['Keyboard' => Crypt::encryptString($keyboard->id)]) }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                         stroke-linecap="round" stroke-linejoin="round"

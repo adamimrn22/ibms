@@ -94,7 +94,7 @@
                                             <th scope="row" class="text-start">Keyboard</th>
                                             <td>
                                                 <a
-                                                    href="{{ route('uit.Keyboard.show', ['Keyboard' => Crypt::encrypt($desktop->attribute->keyboard->id)]) }}">
+                                                    href="{{ route('uit.Keyboard.show', ['Keyboard' => Crypt::encryptString($desktop->attribute->keyboard->id)]) }}">
                                                     {{ strtoupper($desktop->attribute->keyboard->name) }}
                                                 </a>
                                             </td>
@@ -105,7 +105,7 @@
                                             <th scope="row" class="text-start"> Mouse </th>
                                             <td>
                                                 <a
-                                                    href="{{ route('uit.Mouse.show', ['Mouse' => Crypt::encrypt($desktop->attribute->mouse->id)]) }}">
+                                                    href="{{ route('uit.Mouse.show', ['Mouse' => Crypt::encryptString($desktop->attribute->mouse->id)]) }}">
                                                     {{ strtoupper($desktop->attribute->mouse->name) }}
                                                 </a>
                                             </td>
@@ -119,7 +119,7 @@
                                                     <tr>
                                                         <td>
                                                             <a
-                                                                href="{{ route('uit.Monitor.show', ['Monitor' => Crypt::encrypt($monitor->id)]) }}">
+                                                                href="{{ route('uit.Monitor.show', ['Monitor' => Crypt::encryptString($monitor->id)]) }}">
                                                                 {{ strtoupper($monitor->name) }}
                                                             </a>
                                                         </td>

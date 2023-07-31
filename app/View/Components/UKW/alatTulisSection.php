@@ -15,7 +15,8 @@ class alatTulisSection extends Component
      */
     public function __construct()
     {
-        $this->supplies = SubCategory::where('category_id', 6)->get();
+        $this->supplies = SubCategory::where('category_id', 7)->get();
+
     }
 
     /**
