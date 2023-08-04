@@ -23,7 +23,7 @@ class SuppliesController extends Controller
     public function create()
     {
         $subcategories = $this->Subcategory(7);
-        $statuses = $this->status(6);
+        $statuses = $this->status(7);
         return view('Admin.AdminUKW.crud.supply.create-supply', compact('statuses', 'subcategories'));
     }
 
@@ -34,7 +34,6 @@ class SuppliesController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|unique:ukw_inventories,name',
-            'current_quantity' => 'required',
             'stock' => 'required',
             'subcategory_id' => 'required',
             'status_id' => 'required'
@@ -42,22 +41,25 @@ class SuppliesController extends Controller
 
         list($id, $name) = explode('|', $validatedData['subcategory_id']);
         $validatedData['subcategory_id'] = $id;
+        $validatedData['current_quantity'] =  $validatedData['stock'];
 
         $validatedData['created_at'] = now();
 
         try {
-            $supply = UkwInventory::create($validatedData);
-
             $tmp_file = TemporaryFile::where('parent_folder', 'supply')->first();
 
             if($tmp_file) {
+
                 Storage::copy('supply/tmp/' . $tmp_file->folder . '/' . $tmp_file->file, 'supply/'. str_replace(' ', '_', $validatedData['name']) . '/' . $tmp_file->folder . '/' . $tmp_file->file);
+
+                $supply = UkwInventory::create($validatedData);
 
                 UkwInventoryImage::create([
                     'inventories_id' => $supply->id,
                     'parent_folder' => str_replace(' ', '_', $validatedData['name']),
                     'path' => $tmp_file->folder . '/' . $tmp_file->file
                 ]);
+
 
                 Storage::deleteDirectory('supply/tmp/');
                 $tmp_file->delete();

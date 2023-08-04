@@ -51,7 +51,7 @@ $(document).ready(function () {
     function fetch_data(page, searchTerm = '', recordsPerPage = '') {
         $.ajax({
             ...ajaxSettings,
-            url: `${baseUrl}/Inventory/UKW/Paper`,
+            url: `${baseUrl}/UKW/Inventory/Paper`,
             type: "GET",
             data: {
                 page: page,

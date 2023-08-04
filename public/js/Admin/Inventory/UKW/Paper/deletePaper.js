@@ -20,7 +20,7 @@ $(document).ready(function () {
         $.ajax({
             ...ajaxSettings,
             type: "DELETE",
-            url: `${baseUrl}/Inventory/UKW/Paper/${id}`,
+            url: `${baseUrl}/UKW/Inventory/Paper/${id}`,
             success: function (response) {
                 $('#paperTable').html(response.table).show();
                 $('#Pagination').html(response.pagination).show()

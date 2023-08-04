@@ -17,14 +17,14 @@ $(document).ready(function () {
     $(document).on('click', '#Pagination a', function (e) {
         e.preventDefault();
         let page = $(this).attr('href').split('page=')[1];
-        let searchTerm = $('#searchDesktop').val();
+        let searchTerm = $('#searchUser').val();
         let userStatus = $('#statusFilter').val();
         let recordsPerPage = $('#recordFilter').val();
         fetch_data(page, searchTerm, userStatus, recordsPerPage);
     });
 
     // Event listener for search input (onkeyup event)
-    $(document).on('keyup', '#searchDesktop', function () {
+    $(document).on('keyup', '#searchUser', function () {
         // Clear the previous timer
         clearTimeout(searchTimer);
 
@@ -40,7 +40,7 @@ $(document).ready(function () {
     // Event listener for active filter
     $(document).on('change', '#statusFilter', function (e) {
         let userStatus = $(this).val();
-        let searchTerm = $('#searchDesktop').val();
+        let searchTerm = $('#searchUser').val();
         let recordsPerPage = $('#recordFilter').val();
         fetch_data(1, searchTerm, userStatus, recordsPerPage);
     });
@@ -48,7 +48,7 @@ $(document).ready(function () {
     // Event listener for record filter
     $(document).on('change', '#recordFilter', function () {
         let recordsPerPage = $(this).val();
-        let searchTerm = $('#searchDesktop').val();
+        let searchTerm = $('#searchUser').val();
         let userStatus = $('#statusFilter').val();
         fetch_data(1, searchTerm, userStatus, recordsPerPage);
     });

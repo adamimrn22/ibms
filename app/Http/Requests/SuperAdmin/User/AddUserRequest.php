@@ -23,6 +23,7 @@ class AddUserRequest extends FormRequest
     {
         return [
             'username' => 'required|unique:users,username|min:5|max:15',
+            'userRole' => '',
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|unique:users,email|email',

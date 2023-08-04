@@ -6,10 +6,10 @@ trait OfficeroomFilterTraits
 {
     public function applyPaginationFilterSearch($query, $perPage, $searchTerm)
     {
-        $query->where('subcategory_id', '=', 13);
+        $query->where('subcategory_id', '=', 15);
         // For search filtering
         if ($searchTerm) {
-                $query->where('subcategory_id', '=', 13)
+                $query->where('subcategory_id', '=', 15)
                     ->where('name', 'LIKE', "%{$searchTerm}%");
 
         }

@@ -20,7 +20,7 @@ $(document).ready(function () {
         $.ajax({
             ...ajaxSettings,
             type: "DELETE",
-            url: `${baseUrl}/Inventory/UIT/Hardware/Mouse/${deleteID}`,
+            url: `${baseUrl}/UIT/Inventory/Hardware/Mouse/${deleteID}`,
             success: function (response) {
                 $('#mouseTable').html(response.table).show();
                 $('#Pagination').html(response.pagination).show()

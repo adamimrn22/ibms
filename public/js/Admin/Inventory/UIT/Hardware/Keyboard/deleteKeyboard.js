@@ -20,7 +20,7 @@ $(document).ready(function () {
         $.ajax({
             ...ajaxSettings,
             type: "DELETE",
-            url: `${baseUrl}/Inventory/UIT/Hardware/Keyboard/${deleteID}`,
+            url: `${baseUrl}/UIT/Inventory/Hardware/Keyboard/${deleteID}`,
             success: function (response) {
                 $('#keyboardTable').html(response.table).show();
                 $('#Pagination').html(response.pagination).show()

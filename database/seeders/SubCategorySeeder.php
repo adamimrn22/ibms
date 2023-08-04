@@ -119,7 +119,10 @@ class SubCategorySeeder extends Seeder
             'category_id' => '2'
         ]);
 
-
+        SubCategory::create([
+            'subcategory_name' => 'A4 Paper',
+            'category_id' => '7'
+        ]);
 
     }
 }

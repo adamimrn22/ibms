@@ -8,11 +8,13 @@ use App\Models\Position;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Traits\SuperAdmin\Filters\UserFilterTraits;
 use App\Http\Requests\SuperAdmin\User\AddUserRequest;
 use App\Http\Requests\SuperAdmin\User\EditUserRequest;
+use App\Models\UserPaperBookingAmount;
 
 class UserController extends Controller
 {
@@ -65,14 +67,28 @@ class UserController extends Controller
     public function store(AddUserRequest $request)
     {
         try {
+            $user = Auth::user();
 
             $validatedData = $request->validated();
             $validatedData['password'] = Hash::make($validatedData['username']);
             $validatedData['created_at'] = now();
 
+            if ($user->hasRole('Admin UPSM')) {
+                $validatedData['userRole'] = 'User';
+            }
+
             $user = User::create($validatedData);
-            $user->assignRole('User');
+
+            $user->assignRole($validatedData['userRole']);
             $user->syncPermissions();
+
+            UserPaperBookingAmount::create([
+                'user_id' => $user->id,
+                'amount' => 3,
+                'default_amount' => 3,
+                'month' => date("m"),
+                'year' => date("Y")
+            ]);
 
             $userCounts = $this->getUserCounts();
             $data = User::paginate(7);

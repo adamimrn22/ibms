@@ -20,7 +20,7 @@ $(document).ready(function () {
         $.ajax({
             ...ajaxSettings,
             type: "DELETE",
-            url: `${baseUrl}/Inventory/UIT/Cable/Hdmi/${deleteID}`,
+            url: `${baseUrl}/UIT/Inventory/Cable/Hdmi/${deleteID}`,
             success: function (response) {
                 $('#hdmiTable').html(response.table).show();
                 $('#Pagination').html(response.pagination).show()

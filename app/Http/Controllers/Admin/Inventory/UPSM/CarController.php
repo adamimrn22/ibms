@@ -65,7 +65,7 @@ class CarController extends Controller
             'attribute' => json_encode($attribute),
             'location' => $validatedData['location'],
             'status_id' => $validatedData['status'],
-            'subcategory_id' => 15,
+            'subcategory_id' => 17,
             'created_at' => now()
         ]);
 

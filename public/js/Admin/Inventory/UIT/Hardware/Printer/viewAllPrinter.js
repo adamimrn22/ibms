@@ -62,7 +62,7 @@ $(document).ready(function () {
     function fetch_data(page, searchTerm = '', status = '', recordsPerPage = '') {
         $.ajax({
             ...ajaxSettings,
-            url: `${baseUrl}/Inventory/UIT/Hardware/Printer`,
+            url: `${baseUrl}/UIT/Inventory/Hardware/Printer`,
             type: "GET",
             data: {
                 page: page,

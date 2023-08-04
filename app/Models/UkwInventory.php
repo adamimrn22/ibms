@@ -24,4 +24,9 @@ class UkwInventory extends Model
     public function status(){
         return $this->hasOne(Status::class,  'id' ,'status_id',);
     }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class, 'inventory_id');
+    }
 }

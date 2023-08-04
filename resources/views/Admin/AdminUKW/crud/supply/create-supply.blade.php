@@ -13,7 +13,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title"> Create Paper</h3>
+                        <h3 class="card-title"> Create Alat Tulis</h3>
                     </div>
                     <div class="card-body">
 
@@ -25,11 +25,6 @@
                                 <x-form.form-group>
                                     <x-form.label :for="'name'" :title="'Name'" />
                                     <x-form.input :id="'name'" :placeholder="'A4 Paper'" />
-                                </x-form.form-group>
-
-                                <x-form.form-group>
-                                    <x-form.label :for="'current_quantity'" :title="'Quantity'" />
-                                    <x-form.input :id="'current_quantity'" :placeholder="'20'" />
                                 </x-form.form-group>
 
                                 <x-form.form-group>
@@ -151,5 +146,5 @@
             submitButton.disabled = false;
         });
     </script>
-    <script src="{{ asset('js/Admin/Inventory/UPSM/Classroom/AddClass.js') }}"></script>
+    <script src="{{ asset('js/Admin/Inventory/UKW/createAlatTulis.js') }}"></script>
 @endsection

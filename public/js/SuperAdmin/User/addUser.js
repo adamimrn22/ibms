@@ -55,6 +55,7 @@ $(document).ready(function () {
                 // This function will be triggered when the form is valid
                 // You can perform the AJAX request or other form handling logic here
                 let addUserID = $('#addUserID').val();
+                let modalAddUserRole = $('#modalAddUserRole').val();
                 let modalAddUserFirstName = $('#modalAddUserFirstName').val();
                 let modalAddUserLastName = $('#modalAddUserLastName').val();
                 let modalUserPosition = $('#modalUserPosition').val();
@@ -69,6 +70,7 @@ $(document).ready(function () {
                     url: "/users",
                     data: {
                         username: addUserID.toUpperCase(),
+                        userRole: modalAddUserRole,
                         first_name: modalAddUserFirstName.toUpperCase(),
                         last_name: modalAddUserLastName.toUpperCase(),
                         position_id: modalUserPosition.toUpperCase(),

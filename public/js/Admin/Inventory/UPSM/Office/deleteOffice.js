@@ -20,7 +20,7 @@ $(document).ready(function () {
         $.ajax({
             ...ajaxSettings,
             type: "DELETE",
-            url: `${baseUrl}/Inventory/UPSM/Office/${id}`,
+            url: `${baseUrl}/UPSM/Inventory/Office/${id}`,
             success: function (response) {
                 $('#officeTable').html(response.table).show();
                 $('#Pagination').html(response.pagination).show()

@@ -20,7 +20,7 @@ $(document).ready(function () {
         $.ajax({
             ...ajaxSettings,
             type: "DELETE",
-            url: `${baseUrl}/Inventory/UPSM/Kenderaan/${id}`,
+            url: `${baseUrl}/UPSM/Inventory/Kenderaan/${id}`,
             success: function (response) {
                 $('#carTable').html(response.table).show();
                 $('#Pagination').html(response.pagination).show()

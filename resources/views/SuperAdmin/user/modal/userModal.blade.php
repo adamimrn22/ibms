@@ -10,14 +10,34 @@
                     <p>Add the staff information credentials.</p>
                 </div>
                 <form id="AddUserForm" class="row gy-1 pt-75" novalidate>
-                    <div class="row">
-                        <div class="col-6">
-                            <label class="form-label" for="modalAddUserID">STAFF ID</label>
-                            <input type="text" id="addUserID" name="addUserID" class="form-control text-uppercase"
-                                placeholder="SC0000">
-                            <p class="error text-danger username-error"></p>
-                        </div>
+
+                    <div class="col-12 col-md-6">
+                        <label class="form-label" for="modalAddUserID">STAFF ID</label>
+                        <input type="text" id="addUserID" name="addUserID" class="form-control text-uppercase"
+                            placeholder="SC0000">
+                        <p class="error text-danger username-error"></p>
                     </div>
+
+                    @hasanyrole(['Admin UPSM'])
+                        <div class="col-12 col-md-6">
+                            <input type="hidden" id="modalAddUserRole" name="addUserID" class="form-control text-uppercase"
+                                value="User">
+                        </div>
+                    @endrole
+
+                    @hasanyrole(['Super Admin'])
+                        <div class="col-12 col-md-6">
+                            <label class="form-label" for="modalAddUserRole">User Role</label>
+                            <select id="modalAddUserRole" class="select2 form-select form-select form-select ">
+                                <option value="User">User</option>
+                                <option value="Admin UIT">Admin UIT</option>
+                                <option value="Admin UPSM">Admin UPSM</option>
+                                <option value="Admin UKW">Admin UKW</option>
+                                <option value="Super Admin">Super Admin</option>
+                            </select>
+                        </div>
+                    @endrole
+
                     <div class="col-12 col-md-6">
                         <label class="form-label" for="modalAddUserFirstName">First Name</label>
                         <input type="text" id="modalAddUserFirstName" name="modalAddUserFirstName"
@@ -25,6 +45,7 @@
                             data-msg="Please enter your first name">
                         <p class="error text-danger first_name-error"></p>
                     </div>
+
                     <div class="col-12 col-md-6">
                         <label class="form-label" for="modalAddUserLastName">Last Name</label>
                         <input type="text" id="modalAddUserLastName" name="modalAddUserLastName"

@@ -20,7 +20,7 @@ $(document).ready(function () {
         $.ajax({
             ...ajaxSettings,
             type: "DELETE",
-            url: `${baseUrl}/Inventory/UIT/Cable/Vga/${deleteID}`,
+            url: `${baseUrl}/UIT/Inventory/Cable/Vga/${deleteID}`,
             success: function (response) {
                 $('#vgaTable').html(response.table).show();
                 $('#Pagination').html(response.pagination).show()

@@ -51,7 +51,7 @@ $(document).ready(function () {
     function fetch_data(page, searchTerm = '', recordsPerPage = '') {
         $.ajax({
             ...ajaxSettings,
-            url: `${baseUrl}/Inventory/UPSM/Office`,
+            url: `${baseUrl}/UPSM/Inventory/Office`,
             type: "GET",
             data: {
                 page: page,

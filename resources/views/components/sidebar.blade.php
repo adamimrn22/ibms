@@ -27,6 +27,7 @@
             </li>
         </ul>
     </div>
+
     <div class="shadow-bottom"></div>
 
     <div class="main-menu-content ps">
@@ -47,6 +48,52 @@
                 </li>
             @endhasrole
 
+            @hasanyrole(['Admin UIT'])
+                <li class="mb-1 nav-item ">
+                    <a class="d-flex align-items-center {{ Str::contains(request()->path(), 'UIT') ? 'active' : '' }}"
+                        href="{{ route('uit.Desktop.index') }}">
+                        <i data-feather='archive'></i>
+                        <span class="menu-item text-truncate">
+                            UIT Asset Menu
+                        </span>
+                    </a>
+                </li>
+            @endhasrole
+
+            @hasanyrole(['Admin UPSM'])
+                <li class="mb-1 nav-item ">
+                    <a class="d-flex align-items-center {{ Str::contains(request()->path(), 'UPSM/Inventory') ? 'active' : '' }}"
+                        href="{{ route('upsm.Classroom.index') }}">
+                        <i data-feather='archive'></i>
+                        <span class="menu-item text-truncate">
+                            UPSM Asset Menu
+                        </span>
+                    </a>
+                </li>
+            @endhasrole
+
+            @hasanyrole(['Admin UKW'])
+                <li class="mb-1 nav-item ">
+                    <a class="d-flex align-items-center {{ Str::contains(request()->path(), 'UKW/Booking') ? 'active' : '' }}"
+                        href="{{ route('ukw.BookingAlatTulis.index') }}">
+                        <i data-feather='archive'></i>
+                        <span class="menu-item text-truncate">
+                            UKW Booking Menu
+                        </span>
+                    </a>
+                </li>
+
+                <li class="mb-1 nav-item ">
+                    <a class="d-flex align-items-center {{ Str::contains(request()->path(), 'UKW/Inventory') ? 'active' : '' }}"
+                        href="{{ route('ukw.Paper.index') }}">
+                        <i data-feather='archive'></i>
+                        <span class="menu-item text-truncate">
+                            UKW Asset Menu
+                        </span>
+                    </a>
+                </li>
+            @endhasrole
+
             @hasanyrole(['Super Admin'])
                 <li class="mb-1 nav-item ">
                     <a class="d-flex align-items-center " href="{{ route('superadmin.dashboard') }}">
@@ -62,23 +109,23 @@
             @endhasrole
 
 
-            <li class="nav-item has-sub sidebar-group">
-                <a class="d-flex align-items-center" href="#">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" class="feather feather-layout">
-                        <rect x="3" y="3" width="18" height="18" rx="2"
-                            ry="2">
-                        </rect>
-                        <line x1="3" y1="9" x2="21" y2="9"></line>
-                        <line x1="9" y1="21" x2="9" y2="9"></line>
-                    </svg><span class="menu-title text-truncate" data-i18n="Page Layouts">Inventory</span>
-                </a>
-                <ul class="menu-content">
 
-                    @hasanyrole(['Admin UIT', 'Super Admin'])
-                        <li
-                            class="{{ Request::routeIs('uit.Desktop.index') || Request::routeIs('uit.Laptop.index') ? ' active' : '' }}">
+            @hasanyrole(['Super Admin'])
+                <li class="nav-item has-sub sidebar-group">
+                    <a class="d-flex align-items-center" href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-layout">
+                            <rect x="3" y="3" width="18" height="18" rx="2"
+                                ry="2">
+                            </rect>
+                            <line x1="3" y1="9" x2="21" y2="9"></line>
+                            <line x1="9" y1="21" x2="9" y2="9"></line>
+                        </svg><span class="menu-title text-truncate" data-i18n="Page Layouts">Inventory</span>
+                    </a>
+                    <ul class="menu-content">
+
+                        <li class=" {{ Str::contains(request()->path(), 'UIT/Inventory') ? 'active' : '' }}">
                             <a class="d-flex align-items-center" href="{{ route('uit.Desktop.index') }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -91,11 +138,8 @@
                                 </span>
                             </a>
                         </li>
-                    @endhasrole
 
-                    @hasanyrole(['Admin UPSM', 'Super Admin'])
-                        <li
-                            class="{{ Request::routeIs('upsm.Classroom.index') || Request::routeIs('upsm.Office.index') ? ' active' : '' }}">
+                        <li class="{{ Str::contains(request()->path(), 'UPSM/Inventory') ? 'active' : '' }}">
                             <a class="d-flex align-items-center" href="{{ route('upsm.Classroom.index') }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -108,10 +152,8 @@
                                 </span>
                             </a>
                         </li>
-                    @endhasrole
 
-                    @hasanyrole(['Admin UKW', 'Super Admin'])
-                        <li>
+                        <li class="{{ Str::contains(request()->path(), 'UKW/Inventory') ? 'active' : '' }}">
                             <a class="d-flex align-items-center" href="{{ route('ukw.Paper.index') }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -124,12 +166,12 @@
                                 </span>
                             </a>
                         </li>
-                    @endhasrole
 
 
-                </ul>
-            </li>
+                    </ul>
+                </li>
 
+            @endhasrole
 
             @role('Super Admin')
                 <li class="nav-item has-sub mt-1" style=""><a class="d-flex align-items-center"

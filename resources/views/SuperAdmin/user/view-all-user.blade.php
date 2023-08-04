@@ -103,6 +103,8 @@
 @endsection
 
 @section('script')
+    <script src="{{ asset('app-asset/vendors/js/forms/select/select2.full.min.js') }}"></script>
+    <script src="{{ asset('app-asset/js/scripts/forms/form-select2.js') }}"></script>
     <script src="{{ asset('js/SuperAdmin/User/viewAllUserTable.js') }}"></script>
     <script src="{{ asset('js/SuperAdmin/User/addUser.js') }}"></script>
     <script src="{{ asset('js/SuperAdmin/User/editUser.js') }}"></script>

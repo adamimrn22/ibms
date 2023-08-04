@@ -76,7 +76,7 @@ class OfficeRoomController extends Controller
             'attribute' => json_encode($attribute),
             'location' => $validatedData['officeLocation'],
             'status_id' => $validatedData['status'],
-            'subcategory_id' => 13
+            'subcategory_id' => 15
         ]);
 
         return redirect()->route('upsm.Office.index')->with('success', 'Office Created');

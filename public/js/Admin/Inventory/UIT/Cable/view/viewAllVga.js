@@ -62,7 +62,7 @@ $(document).ready(function () {
     function fetch_data(page, searchTerm = '', status = '', recordsPerPage = '') {
         $.ajax({
             ...ajaxSettings,
-            url: `${baseUrl}/Inventory/UIT/Cable/Vga`,
+            url: `${baseUrl}/UIT/Inventory/Cable/Vga`,
             type: "GET",
             data: {
                 page: page,
