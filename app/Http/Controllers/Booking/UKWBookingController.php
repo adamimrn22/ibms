@@ -7,7 +7,9 @@ use App\Models\UkwInventory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Jobs\SendUserBookingJob;
+use App\Mail\NewAlatTulisBooking;
 use App\Mail\UserBookingUKW;
+use App\Models\adminEmailReference;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Models\UserPaperBookingAmount;
@@ -144,37 +146,43 @@ class UKWBookingController extends Controller
         return view('User.UkwBooking.checkout', compact('carts', 'totalQuantity'));
     }
 
-
     public function checkout()
     {
-        $items = array_values(session()->get('cart', []));
-        $user = Auth::user();
+        try {
+            $items = array_values(session()->get('cart', []));
+            $user = Auth::user();
 
-        // Get the last booking reference and calculate the new reference
-        $lastBooking = UkwBooking::latest()->where('reference', 'LIKE', 'UKWBK%')->first();
-        $lastReferenceNumber = $lastBooking ? intval(substr($lastBooking->reference, 6)) : 0;
-        $newReferenceNumber = $lastReferenceNumber + 1;
-        $reference = 'UKWBK' . str_pad($newReferenceNumber, 4, '0', STR_PAD_LEFT);
+            // Get the last booking reference and calculate the new reference
+            $lastBooking = UkwBooking::latest()->where('reference', 'LIKE', 'UKWBK%')->first();
+            $lastReferenceNumber = $lastBooking ? intval(substr($lastBooking->reference, 6)) : 0;
+            $newReferenceNumber = $lastReferenceNumber + 1;
+            $reference = 'UKWBK' . str_pad($newReferenceNumber, 4, '0', STR_PAD_LEFT);
 
-        foreach ($items as $item) {
-            UkwBooking::create([
-                'reference' => $reference,
-                'quantity' => $item['quantity'],
-                'approved_quantity' => $item['quantity'],
-                'user_id' => $user->id,
-                'inventory_id' => $item['id'],
-                'status_id' => 1
-            ]);
+
+            foreach ($items as $item) {
+                UkwBooking::create([
+                    'reference' => $reference,
+                    'quantity' => $item['quantity'],
+                    'approved_quantity' => $item['quantity'],
+                    'user_id' => $user->id,
+                    'inventory_id' => $item['id'],
+                    'status_id' => 1
+                ]);
+            }
+
+            $bookings = UkwBooking::where('reference', $reference)->get();
+            session()->forget('cart');
+            session(['paper_decrement_amount' => 0]);
+
+            $adminEmail = adminEmailReference::select('email')->where('unit_id', 3)->first();
+
+            Mail::to($user->email)->queue(new UserBookingUKW($user, $bookings));
+            Mail::to($adminEmail)->queue(new NewAlatTulisBooking($user, $bookings));
+
+            return redirect()->route('user.homepage')->with(['success' => 'Permohonan anda telah berjaya!']);
+        } catch (\Throwable $th) {
+            return redirect()->route('user.homepage')->with(['error' => strval($th->getMessage())]);
         }
-
-        $bookings = UkwBooking::where('reference', $reference)->get();
-
-        session()->forget('cart');
-        session(['paper_decrement_amount' => 0]);
-
-        Mail::to($user->email)->queue(new UserBookingUKW($user, $bookings));
-
-        return redirect()->route('user.homepage')->with(['success' => 'Permohonan anda telah berjaya!']);
     }
 
     // Cart
@@ -214,6 +222,7 @@ class UKWBookingController extends Controller
                     "id" => $itemId,
                     "name" => $product->name,
                     "quantity" => 1,
+                    "subcategory" => $product->subcategory_id,
                     "image" =>  $product->images->parent_folder . '/' . $product->images->path
                 ];
             }

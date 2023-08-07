@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <title>Document</title>
     <style>
         * {
             padding: 0;
@@ -89,9 +90,9 @@
             background-color: #7772F0;
         }
 
-        .card-pending {
-            color: #727580;
-            background-color: #F3F4F6;
+        .card-rejected {
+            color: white;
+            background-color: #dc2626;
         }
 
         /* Style the horizontal line */
@@ -132,7 +133,7 @@
                     <td>
                         <h2 class="font-normal text-gray my-1">
                             <b>
-                                Pinjaman Alatan Tulis telah berjaya!
+                                Pinjaman Alatan Tulis telah ditalk!
                             </b>
                         </h2>
                     </td>
@@ -141,29 +142,17 @@
 
             <table class="my-1 text-gray">
                 <tr>
-                    <td>Kepada yang berkenaan</td>
+                    <td>Kepada yang berkenaan, </td>
                 </tr>
             </table>
             <table style="margin-bottom: 1.5rem;">
                 <tr class="text-gray">
                     <td>
-                        Pesanan anda telah berjaya dihantar. Berikut adalah beberapa maklumat mengenai pesanan anda
+                        Pesanan anda telah ditolak. Sila hubungi pentadbiran jika ada sebarang pertanyaan
                     </td>
                 </tr>
 
             </table>
-
-            <div class="parent-card">
-                <div class="card card-approve">
-                    <p>Dipesan pada </p>
-                    <p>{{ Carbon\Carbon::parse($date)->format('F j Y') }}
-                </div>
-                <span class="line"></span>
-                <div class="card card-pending">
-                    <p>Status: Pending</p>
-                    <p>Akan Dimaklumkan</p>
-                </div>
-            </div>
 
             <table width="100%" class="my-1">
                 <tr align="left">
@@ -171,7 +160,7 @@
                         <span>
                             ORDER:
                             <b>
-                                {{ $orderID }}
+                                UKWKBK00012
                             </b>
                         </span>
                     </td>
@@ -179,34 +168,22 @@
                 </tr>
                 <tr align="left">
                     <td class="text-gray">
-                        {{ $date }}</p>
+                        August 04, 2023 03:01 PM
                     </td>
                 </tr>
             </table>
 
-            <table border="1" cellspacing="0" width="100%"
-                style="border-collapse: collapse; border: 2px solid gray;">
-                <thead>
-                    <tr>
-                        <th style="padding: 8px; text-align: left; color: #727580;">PESANAN BARANG</th>
-                        <th style="padding: 8px; text-align: right; color: #727580;">KUANTITI</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($bookings as $booking)
-                        <tr>
-                            <td style="padding: 8px; text-align: left; color: #727580;">
-                                {{ $booking->inventory->name }}
-                            </td>
-                            <td style="padding: 8px; text-align: right; color: #727580;"> {{ $booking->quantity }}x</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-
-            <p style="text-align: end;" class="text-gray my-1">Jumlah Keseluruhan:
-                <span> {{ $totalQuantity }} </span>
-            </p>
+            <div class="parent-card">
+                <div class="card card-approve">
+                    <p>Dipesan pada:</p>
+                    <p>{{ Carbon\Carbon::parse($bookDate)->format('F j Y') }}
+                </div>
+                <span class="line"></span>
+                <div class="card card-rejected">
+                    <p>Status: Rejected</p>
+                    <p>{{ Carbon\Carbon::parse($rejectedDate)->format('F j Y') }}
+                </div>
+            </div>
 
             <table class="my-1 text-gray">
                 <tr>

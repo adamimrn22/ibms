@@ -96,7 +96,7 @@
 
             <div class="col-md-3 mb-4">
                 <div class="image-container">
-                    <a href="">
+                    <a href="{{ route('TempahanKereta.index') }}">
                         <img class="fixed-image" src="{{ asset('img/car.jpg') }}" alt="Image 4">
                         <div class="overlay-text">
                             Tempahan Kereta
@@ -119,6 +119,13 @@
                 icon: 'success',
                 title: 'Berjaya!',
                 text: '{{ session('success') }}',
+            });
+        @endif
+        @if (session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: '{{ session('error') }}',
             });
         @endif
     </script>

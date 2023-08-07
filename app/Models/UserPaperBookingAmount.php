@@ -10,4 +10,10 @@ class UserPaperBookingAmount extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function subtractAmount($amount)
+    {
+        $this->amount -= $amount;
+        $this->save();
+    }
 }

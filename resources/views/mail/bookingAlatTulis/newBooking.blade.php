@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <title>Document</title>
     <style>
         * {
             padding: 0;
@@ -35,6 +36,25 @@
             font-weight: 400;
         }
 
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        .btn-primary {
+            background-color: #7772F0;
+        }
+
+        .btn-primary:hover {
+            background-color: #605bc2;
+        }
+
         hr {
             margin: 0.25rem 0;
             border: solid 1px #7772F0;
@@ -61,37 +81,10 @@
             padding: 1rem;
         }
 
-        .parent-card {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 1rem;
-        }
-
         .thin-line {
             height: 1px;
             background-color: #727580;
             margin: 10px 0;
-        }
-
-        /* Styling for the two cards */
-        .card {
-            width: 200px;
-            height: 100px;
-            border-radius: 5px;
-            padding: 1.5rem 0.5rem;
-            display: inline-block;
-            text-align: center;
-        }
-
-        .card-approve {
-            color: white;
-            background-color: #7772F0;
-        }
-
-        .card-pending {
-            color: #727580;
-            background-color: #F3F4F6;
         }
 
         /* Style the horizontal line */
@@ -128,11 +121,11 @@
             </table>
             <hr>
             <table width="100%">
-                <tr align="center">
+                <tr align="left">
                     <td>
                         <h2 class="font-normal text-gray my-1">
                             <b>
-                                Pinjaman Alatan Tulis telah berjaya!
+                                Terdapat Pesanan Baharu!
                             </b>
                         </h2>
                     </td>
@@ -141,29 +134,17 @@
 
             <table class="my-1 text-gray">
                 <tr>
-                    <td>Kepada yang berkenaan</td>
+                    <td>Kepada, ADMIN UKW</td>
                 </tr>
             </table>
-            <table style="margin-bottom: 1.5rem;">
+            <table style="margin-bottom: 1.5rem;" width="100%">
                 <tr class="text-gray">
                     <td>
-                        Pesanan anda telah berjaya dihantar. Berikut adalah beberapa maklumat mengenai pesanan anda
+                        Terdapat pesanan baharu yang dibuat oleh staff. <br> Berikut adalah beberapa maklumat mengenai
+                        pesanan tersebut
                     </td>
                 </tr>
-
             </table>
-
-            <div class="parent-card">
-                <div class="card card-approve">
-                    <p>Dipesan pada </p>
-                    <p>{{ Carbon\Carbon::parse($date)->format('F j Y') }}
-                </div>
-                <span class="line"></span>
-                <div class="card card-pending">
-                    <p>Status: Pending</p>
-                    <p>Akan Dimaklumkan</p>
-                </div>
-            </div>
 
             <table width="100%" class="my-1">
                 <tr align="left">
@@ -179,7 +160,29 @@
                 </tr>
                 <tr align="left">
                     <td class="text-gray">
-                        {{ $date }}</p>
+                        <b>
+                            {{ $date }}
+                        </b>
+                    </td>
+                </tr>
+                <tr align="left">
+                    <td class="text-gray">
+                        STAFF ID: <b>{{ $user->username }}</b>
+                    </td>
+                </tr>
+                <tr align="left">
+                    <td class="text-gray">
+                        NAMA STAFF: <b>{{ $user->first_name . ' ' . $user->last_name }}</b>
+                    </td>
+                </tr>
+                <tr align="left">
+                    <td class="text-gray">
+                        UNIT: <b>{{ $user->unit->name }}</b>
+                    </td>
+                </tr>
+                <tr align="left">
+                    <td class="text-gray">
+                        JAWATAN: <b>{{ $user->position->name }}</b>
                     </td>
                 </tr>
             </table>
@@ -189,7 +192,7 @@
                 <thead>
                     <tr>
                         <th style="padding: 8px; text-align: left; color: #727580;">PESANAN BARANG</th>
-                        <th style="padding: 8px; text-align: right; color: #727580;">KUANTITI</th>
+                        <th style="padding: 8px; text-align: left; color: #727580;">KUANTITI</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -198,15 +201,30 @@
                             <td style="padding: 8px; text-align: left; color: #727580;">
                                 {{ $booking->inventory->name }}
                             </td>
-                            <td style="padding: 8px; text-align: right; color: #727580;"> {{ $booking->quantity }}x</td>
+                            <td style="padding: 8px; text-align: left; color: #727580;">
+                                {{ $booking->quantity }}x
+                            </td>
                         </tr>
                     @endforeach
+
                 </tbody>
             </table>
 
             <p style="text-align: end;" class="text-gray my-1">Jumlah Keseluruhan:
                 <span> {{ $totalQuantity }} </span>
             </p>
+
+
+            <table width="100%">
+                <tr>
+                    <td align="right">
+                        <a href="{{ route('ukw.BookingAlatTulis.edit', ['BookingAlatTuli' => Crypt::encryptString($bookings[0]->reference)]) }}"
+                            class="btn btn-primary">
+                            EDIT PERMOHONAN
+                        </a>
+                    </td>
+                </tr>
+            </table>
 
             <table class="my-1 text-gray">
                 <tr>

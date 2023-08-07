@@ -40,6 +40,7 @@ use App\Http\Controllers\Admin\Inventory\UIT\Hardware\PrinterController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\KeyboardController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\ProjectorController;
 use App\Http\Controllers\Admin\Inventory\UIT\Cable\CableController as CableCableController;
+use App\Http\Controllers\Booking\UpsmCarBookingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -174,8 +175,12 @@ Route::middleware(['auth', 'role:User'])->group(function () {
 
         Route::get('/AlatTulis/checkout', [UKWBookingController::class, 'checkoutItem'])->name('cart.checkout');
         Route::post('/AlatTulis/checkout', [UKWBookingController::class, 'checkout'])->name('checkout');
-
     });
+
+    Route::prefix('/Booking/UPSM')->group(function() {
+        Route::resource('/TempahanKereta', UpsmCarBookingController::class);
+    });
+
 });
 
 

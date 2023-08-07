@@ -5,6 +5,7 @@
                 <th>No.</th>
                 <th>Booking ID</th>
                 <th>Booked By</th>
+                <th>Staff ID</th>
                 <th>Status</th>
                 <th>Booking Date</th>
                 <th></th>
@@ -24,6 +25,9 @@
                     </td>
                     <td>
                         {{ $booking->user->first_name . ' ' . $booking->user->last_name }}
+                    </td>
+                    <td>
+                        {{ $booking->user->username }}
                     </td>
                     <td>
                         <span class="badge rounded-pill badge-light-primary">

@@ -6,82 +6,111 @@
     <x-app-content>
 
         <div class="row mt-1">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title"> Edit Alat Tulis</h3>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text mb-1">
-                            Check the checkbox for approve and leave uncheck for reject
-                        </p>
-                        <table class="table ">
-                            <thead>
-                                <tr>
-                                    <th width="2%">No.</th>
-                                    <th width="5%" class="text-center">
-                                        <div class="form-check form-check-success">
-                                            <input class="form-check-input" type="checkbox" id="approval">
-                                            <label class="form-check-label" for="approval">Approve</label>
-                                        </div>
-                                    <th>Name</th>
-                                    <th width="5%" class="text-center">Quantity</th>
-                                </tr>
-                            </thead>
-                            @foreach ($bookings as $index => $booking)
-                                <tr>
-                                    <td class="text-center">{{ $index + 1 }}</td>
-                                    <td>
-                                        <div class="form-check form-check-success">
-                                            <input class="form-check-input" type="checkbox" id="approval">
-                                            <label class="form-check-label" for="approval">Approve</label>
-                                        </div>
-                                    </td>
-                                    <td>{{ $booking->inventory->name }}</td>
-                                    @php
-                                        if ($booking->quantity > $booking->inventory->current_quantity) {
-                                            $booking->quantity = $booking->inventory->current_quantity;
-                                        }
-                                    @endphp
-                                    <td>
-                                        <div class="input-group bootstrap-touchspin">
-                                            <span class="input-group-btn bootstrap-touchspin-injected"><button
-                                                    class="btn btn-primary bootstrap-touchspin-down" type="button"><svg
-                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="feather feather-minus">
-                                                        <line x1="5" y1="12" x2="19" y2="12">
-                                                        </line>
-                                                    </svg>
-                                                </button></span>
-                                            <input type="number" class="touchspin form-control"
-                                                value="{{ $booking->quantity }}">
-                                            <span class="input-group-btn bootstrap-touchspin-injected">
-                                                <button class="btn btn-primary bootstrap-touchspin-up" type="button"><svg
-                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="feather feather-plus">
-                                                        <line x1="12" y1="5" x2="12" y2="19">
-                                                        </line>
-                                                        <line x1="5" y1="12" x2="19" y2="12">
-                                                        </line>
-                                                    </svg></button></span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </table>
-                        <hr>
-                        <div class="d-flex flex-row-reverse p-2">
-                            <button type="button"
-                                class="btn btn-success waves-effect waves-float waves-light mx-1">Approve</button>
-                            <button type="button" class="btn btn-outline-danger waves-effect">Reject All</button>
+            <form action="{{ route('ukw.BookingAlatTulis.update', ['BookingAlatTuli' => $bookings[0]->reference]) }}"
+                method="POST">
+                @csrf
+                @method('PUT')
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"> Boooking Alat Tulis</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text mb-1">
+                                Check the checkbox for approve and leave uncheck for reject
+                            </p>
+                            <div class="my-2">
+                                <table width="100%" border="1">
+                                    <thead>
+                                        <tr align="center">
+                                            <td>BOOKING ID</td>
+                                            <th>{{ $bookings[0]->reference }}</th>
+
+                                            <td>STAFF ID</td>
+                                            <th>{{ $bookings[0]->user->username }}</th>
+
+                                            <td>Full Name</td>
+                                            <th>{{ $bookings[0]->user->first_name . ' ' . $bookings[0]->user->last_name }}
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <table class="table ">
+                                <thead>
+                                    <tr>
+                                        <th width="2%">No.</th>
+                                        <th width="5%" class="text-center">
+                                            <div class="form-check form-check-success">
+                                                <input class="form-check-input" type="checkbox" id="approveAll">
+                                                <label class="form-check-label" for="approveAll">Approve</label>
+                                            </div>
+                                        <th>Name</th>
+                                        <th width="5%" class="text-center">Quantity</th>
+                                    </tr>
+                                </thead>
+                                @foreach ($bookings as $index => $booking)
+                                    <tr>
+                                        <td class="text-center">{{ $index + 1 }}</td>
+                                        <td>
+                                            <div class="form-check form-check-success">
+                                                <input type="hidden" name="booking[{{ $booking->id }}]" value="unchecked">
+                                                <input class="form-check-input approveCheckbox" type="checkbox"
+                                                    id="approval" name="booking[{{ $booking->id }}]" value="approved">
+                                                <label class="form-check-label">Approve</label>
+                                            </div>
+                                        </td>
+                                        <td>{{ $booking->inventory->name }}</td>
+                                        @php
+                                            if ($booking->quantity > $booking->inventory->current_quantity) {
+                                                $booking->quantity = $booking->inventory->current_quantity;
+                                            }
+                                        @endphp
+                                        <td>
+                                            <div class="input-group bootstrap-touchspin">
+                                                <span class="input-group-btn bootstrap-touchspin-injected"><button
+                                                        class="btn btn-primary bootstrap-touchspin-down" type="button"><svg
+                                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                            class="feather feather-minus">
+                                                            <line x1="5" y1="12" x2="19"
+                                                                y2="12">
+                                                            </line>
+                                                        </svg>
+                                                    </button></span>
+                                                <input type="number" class="touchspin form-control"
+                                                    value="{{ $booking->quantity }}" name="quantity[{{ $booking->id }}]"
+                                                    max="{{ $booking->inventory->current_quantity }}">
+                                                <span class="input-group-btn bootstrap-touchspin-injected">
+                                                    <button class="btn btn-primary bootstrap-touchspin-up"
+                                                        type="button"><svg xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round" class="feather feather-plus">
+                                                            <line x1="12" y1="5" x2="12"
+                                                                y2="19">
+                                                            </line>
+                                                            <line x1="5" y1="12" x2="19"
+                                                                y2="12">
+                                                            </line>
+                                                        </svg></button></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </table>
+                            <hr>
+                            <div class="d-flex flex-row-reverse p-2">
+                                <button type="submit" name="updateBooking" value="approveButton"
+                                    class="btn btn-success waves-effect waves-float waves-light mx-1">Approve</button>
+                                <button type="submit" name="updateBooking" value="rejectButton"
+                                    class="btn btn-outline-danger waves-effect">Reject All</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </x-app-content>
 @endsection
@@ -97,4 +126,31 @@
             toastr.success("{{ session('success') }}", 'Success');
         </script>
     @endif
+
+    <script>
+        $(document).ready(function() {
+            $('#approveAll').click(function() {
+                $('.approveCheckbox').prop('checked', this.checked);
+            });
+
+            $('.bootstrap-touchspin-up').click(function() {
+                var input = $(this).closest('.input-group').find('.touchspin');
+                var currentValue = parseInt(input.val());
+                var maxQuantity = parseInt(input.attr('max'));
+
+                if (currentValue < maxQuantity) {
+                    input.val(currentValue + 1);
+                }
+            });
+
+            $('.bootstrap-touchspin-down').click(function() {
+                var input = $(this).closest('.input-group').find('.touchspin');
+                var currentValue = parseInt(input.val());
+
+                if (currentValue > 1) {
+                    input.val(currentValue - 1);
+                }
+            });
+        });
+    </script>
 @endsection

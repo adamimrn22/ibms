@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <title>Document</title>
     <style>
         * {
             padding: 0;
@@ -89,9 +90,9 @@
             background-color: #7772F0;
         }
 
-        .card-pending {
-            color: #727580;
-            background-color: #F3F4F6;
+        .card-approved {
+            color: white;
+            background-color: #4ade80;
         }
 
         /* Style the horizontal line */
@@ -132,7 +133,7 @@
                     <td>
                         <h2 class="font-normal text-gray my-1">
                             <b>
-                                Pinjaman Alatan Tulis telah berjaya!
+                                Pinjaman Alatan Tulis telah diluluskan!
                             </b>
                         </h2>
                     </td>
@@ -141,27 +142,26 @@
 
             <table class="my-1 text-gray">
                 <tr>
-                    <td>Kepada yang berkenaan</td>
+                    <td>Kepada, {{ $user->first_name . ' ' . $user->last_name }}</td>
                 </tr>
             </table>
             <table style="margin-bottom: 1.5rem;">
                 <tr class="text-gray">
                     <td>
-                        Pesanan anda telah berjaya dihantar. Berikut adalah beberapa maklumat mengenai pesanan anda
-                    </td>
+                        Pesanan anda telah diluluskan. Sila ambil barang yang telah dimohon </td>
                 </tr>
 
             </table>
 
             <div class="parent-card">
                 <div class="card card-approve">
-                    <p>Dipesan pada </p>
-                    <p>{{ Carbon\Carbon::parse($date)->format('F j Y') }}
+                    <p>Dipesan pada:</p>
+                    <p>{{ Carbon\Carbon::parse($bookDate)->format('F j Y') }}
                 </div>
                 <span class="line"></span>
-                <div class="card card-pending">
-                    <p>Status: Pending</p>
-                    <p>Akan Dimaklumkan</p>
+                <div class="card card-approved">
+                    <p>Status: Approve</p>
+                    <p>{{ Carbon\Carbon::parse($approvedDate)->format('F j Y') }}
                 </div>
             </div>
 
@@ -179,7 +179,7 @@
                 </tr>
                 <tr align="left">
                     <td class="text-gray">
-                        {{ $date }}</p>
+                        {{ $approvedDate }}</p>
                     </td>
                 </tr>
             </table>
@@ -189,7 +189,9 @@
                 <thead>
                     <tr>
                         <th style="padding: 8px; text-align: left; color: #727580;">PESANAN BARANG</th>
-                        <th style="padding: 8px; text-align: right; color: #727580;">KUANTITI</th>
+                        <th style="padding: 8px; text-align: right; color: #727580;">KUANTITI YANG DIMOHON</th>
+                        <th style="padding: 8px; text-align: right; color: #727580;">KUANTITI YANG DILULUSKAN</th>
+                        <th style="padding: 8px; text-align: center; color: #727580;">STATUS</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -198,14 +200,23 @@
                             <td style="padding: 8px; text-align: left; color: #727580;">
                                 {{ $booking->inventory->name }}
                             </td>
-                            <td style="padding: 8px; text-align: right; color: #727580;"> {{ $booking->quantity }}x</td>
+                            <td style="padding: 8px; text-align: right; color: #727580;">
+                                {{ $booking->quantity }}x
+                            </td>
+                            <td style="padding: 8px; text-align: right; color: #727580;">
+                                {{ $booking->approved_quantity }}x
+                            </td>
+                            <td style="padding: 8px; text-align: center; color: #727580;">
+                                {{ $booking->status->name }}
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
 
-            <p style="text-align: end;" class="text-gray my-1">Jumlah Keseluruhan:
-                <span> {{ $totalQuantity }} </span>
+            <p style="text-align: end;" class="text-gray my-1">Jumlah Kesemua Barang yang diluluskan: <span>
+                    {{ $totalQuantity }}
+                </span>
             </p>
 
             <table class="my-1 text-gray">
