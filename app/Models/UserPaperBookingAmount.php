@@ -16,4 +16,9 @@ class UserPaperBookingAmount extends Model
         $this->amount -= $amount;
         $this->save();
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

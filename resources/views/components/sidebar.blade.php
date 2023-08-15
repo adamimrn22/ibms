@@ -62,6 +62,26 @@
 
             @hasanyrole(['Admin UPSM'])
                 <li class="mb-1 nav-item ">
+                    <a class="d-flex align-items-center {{ Str::contains(request()->path(), 'UPSM/Booking/Kenderaan') ? 'active' : '' }}"
+                        href="{{ route('upsm.BookingKenderaan.index') }}">
+                        <i data-feather='archive'></i>
+                        <span class="menu-item">
+                            Tempahan Kenderaan
+                        </span>
+                    </a>
+                </li>
+
+                <li class="mb-1 nav-item ">
+                    <a class="d-flex align-items-center {{ Str::contains(request()->path(), 'UPSM/Booking/Ruang') ? 'active' : '' }}"
+                        href="{{ route('upsm.Classroom.index') }}">
+                        <i data-feather='archive'></i>
+                        <span class="menu-item text-truncate">
+                            Tempahan Ruang
+                        </span>
+                    </a>
+                </li>
+
+                <li class="mb-1 nav-item ">
                     <a class="d-flex align-items-center {{ Str::contains(request()->path(), 'UPSM/Inventory') ? 'active' : '' }}"
                         href="{{ route('upsm.Classroom.index') }}">
                         <i data-feather='archive'></i>
@@ -74,7 +94,7 @@
 
             @hasanyrole(['Admin UKW'])
                 <li class="mb-1 nav-item ">
-                    <a class="d-flex align-items-center {{ Str::contains(request()->path(), 'UKW/Booking') ? 'active' : '' }}"
+                    <a class="d-flex align-items-center {{ Str::contains(request()->path(), 'UKW/Booking/BookingAlatTulis') ? 'active' : '' }}"
                         href="{{ route('ukw.BookingAlatTulis.index') }}">
                         <i data-feather='archive'></i>
                         <span class="menu-item text-truncate">
@@ -89,6 +109,16 @@
                         <i data-feather='archive'></i>
                         <span class="menu-item text-truncate">
                             UKW Asset Menu
+                        </span>
+                    </a>
+                </li>
+
+                <li class="mb-1 nav-item ">
+                    <a class="d-flex align-items-center {{ Str::contains(request()->path(), 'UKW/Booking/Amount') ? 'active' : '' }}"
+                        href="{{ route('ukw.Amount.index') }}">
+                        <i data-feather='archive'></i>
+                        <span class="menu-item text-truncate">
+                            Staff A4 Amount
                         </span>
                     </a>
                 </li>

@@ -17,10 +17,6 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('app-asset/vendors/css/extensions/toastr.min.css') }}">
     <!-- END: Vendor CSS-->
 
-
-    @yield('csslink')
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('app-asset/vendors/js/tables/datatable/buttons.bootstrap5.min.js') }}">
     <!-- BEGIN: Theme CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('app-asset/css/bootstrap.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-asset/css/bootstrap-extended.css') }}">
@@ -28,8 +24,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('app-asset/css/components.css') }}">
 
     <!-- BEGIN: Page CSS-->
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('app-asset/css/core/menu/menu-types/horizontal-menu.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('app-asset/css/core/menu/menu-types/horizontal-menu.css') }}">
 
     <link rel="stylesheet" type="text/css"
         href="{{ asset('app-asset/css/plugins/extensions/ext-component-toastr.css') }}">
@@ -39,6 +34,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('app-asset/css/style.css') }}">
     <!-- END: Custom CSS-->
 
+    @yield('csslink')
 
 </head>
 <!-- END: Head-->
@@ -115,26 +111,13 @@
                                 class="avatar-status-online"></span></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user">
-                        <a class="dropdown-item" href="{{ route('logout') }}"
-                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <div class="d-flex align-items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round"
-                                    class="feather feather-power me-50">
-                                    <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
-                                    <line x1="12" y1="2" x2="12" y2="12"></line>
-                                </svg>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                    class="ms-2">
-                                    @csrf
-                                    <span type="submit">
-                                        Logout
-                                    </span>
-                                </form>
-                            </div>
-                        </a>
-
+                        <a class="dropdown-item" href="auth-login-cover.html"><svg xmlns="http://www.w3.org/2000/svg"
+                                width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-power me-50">
+                                <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+                                <line x1="12" y1="2" x2="12" y2="12"></line>
+                            </svg> Logout</a>
                     </div>
                 </li>
             </ul>
@@ -164,25 +147,20 @@
                 </ul>
             </div>
 
-            @php
-                $currentPath = request()->path();
-            @endphp
-
             <div class="shadow-bottom"></div>
             <!-- Horizontal menu content-->
             <div class="navbar-container main-menu-content" data-menu="menu-container">
                 <!-- include ../../../includes/mixins-->
                 <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
 
-                    <li class="nav-item my-1 my-lg-0   {{ request()->path() === 'User' ? 'active' : '' }}">
-                        <a class="nav-link d-flex align-items-center " href="/">
+                    <li class="nav-item active  my-1 my-lg-0">
+                        <a class="nav-link d-flex align-items-center" href="index.html">
                             <span>Halaman Utama</span>
                         </a>
                     </li>
 
-                    <li
-                        class="nav-item  my-1 my-lg-0 {{ Str::contains(request()->path(), 'UKW/AlatTulis') ? 'active' : '' }}">
-                        <a class="nav-link d-flex align-items-center " href="{{ route('AlatTulis.index') }}">
+                    <li class="nav-item  my-1 my-lg-0">
+                        <a class="nav-link d-flex align-items-center" href="index.html">
                             <span>Pinjaman Alat Tulis</span>
                         </a>
                     </li>
@@ -193,17 +171,15 @@
                         </a>
                     </li>
 
-                    <li
-                        class="nav-item  my-1 my-lg-0 {{ Str::contains(request()->path(), '/UPSM/TempahRuang') ? 'active' : '' }}">
+                    <li class="nav-item  my-1 my-lg-0">
                         <a class="nav-link d-flex align-items-center" href="index.html">
                             <span>Tempahan Ruang Kelas</span>
                         </a>
                     </li>
 
-                    <li
-                        class="nav-item  my-1 my-lg-0 {{ Str::contains(request()->path(), '/UPSM/TempahanKereta') ? 'active' : '' }}">
-                        <a class="nav-link d-flex align-items-center" href="{{ route('TempahKereta.index') }}">
-                            <span>Tempahan Kenderaan</span>
+                    <li class="nav-item  my-1 my-lg-0">
+                        <a class="nav-link d-flex align-items-center" href="index.html">
+                            <span>Tempahan Kereta</span>
                         </a>
                     </li>
 

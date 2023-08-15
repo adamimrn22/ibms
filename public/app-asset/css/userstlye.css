@@ -61,3 +61,9 @@ label.error {
     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
     /* Adjust the shadow properties as needed */
 }
+
+.custom-toggler {
+    color: #333 !important;
+    /* Change this to your desired darker color */
+    /* Add more styles if needed */
+}

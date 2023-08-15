@@ -60,6 +60,10 @@ class User extends Authenticatable
         return $this->hasOne(Unit::class, 'id', 'unit_id');
     }
 
+    public function paperAmount()
+    {
+        return $this->hasOne(UserPaperBookingAmount::class, 'user_id', 'id');
+    }
     public function booking()
     {
         return $this->hasMany(Booking::class);
@@ -68,5 +72,10 @@ class User extends Authenticatable
     public function sendPasswordResetNotification($token): void
     {
         $this->notify(new ResetPasswordNotification($token));
+    }
+
+    public function UpsmVehicleBookings()
+    {
+        return $this->belongsToMany(UpsmVehicleBooking::class, 'upsm_vehicle_bookings_user', 'booking_id');
     }
 }

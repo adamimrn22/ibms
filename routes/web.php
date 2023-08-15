@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\Booking\UKW\A4Amount;
+use App\Http\Controllers\Admin\Booking\UKW\A4AmountController;
 use App\Http\Controllers\Admin\Booking\UKW\AlatTulisBookingController;
+use App\Http\Controllers\Admin\Booking\UPSM\KenderaanBookingController;
 use Carbon\Carbon;
 use App\Models\Booking;
 use App\Models\Inventory;
@@ -41,6 +44,11 @@ use App\Http\Controllers\Admin\Inventory\UIT\Hardware\KeyboardController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\ProjectorController;
 use App\Http\Controllers\Admin\Inventory\UIT\Cable\CableController as CableCableController;
 use App\Http\Controllers\Booking\UpsmCarBookingController;
+use App\Http\Controllers\User\Booking\BookingAlatTulisController;
+use App\Http\Controllers\User\Booking\CartController;
+use App\Http\Controllers\User\Reservation\CarReservationController;
+use App\Http\Controllers\UserBookingDashboardController;
+use App\Models\UserPaperBookingAmount;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,7 +77,7 @@ Route::middleware(['auth'])->group(function () {
         } else if (str_contains($user->roles->pluck('name')[0], 'Admin')) {
             return redirect()->intended('/admin/dashboard');
         } else if ($user->roles->pluck('name')[0] === 'User') {
-            return redirect()->intended('/user');
+            return redirect()->intended('/User');
         } else {
             abort(response('Unauthorized', 401));
         }
@@ -132,6 +140,13 @@ Route::middleware(['auth', 'role:Admin UPSM|Super Admin'])->prefix('UPSM')->name
         Route::post('/tmp-upload', [ClassroomController::class, 'tmpUpload'])->name('classroom-tmp-upload');
         Route::delete('/tmp-delete', [ClassroomController::class, 'tmpDelete'])->name('classroom-tmp-delete');
     });
+    Route::prefix('/Booking')->group(function() {
+        Route::prefix('/Kenderaan')->group(function() {
+            Route::get('/', [KenderaanBookingController::class, 'index'])->name('BookingKenderaan.index');
+            Route::get('/{Kenderaan}/edit', [KenderaanBookingController::class, 'edit'])->name('BookingKenderaan.edit');
+
+        });
+    });
 });
 
 Route::middleware(['auth', 'role:Admin UKW|Super Admin'])->prefix('UKW')->name('ukw.')->group(function () {
@@ -153,44 +168,60 @@ Route::middleware(['auth', 'role:Admin UKW|Super Admin'])->prefix('UKW')->name('
 
     Route::prefix('Booking/UKW')->group(function() {
         Route::resource('/BookingAlatTulis', AlatTulisBookingController::class);
+        Route::resource('/Amount', A4AmountController::class);
     });
+
+
 
 });
 
 
-Route::middleware(['auth', 'role:User'])->group(function () {
-    Route::get('/user', [UserHomeController::class, 'index'])->name('user.homepage');
+Route::middleware(['auth', 'role:User'])->prefix('/User')->group(function () {
+    Route::get('/', [UserHomeController::class, 'index'])->name('user.homepage');
     Route::prefix('/Booking/UKW')->group(function() {
-        Route::get('AlatTulis', [UKWBookingController::class, 'index'])->name('AlatTulis.index');
-        Route::get('AlatTulis/File', [UKWBookingController::class, 'fileIndex'])->name('AlatTulis.file');
-        Route::get('AlatTulis/Stationery', [UKWBookingController::class, 'stationeryIndex'])->name('AlatTulis.stationery');
-        Route::get('AlatTulis/A4', [UKWBookingController::class, 'a4Index'])->name('AlatTulis.a4');
 
-        Route::post('/add-to-cart', [UKWBookingController::class, 'addToCart'])->name('cart.add');
-        Route::get('/get-cart', [UKWBookingController::class,'getCart'])->name('cart.get');
-        Route::post('/cart/decrement/{itemId}',  [UKWBookingController::class,'decrementQuantity'] )->name('cart.decrement');
-        Route::post('/cart/increment/{itemId}',  [UKWBookingController::class,'incrementQuantity'] )->name('cart.increment');
-        Route::delete('/cart/remove/{itemId}', [UKWBookingController::class,'removeItem'])->name('cart.remove');
-        Route::delete('/cart/clear', [UKWBookingController::class,'clearCart'])->name('cart.clear');
+        Route::get('AlatTulis', [BookingAlatTulisController::class, 'index'])->name('AlatTulis.index');
+        Route::get('AlatTulis/Booking/{Booking}', [BookingAlatTulisController::class, 'show'])->name('AlatTulis.show');
+        Route::get('AlatTulis/Paper', [BookingAlatTulisController::class, 'paperIndex'])->name('AlatTulis.paper');
+        Route::get('AlatTulis/File', [BookingAlatTulisController::class, 'fileIndex'])->name('AlatTulis.file');
+        Route::get('AlatTulis/Stationery', [BookingAlatTulisController::class, 'stationeryIndex'])->name('AlatTulis.stationery');
+        Route::get('AlatTulis/A4', [BookingAlatTulisController::class, 'a4Index'])->name('AlatTulis.a4');
+        Route::get('AlatTulis/checkout', [BookingAlatTulisController::class, 'checkoutItem'])->name('AlatTulis.checkoutItem');
+        Route::post('AlatTulis/checkout', [BookingAlatTulisController::class, 'checkout'])->name('AlatTulis.checkout');
 
-        Route::get('/AlatTulis/checkout', [UKWBookingController::class, 'checkoutItem'])->name('cart.checkout');
-        Route::post('/AlatTulis/checkout', [UKWBookingController::class, 'checkout'])->name('checkout');
+        Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
+        Route::get('/get-cart', [CartController::class,'getCart'])->name('cart.get');
+        Route::post('/cart/decrement/{itemId}',  [CartController::class,'decrementQuantity'] )->name('cart.decrement');
+        Route::post('/cart/increment/{itemId}',  [CartController::class,'incrementQuantity'] )->name('cart.increment');
+        Route::delete('/cart/remove/{itemId}', [CartController::class,'removeItem'])->name('cart.remove');
+        Route::delete('/cart/clear', [CartController::class,'clearCart'])->name('cart.clear');
+
     });
 
     Route::prefix('/Booking/UPSM')->group(function() {
-        Route::resource('/TempahanKereta', UpsmCarBookingController::class);
+        Route::prefix('/TempahanKereta')->group(function() {
+            Route::get('/Tempah', [CarReservationController::class, 'index'])->name('TempahKereta.index');
+            Route::post('/Tempah', [CarReservationController::class, 'store'])->name('TempahKereta.store');
+        });
     });
 
 });
 
 
-Route::get('/test', function(){
-    $booking = Booking::with('inventory', 'staff')->where('inventory_id', 10)->get();
-    $desktop = Inventory::with('bookings', 'staff')->findOrFail(10);
-    $desktop->attribute = json_decode($desktop->attribute);
-    // dd($booking);
-    return view('test', compact('booking', 'desktop'));
-});
+// Route::get('/test', function(){
+//     return view('test.test');
+// });
+
+// Route::get('/test1', [UserBookingDashboardController::class, 'index']);
+// Route::get('/testAlatanTulis', [UserBookingDashboardController::class, 'testShow']);
+// Route::get('/checkoutTest', [UserBookingDashboardController::class, 'checkOut']);
+
+// Route::get('/test', function(){
+//     $user = Auth::user();
+//     return view('test.test1', compact('user'));
+// });
+
+
 
 // Route::get('/mail', function() {
 //     $user = Auth::user();
@@ -201,26 +232,5 @@ Route::get('/test', function(){
 //     $date = Carbon::parse($bookings[0]->created_at)->formatLocalized('%B %d, %Y %I:%M %p');
 //     return view('mail.ukwuserbooking', compact('user', 'bookings', 'date', 'orderID', 'totalQuantity'));
 // });
-
-
-Route::post('/test', function(){
-    $staffId = 2; // Staff ID
-
-    $locationId = 10; // The desired location ID
-
-    $booking = new Booking();
-    $booking->start_date = '2023-07-15'; // Example start date
-    $booking->end_date = '2023-07-20'; // Example end date
-    $booking->end_date = '2023-07-20'; // Example end date
-
-    $booking->user_id = $staffId;
-    $booking->inventory_id = $locationId;
-    // Save the booking
-    $booking->save();
-
-    // Set the location on the related inventory model
-    $booking->inventory->location = $staffId;
-    $booking->inventory->save();
-});
 
 require __DIR__ . '/auth.php';

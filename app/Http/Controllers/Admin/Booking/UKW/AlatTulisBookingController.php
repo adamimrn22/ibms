@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Admin\Booking\UKW;
 
+use Carbon\Carbon;
 use App\Models\UkwBooking;
 use App\Models\UkwInventory;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Mail\ApproveAlatTulis;
 use App\Mail\RejectedAlatTulis;
-use App\Models\UserPaperBookingAmount;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
+use App\Models\UserPaperBookingAmount;
 
 class AlatTulisBookingController extends Controller
 {
@@ -66,8 +67,6 @@ class AlatTulisBookingController extends Controller
         $reference = Crypt::decryptString($encrypytReference);
         $bookings = UkwBooking::with('inventory', 'user')->where('reference', $reference)->get();
 
-
-
         return view('Admin.AdminUKW.Booking.AlatTulis.updateBookingTable', compact('bookings'));
     }
 
@@ -104,14 +103,11 @@ class AlatTulisBookingController extends Controller
 
             }else if ($updateBookingBtn === 'approveButton') {
 
-                if(empty($bookingUpdates)) {
-                    return back()->with(['error' => 'error']);
-                }
+
 
                 foreach ($bookingUpdates as $bookingId => $status) {
 
                     $booking = UkwBooking::with('inventory', 'user', 'status')->find($bookingId);
-
 
 
                     if ($status === 'approved') {
@@ -125,7 +121,15 @@ class AlatTulisBookingController extends Controller
                     }
 
                     if($booking->inventory->subcategory_id == 22) {
-                        $userPaperBooking = UserPaperBookingAmount::where('user_id', $booking->user->id)->first();
+                        $now = Carbon::now();
+                        $currentYear = $now->year;
+                        $currentMonth = $now->month;
+
+                        $userPaperBooking = UserPaperBookingAmount::where('year', $currentYear)
+                            ->where('month', $currentMonth)
+                            ->where('user_id', $booking->user->id)
+                            ->first();
+
                         if ($userPaperBooking) {
                             $userPaperBooking->subtractAmount( $quantityUpdates[$bookingId] );
                         }

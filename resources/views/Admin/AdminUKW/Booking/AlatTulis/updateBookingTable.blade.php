@@ -102,8 +102,9 @@
                             </table>
                             <hr>
                             <div class="d-flex flex-row-reverse p-2">
-                                <button type="submit" name="updateBooking" value="approveButton"
-                                    class="btn btn-success waves-effect waves-float waves-light mx-1">Approve</button>
+                                <button id="submitBtn" type="submit" name="updateBooking" value="approveButton"
+                                    class="btn btn-success waves-effect waves-float waves-light mx-1"
+                                    disabled>Approve</button>
                                 <button type="submit" name="updateBooking" value="rejectButton"
                                     class="btn btn-outline-danger waves-effect">Reject All</button>
                             </div>
@@ -129,8 +130,20 @@
 
     <script>
         $(document).ready(function() {
+            function updateApproveButtonState() {
+                var anyCheckboxChecked = $('.approveCheckbox:checked').length > 0;
+                $('#submitBtn').prop('disabled', !anyCheckboxChecked);
+            }
+
+            // Checkbox change event
+            $('.approveCheckbox').on('change', function() {
+                updateApproveButtonState();
+            });
+
+            // "Check All" button click event
             $('#approveAll').click(function() {
                 $('.approveCheckbox').prop('checked', this.checked);
+                updateApproveButtonState(); // Update the button state
             });
 
             $('.bootstrap-touchspin-up').click(function() {
@@ -151,6 +164,8 @@
                     input.val(currentValue - 1);
                 }
             });
+
+            updateApproveButtonState();
         });
     </script>
 @endsection

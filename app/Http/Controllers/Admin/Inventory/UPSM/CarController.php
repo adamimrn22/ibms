@@ -38,7 +38,7 @@ class CarController extends Controller
      */
     public function create()
     {
-        $statuses = $this->status(7);
+        $statuses = $this->status(6);
         return view('Admin.AdminUPSM.crud.car.create-car', compact('statuses'));
     }
 

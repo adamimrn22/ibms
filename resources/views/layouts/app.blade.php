@@ -26,6 +26,7 @@
         href="{{ asset('app-asset/css/plugins/extensions/ext-component-toastr.min.css') }}">
 
     <link rel="stylesheet" href="{{ asset('app-asset/css/style.css') }}">
+
     @yield('csslink')
 
     <!-- END: Vendor CSS-->
@@ -45,7 +46,6 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('app-asset/css/plugins/charts/chart-apex.css') }}">
     <link rel="stylesheet" type="text/css"
         href="{{ asset('app-asset/css/plugins/extensions/ext-component-toastr.css') }}">
-    {{-- <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/app-invoice-list.css"> --}}
     <!-- END: Page CSS-->
 
 </head>
