@@ -11,9 +11,11 @@ class UkwBooking extends Model
 
     protected $guarded = [];
 
-    public function inventory()
+    public function inventories()
     {
-        return $this->belongsTo(UkwInventory::class, 'inventory_id');
+        return $this->belongsToMany(UkwInventory::class, 'ukw_bookings_inventories', 'booking_id', 'inventory_id')
+                    ->withPivot(['quantity', 'approved_quantity', 'status_id'])
+                    ->withTimestamps();
     }
 
     public function status()

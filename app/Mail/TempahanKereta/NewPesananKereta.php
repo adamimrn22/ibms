@@ -1,41 +1,42 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\TempahanKereta;
 
 use Carbon\Carbon;
-use App\Models\UkwBooking;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use App\Models\UpsmVehicleBooking;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class UserBookingUKW extends Mailable implements ShouldQueue
+class NewPesananKereta extends Mailable
 {
     use Queueable, SerializesModels;
 
     protected $user;
     protected $booking;
-    protected $totalQuantity;
     protected $orderID;
     protected $date;
+    protected $randomString;
+
     /**
      * Create a new message instance.
      */
-    public function __construct($user, $reference )
+    public function __construct($booking, $user)
     {
         $this->user = $user;
-        $this->booking = UkwBooking::with('inventories')
-            ->withSum('inventories', 'ukw_bookings_inventories.quantity')
-            ->where('reference', $reference)->first();
+        $this->booking =  UpsmVehicleBooking::with('staff')->findOrFail($booking->id);
 
-
-        $this->orderID = $reference;
-        $this->totalQuantity = $this->booking->inventories_sum_ukw_bookings_inventoriesquantity;
+        $this->orderID = $this->booking->reference;
 
         $formatDate = Carbon::parse($this->booking->created_at)->formatLocalized('%B %d, %Y %I:%M %p');
         $this->date =  $formatDate;
+
+        // gmail trim the mail this is for not making it trim
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $this->randomString = substr(str_shuffle($characters), 0, 10);
     }
 
     /**
@@ -44,7 +45,7 @@ class UserBookingUKW extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Pinjaman Alat Tulis berjaya!',
+            subject: 'New Pesanan Kereta',
         );
     }
 
@@ -54,12 +55,12 @@ class UserBookingUKW extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            view: 'mail.ukwuserbooking',
+            view: 'mail.TempahanKereta.pesanan-baharu',
             with: [
                 'user' => $this->user,
+                'randomness' => $this->randomString,
                 'booking' => $this->booking,
                 'orderID' => $this->orderID,
-                'totalQuantity' => $this->totalQuantity,
                 'date' => $this->date,
             ]
         );

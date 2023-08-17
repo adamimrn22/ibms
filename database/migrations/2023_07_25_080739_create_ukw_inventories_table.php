@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('current_quantity');
-            $table->integer('stock');
             $table->unsignedBigInteger('status_id')->nullable();
             $table->unsignedBigInteger('subcategory_id')->nullable();
             $table->timestamps();

@@ -15,19 +15,23 @@ class RejectedAlatTulis extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $bookings;
+    protected $booking;
     protected $rejectedDate;
     protected $bookDate;
+    protected $bookingID;
     /**
      * Create a new message instance.
      */
     public function __construct($reference)
     {
-        $this->bookings = UkwBooking::with('inventory', 'user')->where('reference', $reference)->get();
+        $this->booking =  UkwBooking::with('inventories')
+        ->withSum('inventories', 'ukw_bookings_inventories.quantity')
+        ->where('reference', $reference)->first();
 
-        $formatBookDate = Carbon::parse($this->bookings[0]->created_at)->formatLocalized('%B %d, %Y %I:%M %p');
-        $formatApprovedDate = Carbon::parse($this->bookings[0]->updated_at)->formatLocalized('%B %d, %Y %I:%M %p');
+        $formatBookDate = Carbon::parse($this->booking->created_at)->formatLocalized('%B %d, %Y %I:%M %p');
+        $formatApprovedDate = Carbon::parse($this->booking->updated_at)->formatLocalized('%B %d, %Y %I:%M %p');
 
+        $this->bookingID = $reference;
         $this->bookDate =  $formatBookDate;
         $this->rejectedDate =  $formatApprovedDate;
     }
@@ -50,7 +54,8 @@ class RejectedAlatTulis extends Mailable
         return new Content(
             view: 'mail.BookingAlatTulis.rejectedBooking',
             with: [
-                'bookings' => $this->bookings,
+                'bookingID' => $this->bookingID,
+                'booking' => $this->booking,
                 'bookDate' => $this->bookDate,
                 'rejectedDate' => $this->rejectedDate,
             ]

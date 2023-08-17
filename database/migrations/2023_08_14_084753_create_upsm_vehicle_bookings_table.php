@@ -20,6 +20,7 @@ return new class extends Migration
             $table->time('timeReturn');
             $table->text('destination');
             $table->text('objective');
+            $table->text('remark')->nullable();
             $table->boolean('vehicle_type');
             $table->boolean('driver');
             $table->unsignedBigInteger('driver_id')->nullable();

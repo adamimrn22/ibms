@@ -34,14 +34,13 @@ class SuppliesController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|unique:ukw_inventories,name',
-            'stock' => 'required',
+            'current_quantity' => 'required',
             'subcategory_id' => 'required',
             'status_id' => 'required'
         ]);
 
         list($id, $name) = explode('|', $validatedData['subcategory_id']);
         $validatedData['subcategory_id'] = $id;
-        $validatedData['current_quantity'] =  $validatedData['stock'];
 
         $validatedData['created_at'] = now();
 
@@ -101,7 +100,6 @@ class SuppliesController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|unique:ukw_inventories,name,' . $id,
             'current_quantity' => 'required',
-            'stock' => 'required',
             'subcategory_id' => 'required',
             'status_id' => 'required'
         ]);
@@ -112,7 +110,6 @@ class SuppliesController extends Controller
         $validatedData['updated_at'] = now();
 
         try {
-
             UkwInventory::where('id', $id)->update($validatedData);
             $tmp_file = TemporaryFile::where('parent_folder', 'supply')->first();
 

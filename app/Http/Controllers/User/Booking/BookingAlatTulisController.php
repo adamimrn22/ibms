@@ -8,6 +8,7 @@ use App\Mail\UserBookingUKW;
 use App\Models\UkwInventory;
 use Illuminate\Http\Request;
 use App\Mail\NewAlatTulisBooking;
+use Spatie\Permission\Models\Role;
 use App\Models\adminEmailReference;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -34,15 +35,13 @@ class BookingAlatTulisController extends Controller
     public function show(string $encryptReference)
     {
         $reference = Crypt::decryptString($encryptReference);
-        $bookings = UkwBooking::with('inventory','user')->where('reference', $reference)->get();
+
+        $bookings = UkwBooking::with('inventories','user')
+                ->withSum('inventories', 'ukw_bookings_inventories.quantity')
+                ->where('reference', $reference)->get();
         $date =  Carbon::parse($bookings[0]->created_at)->format('F-j-Y H:i:s');
 
-        $totalQuantity = 0;
-        if ($bookings) {
-            foreach ($bookings as $booking) {
-                $totalQuantity += $booking->quantity;
-            }
-        }
+        $totalQuantity = $bookings[0]->inventories_sum_ukw_bookings_inventoriesquantity;
 
         return view('User.AlatTulis.pending-alat-tulis-details', compact('bookings', 'totalQuantity', 'date'));
     }
@@ -53,7 +52,7 @@ class BookingAlatTulisController extends Controller
     public function checkoutItem()
     {
         $carts = $this->getCartInfo();
-        if(empty($carts)){
+        if(empty($carts['cart'])){
             abort(404);
         }
         $user = Auth::user();
@@ -70,8 +69,17 @@ class BookingAlatTulisController extends Controller
 
         if($submitBtn){
             try {
-                $items = array_values(session()->get('cart', []));
+                $items = session()->get('cart', []);
                 $user = Auth::user();
+
+                $items = array_map(function ($item) {
+                    unset($item['name']);
+                    unset($item['id']);
+                    unset($item['subcategory']);
+                    unset($item['image']);
+                    return $item;
+                }, $items);
+
 
                 // Get the last booking reference and calculate the new reference
                 $lastBooking = UkwBooking::latest()->where('reference', 'LIKE', 'UKWBK%')->first();
@@ -80,31 +88,36 @@ class BookingAlatTulisController extends Controller
                 $reference = 'UKWBK' . str_pad($newReferenceNumber, 4, '0', STR_PAD_LEFT);
 
 
-                foreach ($items as $item) {
-                    UkwBooking::create([
-                        'reference' => $reference,
-                        'quantity' => $item['quantity'],
-                        'approved_quantity' => $item['quantity'],
-                        'user_id' => $user->id,
-                        'inventory_id' => $item['id'],
-                        'status_id' => 1
-                    ]);
+                $booking = UkwBooking::create([
+                    'reference' => $reference,
+                    'user_id' => $user->id,
+                    'status_id' => 1
+                ]);
+
+                $booking->inventories()->attach($items, [
+                    'booking_id' => $booking->id
+                ]);
+
+                $role = Role::findByName('ADMIN UKW');
+                $userWithRole = $role->users()->first();
+
+                if ($userWithRole) {
+                    $adminEmail = $userWithRole->email;
+                    Mail::to($user->email)->queue(new UserBookingUKW($user, $booking->reference));
+                    Mail::to($adminEmail)->queue(new NewAlatTulisBooking($user, $booking->reference));
                 }
 
-                $bookings = UkwBooking::where('reference', $reference)->get();
+                // adminEmailReference::select('email')->where('unit_id', 3)->first();
+
                 session()->forget('cart');
                 session(['paper_decrement_amount' => 0]);
-
-                $adminEmail = adminEmailReference::select('email')->where('unit_id', 3)->first();
-
-                Mail::to($user->email)->queue(new UserBookingUKW($user, $bookings));
-                Mail::to($adminEmail)->queue(new NewAlatTulisBooking($user, $bookings));
 
                 return redirect()->route('AlatTulis.index')->with(['success' => 'Permohonan anda telah berjaya!']);
             } catch (\Throwable $th) {
                 return redirect()->route('AlatTulis.index')->with(['error' => strval($th->getMessage())]);
             }
         }
+
         session()->forget('cart');
         session(['paper_decrement_amount' => 0]);
         return redirect()->route('AlatTulis.index')->with(['batal' => 'Permohonan anda telah Dibatalkan!']);

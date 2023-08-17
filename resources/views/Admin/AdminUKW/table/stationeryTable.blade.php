@@ -5,7 +5,6 @@
                 <th>No.</th>
                 <th>Name</th>
                 <th>Current Quantity</th>
-                <th>Stock</th>
                 <th></th>
             </tr>
         </thead>
@@ -22,9 +21,6 @@
                     </td>
                     <td>
                         {{ $stationery->current_quantity }}
-                    </td>
-                    <td>
-                        {{ $stationery->stock }}
                     </td>
 
                     <td>

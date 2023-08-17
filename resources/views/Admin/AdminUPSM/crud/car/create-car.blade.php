@@ -35,6 +35,11 @@
                                 </x-form.form-group>
 
                                 <x-form.form-group>
+                                    <x-form.label :for="'plateNumber'" :title="'Plate Number'" />
+                                    <x-form.input :id="'plateNumber'" />
+                                </x-form.form-group>
+
+                                <x-form.form-group>
                                     <x-form.label :for="'seat'" :title="'Seat'" />
                                     <x-form.input :id="'seat'" :type="'number'" />
                                 </x-form.form-group>

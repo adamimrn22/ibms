@@ -51,10 +51,6 @@
                                     <td>{{ $supply->current_quantity }}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row" class="text-start">Stock</th>
-                                    <td>{{ $supply->stock }}</td>
-                                </tr>
-                                <tr>
                                     <th scope="row" class="text-start">Status</th>
                                     <td>{{ $supply->status->name }}</td>
                                 </tr>

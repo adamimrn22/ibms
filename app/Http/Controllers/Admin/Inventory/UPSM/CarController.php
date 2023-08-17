@@ -50,12 +50,14 @@ class CarController extends Controller
         $validatedData = $request->validate([
             'name' => 'required',
             'seat' => 'required',
+            'plateNumber' => 'required',
             'DOP' => 'required',
             'location' => 'required',
             'status' => 'required',
         ]);
 
         $attribute = [
+            'plateNumber' => $validatedData['plateNumber'],
             'seat' => $validatedData['seat'],
             'DOP' => $validatedData['DOP']
         ];
@@ -105,6 +107,7 @@ class CarController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required',
+            'plateNumber' => 'required',
             'seat' => 'required',
             'DOP' => 'required',
             'location' => 'required',
@@ -113,6 +116,7 @@ class CarController extends Controller
 
         $attribute = [
             'seat' => $validatedData['seat'],
+            'plateNumber' => $validatedData['plateNumber'],
             'DOP' => $validatedData['DOP']
         ];
 

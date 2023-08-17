@@ -6,11 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"
         style="padding: 0;margin: 0;box-sizing: border-box;">
 
+    <title style="padding: 0;margin: 0;box-sizing: border-box;">Document</title>
 
 </head>
 
 <body
-    style="padding: 0;margin: 0;box-sizing: border-box;background-color: white;font-family: Helvetica, Arial, sans-serif;">
+    style="padding: 0;margin: 0;box-sizing: border-box;background-color: #F3F4F6;font-family: Helvetica, Arial, sans-serif;">
+    <div style="opacity: 0;padding: 0;margin: 0;box-sizing: border-box;">{{ $randomness }}</div>
     <div style="padding: 0;margin: 0;box-sizing: border-box;">
         <table align="center" height="100" width="100%" class="containerSpacer"
             style="padding: auto;margin: 0;box-sizing: border-box;background: #7772F0;">
@@ -35,12 +37,12 @@
             </table>
             <hr style="padding: 0;margin: 0.25rem 0;box-sizing: border-box;border: solid 1px #7772F0;">
             <table width="100%" style="padding: 0;margin: 0;box-sizing: border-box;">
-                <tr align="center" style="padding: 0;margin: 0;box-sizing: border-box;">
+                <tr align="left" style="padding: 0;margin: 0;box-sizing: border-box;">
                     <td style="padding: 0;margin: 0;box-sizing: border-box;">
                         <h2 class="font-normal text-gray my-1"
                             style="padding: 0;margin: 1rem 0;box-sizing: border-box;color: #727580;font-weight: 400;">
                             <b style="padding: 0;margin: 0;box-sizing: border-box;">
-                                Pinjaman Alatan Tulis telah berjaya!
+                                Terdapat Pesanan Baharu!
                             </b>
                         </h2>
                     </td>
@@ -49,94 +51,149 @@
 
             <table class="my-1 text-gray" style="padding: 0;margin: 1rem 0;box-sizing: border-box;color: #727580;">
                 <tr style="padding: 0;margin: 0;box-sizing: border-box;">
-                    <td style="padding: 0;margin: 0;box-sizing: border-box;">Kepada yang berkenaan</td>
+                    <td style="padding: 0;margin: 0;box-sizing: border-box;">Kepada, ADMIN UPSM</td>
                 </tr>
             </table>
-            <table style="margin-bottom: 1.5rem;padding: 0;margin: 0;box-sizing: border-box;">
+            <table style="margin-bottom: 1.5rem;padding: 0;margin: 0;box-sizing: border-box;" width="100%">
                 <tr class="text-gray" style="padding: 0;margin: 0;box-sizing: border-box;color: #727580;">
                     <td style="padding: 0;margin: 0;box-sizing: border-box;">
-                        Pesanan anda telah berjaya dihantar. Berikut adalah beberapa maklumat mengenai pesanan anda
+                        Terdapat pesanan baharu yang dibuat oleh staff. <br
+                            style="padding: 0;margin: 0;box-sizing: border-box;"> Berikut adalah beberapa maklumat
+                        mengenai pesanan tersebut
                     </td>
                 </tr>
-
             </table>
 
             <table width="100%" class="my-1" style="padding: 0;margin: 1rem 0;box-sizing: border-box;">
                 <tr align="left" style="padding: 0;margin: 0;box-sizing: border-box;">
                     <td class="text-gray" style="padding: 0;margin: 0;box-sizing: border-box;color: #727580;">
                         <span style="padding: 0;margin: 0;box-sizing: border-box;">
-                            ORDER:
+                            TEMPAHAN ID:
                             <b style="padding: 0;margin: 0;box-sizing: border-box;">
                                 {{ $orderID }}
                             </b>
                         </span>
                     </td>
+                    <td align="right" class="text-gray"
+                        style="padding: 0;margin: 0;box-sizing: border-box;color: #727580;">
+                        <b style="padding: 0;margin: 0;box-sizing: border-box;">
+                            TARIKH: {{ $date }}
+                        </b>
+                    </td>
+                </tr>
 
+                <tr align="left" style="padding: 0;margin: 0;box-sizing: border-box;">
+                    <td class="text-gray" style="padding: 0;margin: 0;box-sizing: border-box;color: #727580;">
+                        STAFF ID: <b style="padding: 0;margin: 0;box-sizing: border-box;">{{ $user->username }}</b>
+                    </td>
                 </tr>
                 <tr align="left" style="padding: 0;margin: 0;box-sizing: border-box;">
                     <td class="text-gray" style="padding: 0;margin: 0;box-sizing: border-box;color: #727580;">
-                        {{ $date }}
+                        NAMA STAFF: <b
+                            style="padding: 0;margin: 0;box-sizing: border-box;">{{ $user->first_name . ' ' . $user->last_name }}</b>
+                    </td>
+                </tr>
+                <tr align="left" style="padding: 0;margin: 0;box-sizing: border-box;">
+                    <td class="text-gray" style="padding: 0;margin: 0;box-sizing: border-box;color: #727580;">
+                        UNIT: <b style="padding: 0;margin: 0;box-sizing: border-box;">{{ $user->unit->name }}</b>
+                    </td>
+                </tr>
+                <tr align="left" style="padding: 0;margin: 0;box-sizing: border-box;">
+                    <td class="text-gray" style="padding: 0;margin: 0;box-sizing: border-box;color: #727580;">
+                        JAWATAN: <b style="padding: 0;margin: 0;box-sizing: border-box;">{{ $user->position->name }}</b>
                     </td>
                 </tr>
             </table>
+
+            <h4 style="color: #727580;text-transform: uppercase;padding: 0;margin: 0;box-sizing: border-box;">Butir
+                Tempahan Kereta :</h4>
 
             <table border="1" cellspacing="0" width="100%"
                 style="border-collapse: collapse;border: 2px solid gray;margin: 15px 0;padding: 0;box-sizing: border-box;">
                 <thead style="padding: 0;margin: 0;box-sizing: border-box;">
                     <tr style="padding: 0;margin: 0;box-sizing: border-box;">
-                        <th
-                            style="padding: 3px;text-align: center;color: #727580;font-family: Arial, Helvetica, sans-serif !important;margin: 0;box-sizing: border-box;">
-                            Dipesan Pada</th>
-                        <th
-                            style="padding: 3px;text-align: center;color: #727580;font-family: Arial, Helvetica, sans-serif !important;margin: 0;box-sizing: border-box;">
-                            Status</th>
+                        <th scope="col" colspan="5"
+                            style="padding: 10px;text-align: center;color: #727580;font-family: Arial, Helvetica, sans-serif !important;margin: 0;box-sizing: border-box;">
+                            BUTIR TEMPAHAN
+                        </th>
                     </tr>
                 </thead>
                 <tbody style="padding: 0;margin: 0;box-sizing: border-box;">
                     <tr style="padding: 0;margin: 0;box-sizing: border-box;">
+                        <th width="20%"
+                            style="padding: 3px;text-align: center;color: #727580;font-family: Arial, Helvetica, sans-serif !important;margin: 0;box-sizing: border-box;">
+                            Tarikh Pergi:
+                        </th>
                         <td
                             style="padding: 8px;text-align: center;color: #727580;font-family: Arial, Helvetica, sans-serif !important;margin: 0;box-sizing: border-box;">
-                            <p style="padding: 0;margin: 0;box-sizing: border-box;">
-                                {{ Carbon\Carbon::parse($date)->format('F j Y') }} </p>
+                            {{ $booking->dateGo }}
                         </td>
+                    </tr>
+                    <tr style="padding: 0;margin: 0;box-sizing: border-box;">
+                        <th
+                            style="padding: 3px;text-align: center;color: #727580;font-family: Arial, Helvetica, sans-serif !important;margin: 0;box-sizing: border-box;">
+                            Tarikh Balik:
+                        </th>
                         <td
                             style="padding: 8px;text-align: center;color: #727580;font-family: Arial, Helvetica, sans-serif !important;margin: 0;box-sizing: border-box;">
-                            <p style="padding: 0;margin: 0;box-sizing: border-box;"> PENDING </p>
-                            <p style="padding: 0;margin: 0;box-sizing: border-box;">Akan Dimaklumkan</p>
+                            {{ $booking->dateReturn }}
+                        </td>
+                    </tr>
+                    <tr style="padding: 0;margin: 0;box-sizing: border-box;">
+                        <th
+                            style="padding: 3px;text-align: center;color: #727580;font-family: Arial, Helvetica, sans-serif !important;margin: 0;box-sizing: border-box;">
+                            Waktu Pergi:
+                        </th>
+                        <td
+                            style="padding: 8px;text-align: center;color: #727580;font-family: Arial, Helvetica, sans-serif !important;margin: 0;box-sizing: border-box;">
+                            {{ $booking->timeGo }}
+                        </td>
+                    </tr>
+                    <tr style="padding: 0;margin: 0;box-sizing: border-box;">
+                        <th
+                            style="padding: 3px;text-align: center;color: #727580;font-family: Arial, Helvetica, sans-serif !important;margin: 0;box-sizing: border-box;">
+                            Waktu Balik:
+                        </th>
+                        <td
+                            style="padding: 8px;text-align: center;color: #727580;font-family: Arial, Helvetica, sans-serif !important;margin: 0;box-sizing: border-box;">
+                            {{ $booking->timeReturn }}
+                        </td>
+                    </tr>
+                    <tr style="padding: 0;margin: 0;box-sizing: border-box;">
+                        <th
+                            style="padding: 3px;text-align: center;color: #727580;font-family: Arial, Helvetica, sans-serif !important;margin: 0;box-sizing: border-box;">
+                            Destinasi:
+                        </th>
+                        <td
+                            style="padding: 8px;text-align: center;color: #727580;font-family: Arial, Helvetica, sans-serif !important;margin: 0;box-sizing: border-box;">
+                            {{ $booking->destination }}
+                        </td>
+                    </tr>
+                    <tr style="padding: 0;margin: 0;box-sizing: border-box;">
+                        <th
+                            style="padding: 3px;text-align: center;color: #727580;font-family: Arial, Helvetica, sans-serif !important;margin: 0;box-sizing: border-box;">
+                            Tujuan:
+                        </th>
+                        <td
+                            style="padding: 8px;text-align: center;color: #727580;font-family: Arial, Helvetica, sans-serif !important;margin: 0;box-sizing: border-box;">
+                            {{ $booking->objective }}
                         </td>
                     </tr>
                 </tbody>
             </table>
 
 
-            <table border="1" cellspacing="0" width="100%"
-                style="border-collapse: collapse;border: 2px solid gray;padding: 0;margin: 0;box-sizing: border-box;">
-                <thead style="padding: 0;margin: 0;box-sizing: border-box;">
-                    <tr style="padding: 0;margin: 0;box-sizing: border-box;">
-                        <th style="padding: 8px;text-align: left;color: #727580;margin: 0;box-sizing: border-box;">
-                            PESANAN BARANG</th>
-                        <th style="padding: 8px;text-align: right;color: #727580;margin: 0;box-sizing: border-box;">
-                            KUANTITI</th>
-                    </tr>
-                </thead>
-                <tbody style="padding: 0;margin: 0;box-sizing: border-box;">
-                    @foreach ($booking->inventories as $inventory)
-                        <tr style="padding: 0;margin: 0;box-sizing: border-box;">
-                            <td style="padding: 8px;text-align: left;color: #727580;margin: 0;box-sizing: border-box;">
-                                {{ $inventory->name }}
-                            </td>
-                            <td style="padding: 8px;text-align: right;color: #727580;margin: 0;box-sizing: border-box;">
-                                {{ $inventory->pivot->quantity }}
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
+            <table width="100%" style="padding: 0;margin: 0;box-sizing: border-box;">
+                <tr style="padding: 0;margin: 0;box-sizing: border-box;">
+                    <td align="right" style="padding: 0;margin: 0;box-sizing: border-box;">
+                        <a href="{{ route('upsm.BookingKenderaan.edit', ['Kenderaan' => Crypt::encryptString($booking->id)]) }}"
+                            class="btn btn-primary"
+                            style="padding: 10px 20px;margin: 0;box-sizing: border-box;display: inline-block;font-size: 16px;text-align: center;text-decoration: none;border-radius: 5px;cursor: pointer;color: #fff;background-color: #7772F0;">
+                            EDIT PERMOHONAN
+                        </a>
+                    </td>
+                </tr>
             </table>
-
-            <p style="text-align: end;padding: 0;margin: 1rem 0;box-sizing: border-box;color: #727580;"
-                class="text-gray my-1">Jumlah Keseluruhan:
-                <span style="padding: 0;margin: 0;box-sizing: border-box;"> {{ $totalQuantity }}x </span>
-            </p>
 
             <table class="my-1 text-gray" style="padding: 0;margin: 1rem 0;box-sizing: border-box;color: #727580;">
                 <tr style="padding: 0;margin: 0;box-sizing: border-box;">
@@ -183,6 +240,7 @@
 
     </div>
 
+    <div style="opacity: 0;padding: 0;margin: 0;box-sizing: border-box;">{{ $randomness }}</div>
 </body>
 
 </html>

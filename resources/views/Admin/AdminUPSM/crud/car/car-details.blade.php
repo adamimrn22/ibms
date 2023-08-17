@@ -25,6 +25,13 @@
                             </thead>
                             <tbody>
                                 <tr>
+                                    <th scope="row" class="text-start">Plate Number</th>
+                                    <td>
+                                        <span
+                                            class="badge rounded-pill badge-light-primary">{{ $car->attribute->plateNumber }}</span>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <th scope="row" class="text-start">Seat</th>
                                     <td>
                                         <span>{{ $car->attribute->seat }}</span>

@@ -7,6 +7,9 @@ $(document).ready(function () {
                 name: {
                     required: true,
                 },
+                plateNumber: {
+                    required: true,
+                },
                 seat: {
                     required: true,
                     number: true

@@ -28,8 +28,8 @@
                                 </x-form.form-group>
 
                                 <x-form.form-group>
-                                    <x-form.label :for="'stock'" :title="'Stock'" />
-                                    <x-form.input :id="'stock'" :type="'number'" :placeholder="'20'" />
+                                    <x-form.label :for="'current_quantity'" :title="'Stock'" />
+                                    <x-form.input :id="'current_quantity'" :type="'number'" :placeholder="'20'" />
                                 </x-form.form-group>
 
                                 <div class="col-md-6 col-12">

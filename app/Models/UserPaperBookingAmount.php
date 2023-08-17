@@ -13,7 +13,7 @@ class UserPaperBookingAmount extends Model
 
     public function subtractAmount($amount)
     {
-        $this->amount -= $amount;
+        $this->amount = max(0, $this->amount - $amount);
         $this->save();
     }
 

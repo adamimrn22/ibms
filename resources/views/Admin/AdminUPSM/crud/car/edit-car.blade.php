@@ -36,6 +36,11 @@
                                 </x-form.form-group>
 
                                 <x-form.form-group>
+                                    <x-form.label :for="'plateNumber'" :title="'Plate Number'" />
+                                    <x-form.input :id="'plateNumber'" :value="$car->attribute->plateNumber" />
+                                </x-form.form-group>
+
+                                <x-form.form-group>
                                     <x-form.label :for="'seat'" :title="'Seat'" />
                                     <x-form.input :id="'seat'" :type="'number'" :value="$car->attribute->seat" />
                                 </x-form.form-group>

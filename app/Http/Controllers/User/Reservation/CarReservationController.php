@@ -4,9 +4,14 @@ namespace App\Http\Controllers\User\Reservation;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\UpsmVehicleBooking;
+use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
+use App\Mail\TempahanKereta\NewPesananKereta;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TempahanKereta\PesananBerjaya;
+use App\Mail\TempahanKereta\PesananKeretaBerjaya;
 
 class CarReservationController extends Controller
 {
@@ -46,6 +51,8 @@ class CarReservationController extends Controller
             'name' => 'required|array', // Staff IDs
         ]);
 
+        $user = Auth::user();
+
         $lastBooking = UpsmVehicleBooking::latest()->where('reference', 'LIKE', 'UPSMVHBK%')->first();
         $lastReferenceNumber = $lastBooking ? intval(substr($lastBooking->reference, 8)) : 0; // Changed index from 6 to 8
         $newReferenceNumber = $lastReferenceNumber + 1;
@@ -70,6 +77,14 @@ class CarReservationController extends Controller
             'created_at' => now()
         ]);
 
+        $role = Role::findByName('ADMIN UPSM');
+        $userWithRole = $role->users()->first();
+
+        if ($userWithRole) {
+            $adminEmail = $userWithRole->email;
+            Mail::to($user->email)->queue(new PesananKeretaBerjaya($booking));
+            Mail::to($adminEmail)->queue(new NewPesananKereta($booking, $user));
+        }
 
         return redirect()->route('user.homepage')->with('success', 'Tempahan Kenderaan telah berjaya');
 

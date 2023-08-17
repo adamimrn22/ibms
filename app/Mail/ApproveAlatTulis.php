@@ -16,11 +16,12 @@ class ApproveAlatTulis extends Mailable implements ShouldQueue
     use Queueable, SerializesModels;
 
     protected $user;
-    protected $bookings;
+    protected $booking;
     protected $orderID;
     protected $totalQuantity;
     protected $approvedDate;
     protected $bookDate;
+    protected $randomString;
 
     /**
      * Create a new message instance.
@@ -28,15 +29,24 @@ class ApproveAlatTulis extends Mailable implements ShouldQueue
     public function __construct($user, $reference)
     {
         $this->user = $user;
-        $this->bookings = UkwBooking::with('inventory', 'status')->where('reference', $reference)->get();
-        $this->orderID = $reference;
-        $this->totalQuantity = $this->bookings->sum('approved_quantity');
+        $this->booking =  UkwBooking::with('inventories', 'status')
+        ->withSum('inventories', 'ukw_bookings_inventories.quantity')
+        ->where('reference', $reference)->first();
 
-        $formatBookDate = Carbon::parse($this->bookings[0]->created_at)->formatLocalized('%B %d, %Y %I:%M %p');
-        $formatApprovedDate = Carbon::parse($this->bookings[0]->updated_at)->formatLocalized('%B %d, %Y %I:%M %p');
+        $this->orderID = $reference;
+        $this->totalQuantity = $this->booking->inventories_sum_ukw_bookings_inventoriesquantity;
+
+
+        $formatBookDate = Carbon::parse($this->booking->created_at)->formatLocalized('%B %d, %Y %I:%M %p');
+        $formatApprovedDate = Carbon::parse($this->booking->updated_at)->formatLocalized('%B %d, %Y %I:%M %p');
 
         $this->bookDate =  $formatBookDate;
         $this->approvedDate =  $formatApprovedDate;
+
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        // gmail trim the mail this is for not making it trim
+        $this->randomString = substr(str_shuffle($characters), 0, 10);
     }
 
     /**
@@ -58,7 +68,8 @@ class ApproveAlatTulis extends Mailable implements ShouldQueue
             view: 'mail.bookingAlatTulis.approvedBooking',
             with: [
                 'user' => $this->user,
-                'bookings' => $this->bookings,
+                'randomness' => $this->randomString,
+                'booking' => $this->booking,
                 'orderID' => $this->orderID,
                 'totalQuantity' => $this->totalQuantity,
                 'bookDate' => $this->bookDate,

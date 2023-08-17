@@ -6,8 +6,7 @@
     <x-app-content>
 
         <div class="row mt-1">
-            <form action="{{ route('ukw.BookingAlatTulis.update', ['BookingAlatTuli' => $bookings[0]->reference]) }}"
-                method="POST">
+            <form action="{{ route('ukw.BookingAlatTulis.update', ['BookingAlatTuli' => $booking->id]) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="col-12">
@@ -24,13 +23,13 @@
                                     <thead>
                                         <tr align="center">
                                             <td>BOOKING ID</td>
-                                            <th>{{ $bookings[0]->reference }}</th>
+                                            <th>{{ $booking->reference }}</th>
 
                                             <td>STAFF ID</td>
-                                            <th>{{ $bookings[0]->user->username }}</th>
+                                            <th>{{ $booking->user->username }}</th>
 
                                             <td>Full Name</td>
-                                            <th>{{ $bookings[0]->user->first_name . ' ' . $bookings[0]->user->last_name }}
+                                            <th>{{ $booking->user->first_name . ' ' . $booking->user->last_name }}
                                             </th>
                                         </tr>
                                     </thead>
@@ -49,21 +48,26 @@
                                         <th width="5%" class="text-center">Quantity</th>
                                     </tr>
                                 </thead>
-                                @foreach ($bookings as $index => $booking)
+                                @foreach ($booking->inventories as $index => $inventory)
                                     <tr>
                                         <td class="text-center">{{ $index + 1 }}</td>
                                         <td>
                                             <div class="form-check form-check-success">
-                                                <input type="hidden" name="booking[{{ $booking->id }}]" value="unchecked">
+                                                <input type="hidden" name="booking[{{ $inventory->id }}]"
+                                                    value="unchecked">
                                                 <input class="form-check-input approveCheckbox" type="checkbox"
-                                                    id="approval" name="booking[{{ $booking->id }}]" value="approved">
+                                                    id="approval" name="booking[{{ $inventory->id }}]" value="approved">
                                                 <label class="form-check-label">Approve</label>
                                             </div>
                                         </td>
-                                        <td>{{ $booking->inventory->name }}</td>
+                                        <td>
+                                            {{ $inventory->name }}
+                                            <input type="hidden" name="subcategory[{{ $inventory->id }}]"
+                                                value="{{ $inventory->subcategory_id }}">
+                                        </td>
                                         @php
-                                            if ($booking->quantity > $booking->inventory->current_quantity) {
-                                                $booking->quantity = $booking->inventory->current_quantity;
+                                            if ($inventory->pivot->quantity > $inventory->current_quantity) {
+                                                $inventory->pivot->quantity = $inventory->current_quantity;
                                             }
                                         @endphp
                                         <td>
@@ -80,8 +84,9 @@
                                                         </svg>
                                                     </button></span>
                                                 <input type="number" class="touchspin form-control"
-                                                    value="{{ $booking->quantity }}" name="quantity[{{ $booking->id }}]"
-                                                    max="{{ $booking->inventory->current_quantity }}">
+                                                    value="{{ $inventory->pivot->quantity }}"
+                                                    name="approvedQuantity[{{ $inventory->id }}]"
+                                                    max="{{ $inventory->current_quantity }}">
                                                 <span class="input-group-btn bootstrap-touchspin-injected">
                                                     <button class="btn btn-primary bootstrap-touchspin-up"
                                                         type="button"><svg xmlns="http://www.w3.org/2000/svg"
@@ -101,11 +106,17 @@
                                 @endforeach
                             </table>
                             <hr>
+
+                            <div class="mb-1">
+                                <label class="form-label" for="remark">Remarks</label>
+                                <textarea class="form-control" id="remark" name="remark" rows="3" placeholder="Remarks for not approve"></textarea>
+                            </div>
+
                             <div class="d-flex flex-row-reverse p-2">
-                                <button id="submitBtn" type="submit" name="updateBooking" value="approveButton"
+                                <button id="submitBtn" type="submit" name="updateBooking" value="1"
                                     class="btn btn-success waves-effect waves-float waves-light mx-1"
                                     disabled>Approve</button>
-                                <button type="submit" name="updateBooking" value="rejectButton"
+                                <button type="submit" name="updateBooking" value="0"
                                     class="btn btn-outline-danger waves-effect">Reject All</button>
                             </div>
                         </div>

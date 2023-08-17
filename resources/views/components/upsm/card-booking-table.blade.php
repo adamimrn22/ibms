@@ -5,6 +5,21 @@
         <div class="card">
 
             <div class="card-header">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('upsm.BookingKenderaan.index') ? 'active' : '' }}"
+                            id="home-tab" data-bs-toggle="tab" href="{{ route('upsm.BookingKenderaan.index') }}"
+                            aria-controls="home" role="tab" aria-selected="true">Pending</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('upsm.BookingKenderaan.indexHistory') ? 'active' : '' }}"
+                            href="{{ route('upsm.BookingKenderaan.indexHistory') }}" aria-controls="profile"
+                            role="tab" aria-selected="false">History</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card-header">
                 <h4 class="card-title">{{ $title }}</h4>
             </div>
 

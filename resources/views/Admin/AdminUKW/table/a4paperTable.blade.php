@@ -5,7 +5,6 @@
                 <th>No.</th>
                 <th>Name</th>
                 <th>Current Quantity</th>
-                <th>Stock</th>
                 <th></th>
             </tr>
         </thead>
@@ -23,10 +22,6 @@
                     <td>
                         {{ $paper->current_quantity }}
                     </td>
-                    <td>
-                        {{ $paper->stock }}
-                    </td>
-
                     <td>
                         <div class="dropdown">
                             <button type="button"

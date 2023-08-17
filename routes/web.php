@@ -1,41 +1,48 @@
 <?php
 
-use App\Http\Controllers\Admin\Booking\UKW\A4Amount;
-use App\Http\Controllers\Admin\Booking\UKW\A4AmountController;
-use App\Http\Controllers\Admin\Booking\UKW\AlatTulisBookingController;
-use App\Http\Controllers\Admin\Booking\UPSM\KenderaanBookingController;
 use Carbon\Carbon;
 use App\Models\Booking;
 use App\Models\Inventory;
 use App\Models\UkwBooking;
+use App\Models\BookingStatus;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Models\UserPaperBookingAmount;
 use App\Http\Controllers\TempfileController;
 use App\Http\Controllers\UserHomeController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\SuperAdmin\UnitController;
 use App\Http\Controllers\SuperAdmin\UserController;
+use App\Http\Controllers\Admin\Booking\UKW\A4Amount;
 use App\Http\Controllers\SuperAdmin\RolesController;
 use App\Http\Controllers\SuperAdmin\SAHomeController;
+use App\Http\Controllers\User\Booking\CartController;
 use App\Http\Controllers\Booking\UKWBookingController;
 use App\Http\Controllers\SuperAdmin\PositionController;
+use App\Http\Controllers\UserBookingDashboardController;
 use App\Http\Controllers\SuperAdmin\PermissionController;
+use App\Http\Controllers\Booking\UpsmCarBookingController;
 use App\Http\Controllers\Admin\Inventory\UKW\FileController;
 use App\Http\Controllers\Admin\Inventory\UPSM\CarController;
 use App\Http\Controllers\Admin\Inventory\UIT\CableController;
 use App\Http\Controllers\Admin\Inventory\UKW\PaperController;
+use App\Http\Controllers\Admin\Booking\UKW\A4AmountController;
 use App\Http\Controllers\Admin\Inventory\UKW\A4PaperController;
 use App\Http\Controllers\Admin\Inventory\UKW\SuppliesController;
 use App\Http\Controllers\Admin\Inventory\UIT\Cable\DviController;
 use App\Http\Controllers\Admin\Inventory\UIT\Cable\UsbController;
 use App\Http\Controllers\Admin\Inventory\UIT\Cable\VgaController;
+use App\Http\Controllers\User\Booking\BookingAlatTulisController;
 use App\Http\Controllers\Admin\Inventory\UIT\Cable\HdmiController;
 use App\Http\Controllers\Admin\Inventory\UKW\StationeryController;
 use App\Http\Controllers\Admin\Inventory\UPSM\ClassroomController;
 use App\Http\Controllers\Admin\Inventory\UPSM\OfficeRoomController;
+use App\Http\Controllers\User\Reservation\CarReservationController;
+use App\Http\Controllers\Admin\Booking\UKW\AlatTulisBookingController;
 use App\Http\Controllers\Admin\Inventory\UIT\Cable\EthernetController;
 use App\Http\Controllers\Admin\Inventory\UIT\Cable\PsuCableController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\MouseController;
+use App\Http\Controllers\Admin\Booking\UPSM\KenderaanBookingController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\LaptopController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\DesktopController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\MonitorController;
@@ -43,12 +50,6 @@ use App\Http\Controllers\Admin\Inventory\UIT\Hardware\PrinterController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\KeyboardController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\ProjectorController;
 use App\Http\Controllers\Admin\Inventory\UIT\Cable\CableController as CableCableController;
-use App\Http\Controllers\Booking\UpsmCarBookingController;
-use App\Http\Controllers\User\Booking\BookingAlatTulisController;
-use App\Http\Controllers\User\Booking\CartController;
-use App\Http\Controllers\User\Reservation\CarReservationController;
-use App\Http\Controllers\UserBookingDashboardController;
-use App\Models\UserPaperBookingAmount;
 
 /*
 |--------------------------------------------------------------------------
@@ -143,8 +144,10 @@ Route::middleware(['auth', 'role:Admin UPSM|Super Admin'])->prefix('UPSM')->name
     Route::prefix('/Booking')->group(function() {
         Route::prefix('/Kenderaan')->group(function() {
             Route::get('/', [KenderaanBookingController::class, 'index'])->name('BookingKenderaan.index');
+            Route::get('/History', [KenderaanBookingController::class, 'indexHistory'])->name('BookingKenderaan.indexHistory');
             Route::get('/{Kenderaan}/edit', [KenderaanBookingController::class, 'edit'])->name('BookingKenderaan.edit');
-
+            Route::put('/{Kenderaan}/edit', [KenderaanBookingController::class, 'update'])->name('BookingKenderaan.update');
+            Route::get('/PDF/{Kenderaan}', [KenderaanBookingController::class, 'generatePDF'])->name('BookingKenderaan.generatePDF');
         });
     });
 });
@@ -208,9 +211,36 @@ Route::middleware(['auth', 'role:User'])->prefix('/User')->group(function () {
 });
 
 
-// Route::get('/test', function(){
-//     return view('test.test');
-// });
+Route::get('/test', function(){
+
+    // $user = Auth::user();
+
+    // $booking = UkwBooking::with('inventories' )
+    // ->withSum('inventories', 'ukw_bookings_inventories.quantity')
+    // ->where('reference', 'UKWBK0001')->first();
+
+    // $totalQuantity =  $totalQuantity = $booking->inventories_sum_ukw_bookings_inventoriesquantity;
+
+    // $orderID = $booking->reference;
+
+    // $totalQuantity = $booking->inventories_sum_ukw_bookings_inventoriesquantity;
+
+
+    // $formatBookDate = Carbon::parse($booking->created_at)->formatLocalized('%B %d, %Y %I:%M %p');
+    // $formatApprovedDate = Carbon::parse($booking->updated_at)->formatLocalized('%B %d, %Y %I:%M %p');
+
+    // $bookDate =  $formatBookDate;
+    // $approvedDate =  $formatApprovedDate;
+
+    // return view('mail.bookingAlatTulis.approvedBooking', compact(
+    //     'user' ,
+    //     'booking' ,
+    //     'orderID' ,
+    //     'totalQuantity',
+    //     'bookDate',
+    //     'approvedDate',
+    // ));
+});
 
 // Route::get('/test1', [UserBookingDashboardController::class, 'index']);
 // Route::get('/testAlatanTulis', [UserBookingDashboardController::class, 'testShow']);

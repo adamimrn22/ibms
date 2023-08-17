@@ -92,88 +92,106 @@
 
                         <hr>
 
-                        @if ($booking->driver)
-                            <table class="table text-center my-1 border">
-                                <thead>
-                                    <th width="60">Nama Pemandu</th>
-                                    <th width="20">Unit</th>
-                                    <th width="20">Jawatan</th>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td width="60">
-                                            <select name="driver" class="form-select select2 staff-select">
-                                                <option value="" selected disabled></option>
-                                                @foreach ($staffs as $staff)
-                                                    <option value="{{ $staff->id }}"
-                                                        data-unit="{{ $staff->unit->name }}"
-                                                        data-position="{{ $staff->position->name }}">
-                                                        {{ $staff->first_name . ' ' . $staff->last_name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td width="20">
-                                            <span class="form-control" id="unit" style="display: none;"></span>
-                                        </td>
-                                        <td width="20">
-                                            <span class="form-control" id="position" style="display: none;"></span>
-                                        </td>
-                                    </tr>
-                                </tbody>
+                        <form action="{{ route('upsm.BookingKenderaan.update', ['Kenderaan' => $booking->id]) }}"
+                            method="POST">
+                            @csrf
+                            @method('PUT')
 
-                            </table>
-                        @endif
-                        @if ($booking->vehicle_type === 1)
-                            <table class="table text-center border my-2">
-                                <thead>
-                                    <th>Kereta</th>
-                                    <th>Butir Kereta</th>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td width="50%">
-                                            <select name="car" class="form-select select2 carSelect">
-                                                <option value="" selected disabled></option>
-                                                @foreach ($cars as $car)
-                                                    <option value="{{ $car->id }}"
-                                                        data-attributes="{{ $car->attribute }}"
-                                                        data-carLocation="{{ $car->location }}">
-                                                        {{ $car->name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td class="m-0 p-0">
-                                            <table width="100%">
-                                                <thead>
-                                                    <th style="padding: 3px">Lokasi</th>
-                                                    <th style="padding: 3px">Bil Tempat Duduk</th>
-                                                </thead>
-                                                <tr>
-                                                    <td style="padding: 3px">
-                                                        <span id="carLocation"></span>
-                                                    </td>
-                                                    <td style="padding: 3px">
-                                                        <span id="carSeat"></span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
+                            @if ($booking->driver)
+                                <table class="table text-center my-1 border">
+                                    <thead>
+                                        <th width="60">Nama Pemandu</th>
+                                        <th width="20">Unit</th>
+                                        <th width="20">Jawatan</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td width="60">
+                                                <select name="driver" class="form-select select2 staff-select">
+                                                    <option value="" selected disabled></option>
+                                                    @foreach ($staffs as $staff)
+                                                        <option value="{{ $staff->id }}"
+                                                            data-unit="{{ $staff->unit->name }}"
+                                                            data-position="{{ $staff->position->name }}">
+                                                            {{ $staff->first_name . ' ' . $staff->last_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                            <td width="20">
+                                                <span class="form-control" id="unit" style="display: none;"></span>
+                                            </td>
+                                            <td width="20">
+                                                <span class="form-control" id="position" style="display: none;"></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
 
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        @endif
+                                </table>
+                            @endif
+                            @if ($booking->vehicle_type === 1)
+                                <table class="table text-center border my-2">
+                                    <thead>
+                                        <th>Kereta</th>
+                                        <th>Butir Kereta</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td width="50%">
+                                                <select name="car" class="form-select select2 carSelect">
+                                                    <option value="" selected disabled></option>
+                                                    @foreach ($cars as $car)
+                                                        <option value="{{ $car->id }}"
+                                                            data-attributes="{{ $car->attribute }}"
+                                                            data-carLocation="{{ $car->location }}">
+                                                            {{ $car->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                            <td class="m-0 p-0">
+                                                <table width="100%">
+                                                    <thead>
+                                                        <th style="padding: 3px">Lokasi</th>
+                                                        <th style="padding: 3px">Bil Tempat Duduk</th>
+                                                        <th style="padding: 3px">Nombor Kenderaan</th>
+                                                    </thead>
+                                                    <tr>
+                                                        <td style="padding: 5px">
+                                                            <span id="carLocation"></span>
+                                                        </td>
+                                                        <td style="padding: 5px">
+                                                            <span id="carSeat"></span>
+                                                        </td>
+                                                        <td style="padding: 5px">
+                                                            <span id="carPlate"></span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
 
-                        <div class="d-flex flex-row-reverse p-2">
-                            <button id="submitBtn" type="submit" name="updateBooking" value="approveButton"
-                                class="btn btn-success waves-effect waves-float waves-light mx-1" disabled>Approve</button>
-                            <button type="submit" name="updateBooking" value="rejectButton"
-                                class="btn btn-outline-danger waves-effect">Reject</button>
-                        </div>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            @endif
+
+                            <div class="mb-1">
+                                <label class="form-label" for="remark">Ulasan</label>
+                                <textarea class="form-control" id="remark" name="remark" rows="3"
+                                    placeholder="Ulasan tinggalakan jika tiada sebarang ulasan"></textarea>
+                            </div>
+
+                            <div class="d-flex flex-row-reverse p-2">
+                                <button id="submitBtn" type="submit" name="updateBooking" value="1"
+                                    class="btn btn-success waves-effect waves-float waves-light mx-1"
+                                    disabled>Approve</button>
+                                <button type="submit" name="updateBooking" value="0"
+                                    class="btn btn-outline-danger waves-effect">Reject</button>
+                            </div>
+
+                        </form>
                     </div>
                 </div>
             </div>
@@ -210,9 +228,10 @@
 
                 if (attributes) { // Assuming DOP refers to location
                     let carSeat = attributes.seat || '';
-
+                    let carPlate = attributes.plateNumber;
                     $('#carLocation').text(carLocation);
                     $('#carSeat').text(carSeat);
+                    $('#carPlate').text(carPlate);
                 } else {
                     $('#carLocation').text('');
                     $('#carSeat').text('');

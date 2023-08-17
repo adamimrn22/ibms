@@ -5,8 +5,9 @@
 @section('layout')
     <x-app-content>
 
+
         <!-- table -->
-        <x-upsm.card-booking-table :id="'searchBooking'" :placeholder="'Search Booking'" :data='$data' :title="'Tempahan Kenderaan'">
+        <x-upsm.card-booking-table :id="'searchBooking'" :placeholder="'Search Booking'" :data='$data' :title="'Pending Tempahan Kenderaan'">
             @include('Admin.AdminUPSM.Booking.kenderaan.bookingTable')
         </x-upsm.card-booking-table>
         <!-- table -->
