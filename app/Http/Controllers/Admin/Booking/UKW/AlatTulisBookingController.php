@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin\Booking\UKW;
 
 use Carbon\Carbon;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use App\Models\UkwBooking;
 use App\Models\UkwInventory;
 use Illuminate\Http\Request;
@@ -24,7 +26,7 @@ class AlatTulisBookingController extends Controller
         $searchTerm = $request->input('search');
         $query = UkwBooking::query()->with('status');
 
-        $data = $this->applyPaginationFilterSearch($query, $perPage, $searchTerm);
+        $data = $this->applyPaginationFilterSearch(1, $query, $perPage, $searchTerm);
         if ($request->ajax()) {
             return response()->json([
                 'table' => view('Admin.AdminUKW.Booking.AlatTulis.bookingTable', compact('data'))->render(),
@@ -35,29 +37,57 @@ class AlatTulisBookingController extends Controller
         return view('Admin.AdminUKW.Booking.AlatTulis.ViewBooking', compact('data'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function indexHistory(Request $request)
     {
-        //
+        $perPage = $request->input('records', 7);
+        $searchTerm = $request->input('search');
+        $filter = $request->input('status');
+
+        $query = UkwBooking::query()->with('status');
+
+        $data = $this->applyPaginationFilterSearch(0, $query, $perPage, $searchTerm, $filter);
+        if ($request->ajax()) {
+            return response()->json([
+                'table' => view('Admin.AdminUKW.Booking.AlatTulis.viewHistoryBookingTable', compact('data'))->render(),
+                'pagination' => view('components.Pagination', compact('data'))->render(),
+            ]);
+        }
+
+         return view('Admin.AdminUKW.Booking.AlatTulis.viewBookingHistory', compact('data'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function generatePDF(string $encryptID)
     {
-        //
+        $id = Crypt::decryptString($encryptID);
+        $booking = UkwBooking::with('user', 'inventories')->find($id);
+// dd($booking);
+        if (!$booking) {
+            abort(404); // Booking not found
+        }
+        // Load your view with the booking data
+        $pdfContent = view('pdf.printPinjamanAlatanTulis', ['booking' => $booking])->render();
+
+        // Create Dompdf options
+        $pdfOptions = new Options();
+        $pdfOptions->set('isHtml5ParserEnabled', true);
+        $pdfOptions->set('isRemoteEnabled', true);
+
+        // Create a Dompdf instance
+        $dompdf = new Dompdf($pdfOptions);
+        $dompdf->loadHtml($pdfContent);
+
+        // (Optional) Set paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the PDF
+        $dompdf->render();
+
+           // Return the PDF content in a new tab
+        return response($dompdf->output())
+                ->header('Content-Type', 'application/pdf')
+                ->header('Content-Disposition', "inline; filename={$booking->reference}_" . Carbon::parse($booking->created_at)->format('Y-m-d') . ".pdf");
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -90,6 +120,7 @@ class AlatTulisBookingController extends Controller
             $bookingItemId = $request->input('booking', []);
             $bookingItemSubCategory = $request->input('subcategory', []);
             $approvedQuantity = $request->input('approvedQuantity', []);
+            $remarkNotes = $request->input('remarkNotes', []);
             $remark = $request->input('remark');
 
             if(empty($remark)){
@@ -123,10 +154,16 @@ class AlatTulisBookingController extends Controller
                                 if ($userPaperBooking) {
                                     if ($userPaperBooking->amount > 0) {
                                         $userPaperBooking->subtractAmount( $approvedQuantity[$itemID] );
+
+                                        $attributes['approved_quantity'] = $approvedQuantity[$itemID];
+                                        $attributes['remarkNotes'] = $remarkNotes[$itemID];
+                                        $attributes['status_id'] = 2;
+                                        $attributes['updated_at'] = now();
                                     }else {
                                         $attributes['approved_quantity'] = 0;
-                                        $attributes['updated_at'] = now();
+                                        $attributes['remarkNotes'] = $remarkNotes[$itemID];
                                         $attributes['status_id'] = 3;
+                                        $attributes['updated_at'] = now();
                                     }
                                 }else {
                                     return redirect()->route('ukw.BookingAlatTulis.index')->with([
@@ -136,13 +173,17 @@ class AlatTulisBookingController extends Controller
                             }else {
                                 $attributes['approved_quantity'] = $approvedQuantity[$itemID];
                                 $attributes['updated_at'] = now();
+                                $attributes['remarkNotes'] = $remarkNotes[$itemID];
+
                                 $attributes['status_id'] = 2;
                             }
 
                         } else {
                             $attributes['approved_quantity'] = 0;
+                            $attributes['remarkNotes'] = $remarkNotes[$itemID];
                             $attributes['status_id'] = 3;
                         }
+
 
                         $updatedAttributes[$itemID] = $attributes;
                     }
@@ -162,6 +203,7 @@ class AlatTulisBookingController extends Controller
                         $attributes = [
                             'approved_quantity' => 0,
                             'status_id' => 3,
+                            $attributes['remarkNotes'] = $remarkNotes[$inventoryId],
                             'updated_at' => now(),
                         ];
 
@@ -171,8 +213,9 @@ class AlatTulisBookingController extends Controller
                     $booking->inventories()->sync($updatedAttributes);
                     Mail::to($booking->user->email)->queue(new RejectedAlatTulis($booking->reference));
                 }
-            return redirect()->route('ukw.BookingAlatTulis.index')->with([
-                'success' => 'Success'
+            return redirect()->route('ukw.BookingAlatTulis.indexHistory')->with([
+                'success'  => 'Booking ' . $booking->reference . ' telah diapprove',
+                'bookingID' => $booking->id
             ]);
 
         } catch (\Throwable $th) {
@@ -188,27 +231,38 @@ class AlatTulisBookingController extends Controller
         //
     }
 
-    public function applyPaginationFilterSearch($query, $perPage, $searchTerm)
+    public function applyPaginationFilterSearch($type, $query, $perPage, $searchTerm, $status = null)
     {
-        // For search filtering
-        if ($searchTerm) {
-            $query->where(function ($query) use ($searchTerm) {
-                $query->whereHas('user', function ($userQuery) use ($searchTerm) {
-                    $userQuery->where('name', 'LIKE', "%{$searchTerm}%");
-                })
-                ->orWhere('reference', 'LIKE', "%{$searchTerm}%")
+        if($type){
+            $query->where('status_id', 1);
+
+            // For search filtering
+            if ($searchTerm) {
+                $query->where('reference', 'LIKE', "%{$searchTerm}%")
                 ->where('status_id', 1);
-            });
+            }
+
+            $query->latest('created_at');
+            // Apply pagination
+            return $query->paginate($perPage);
+            $query->where('status_id', 1);
+
+        }else {
+            $query->where('status_id', '!=', 1);
+            // For search filtering
+            if ($searchTerm) {
+                $query->where('reference', 'LIKE', "%{$searchTerm}%")
+                ->where('status_id', '!=', 1);
+            }
+
+            if ($status && $status !== 'ALL') {
+                $query->where('status_id', '=', "$status");
+            }
+
+            $query->latest('updated_at');
+
+            // Apply pagination
+            return $query->paginate($perPage);
         }
-
-        // Subquery to get latest entries for each reference
-        $subQuery = UkwBooking::selectRaw('MAX(id) as id')
-            ->groupBy('reference')->where('status_id', 1);
-
-        // Apply groupBy
-        $query->whereIn('id', $subQuery);
-
-        // Apply pagination
-        return $query->paginate($perPage);
     }
 }

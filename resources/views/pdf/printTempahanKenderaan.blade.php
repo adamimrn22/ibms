@@ -85,8 +85,8 @@
                     </b>
                 </p>
             </td>
-            <td style="padding: 3pt; border-left: none; border-right: none font-size: 10pt;">
-                <b>Hingga</b>
+            <td style="padding: 3pt; border-left: none; border-right: none; font-size: 10pt;">
+                <b>HINGGA</b>
             </td>
             <td style="border-left: none; border-right: none; padding: 5pt;" align="">
                 <p style="font-size: 8pt; margin: 2pt 0; padding: 0;">(Balik)</p>

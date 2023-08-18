@@ -30,7 +30,6 @@ class KenderaanBookingController extends Controller
             ]);
         }
 
-        $bookings = UpsmVehicleBooking::with('staff', 'inventory')->get();
         return view('Admin.AdminUPSM.Booking.kenderaan.viewBooking', compact('data'));
     }
 
@@ -50,7 +49,6 @@ class KenderaanBookingController extends Controller
             ]);
         }
 
-        $bookings = UpsmVehicleBooking::with('staff', 'inventory')->where('status_id', '!=', 1)->get();
         return view('Admin.AdminUPSM.Booking.kenderaan.viewHistoryBooking', compact('data'));
     }
 
@@ -58,6 +56,11 @@ class KenderaanBookingController extends Controller
     {
         $id = Crypt::decryptString($encryptID);
         $booking = UpsmVehicleBooking::with('staff')->findOrFail($id);
+
+        if($booking->status_id !== 1) {
+            abort(500, 'BOOKING IS ALREADY UPDATED');
+        }
+
         $staffs = User::role('User')->get();
         $cars = UpsmInventory::where('subcategory_id', 17)->where('status_id', 12)->get();
         return view('Admin.AdminUPSM.Booking.kenderaan.updateBooking', compact('booking', 'staffs', 'cars'));
@@ -65,15 +68,19 @@ class KenderaanBookingController extends Controller
 
     public function update(Request $request, string $id)
     {
+
         $updateBtn = $request->input('updateBooking');
         $driver = $request->input('driver');
         $car = $request->input('car');
         $remark = $request->input('remark');
         $booking = UpsmVehicleBooking::with('staff')->find($id);
-        $booking = UpsmVehicleBooking::with('staff')->find($id);
+
+        if($booking->status_id !== 1) {
+            abort(500, 'BOOKING IS ALREADY UPDATED');
+        }
 
         if(empty($remark)){
-            $remark = 'Tiada Remarks';
+            $remark = 'Tiada Ulasan';
         }
 
         if ($booking) {
@@ -88,8 +95,10 @@ class KenderaanBookingController extends Controller
 
                 Mail::to($booking->staff[0]->email)->queue(new PesananKeretaLulus($booking));
 
-                return redirect()->route('upsm.BookingKenderaan.indexHistory');
-
+                return redirect()->route('upsm.BookingKenderaan.indexHistory')->with([
+                    'success'  => 'Booking ' . $booking->reference . ' telah diapprove',
+                    'bookingID' => $booking->id
+                ]);
             } else {
                 UpsmVehicleBooking::where('id', $id)->update([
                     'status_id' => 3,
@@ -134,7 +143,7 @@ class KenderaanBookingController extends Controller
         return response($dompdf->output())
                 ->header('Content-Type', 'application/pdf')
                 ->header('Content-Disposition', "inline; filename={$booking->reference}_" . Carbon::parse($booking->created_at)->format('Y-m-d') . ".pdf");
-            }
+    }
 
     public function applyPaginationFilterSearch($type, $query, $perPage, $searchTerm, $status = null)
     {

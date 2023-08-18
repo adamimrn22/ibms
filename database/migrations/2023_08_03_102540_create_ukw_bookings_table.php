@@ -38,6 +38,7 @@ return new class extends Migration
             $table->unsignedBigInteger('inventory_id');
             $table->integer('quantity');
             $table->integer('approved_quantity')->nullable();
+            $table->string('remarkNotes')->nullable();
             $table->unsignedBigInteger('status_id')->nullable();
             $table->timestamps();
 

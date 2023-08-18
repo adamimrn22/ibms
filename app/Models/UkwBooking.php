@@ -14,7 +14,7 @@ class UkwBooking extends Model
     public function inventories()
     {
         return $this->belongsToMany(UkwInventory::class, 'ukw_bookings_inventories', 'booking_id', 'inventory_id')
-                    ->withPivot(['quantity', 'approved_quantity', 'status_id'])
+                    ->withPivot(['quantity', 'approved_quantity', 'remarkNotes', 'status_id'])
                     ->withTimestamps();
     }
 

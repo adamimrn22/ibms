@@ -194,6 +194,23 @@
     <script src="{{ asset('js/User/Kendereaan/tempahanKenderaan.js') }}"></script>
     <script>
         $(document).ready(function() {
+
+            const translations = {
+                weekdays: {
+                    shorthand: ["Ahad", "Isnin", "Selasa", "Rabu", "Khamis", "Jumaat", "Sabtu"],
+                    longhand: ["Ahad", "Isnin", "Selasa", "Rabu", "Khamis", "Jumaat", "Sabtu"]
+                },
+                months: {
+                    shorthand: ["Jan", "Feb", "Mac", "Apr", "Mei", "Jun", "Jul", "Ogos", "Sep", "Okt", "Nov",
+                        "Dis"
+                    ],
+                    longhand: ["Januari", "Februari", "Mac", "April", "Mei", "Jun", "Julai", "Ogos",
+                        "September", "Oktober", "November", "Disember"
+                    ]
+                }
+                // Add more translations as needed
+            };
+
             let rowNum = 1; // Initialize row number
 
             // Function to update dynamic numbers

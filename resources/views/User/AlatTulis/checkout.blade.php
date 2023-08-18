@@ -124,7 +124,7 @@
                             </tr>
                             <tr>
                                 <th>Tarikh:</th>
-                                <td>{{ date('l, F d, Y') }}</td>
+                                <td>{{ Carbon\Carbon::now()->isoFormat('dddd, MMMM DD, YYYY') }}</td>
                             </tr>
                             <tr>
                                 <th>Unit:</th>

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Mail\NewAlatTulisBooking;
 use Spatie\Permission\Models\Role;
 use App\Models\adminEmailReference;
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -51,12 +52,14 @@ class BookingAlatTulisController extends Controller
      */
     public function checkoutItem()
     {
+        App::setLocale('ms');
         $carts = $this->getCartInfo();
         if(empty($carts['cart'])){
             abort(404);
         }
         $user = Auth::user();
         array_values($carts['cart']);
+
         return view('User.AlatTulis.checkout', compact('user', 'carts'));
     }
 

@@ -8,10 +8,18 @@
                 <h4 class="card-title">Alat Tulis Booking</h4>
             </div>
 
-            {{-- <div class="card-header">
-                <x-ukw.alat-tulis-section />
-            </div> --}}
-            {{-- <hr> --}}
+            <div class="card-header">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('ukw.BookingAlatTulis.index') ? 'active' : '' }}"
+                            href="{{ route('ukw.BookingAlatTulis.index') }}">Pending</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('ukw.BookingAlatTulis.indexHistory') ? 'active' : '' }}"
+                            href="{{ route('ukw.BookingAlatTulis.indexHistory') }}" aria-controls="profile">History</a>
+                    </li>
+                </ul>
+            </div>
 
             <div class="d-flex justify-content-between align-items-center mx-0 mb-2 row">
 

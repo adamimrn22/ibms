@@ -94,7 +94,7 @@
 
             @hasanyrole(['Admin UKW'])
                 <li class="mb-1 nav-item ">
-                    <a class="d-flex align-items-center {{ Str::contains(request()->path(), 'UKW/Booking/BookingAlatTulis') ? 'active' : '' }}"
+                    <a class="d-flex align-items-center {{ Str::contains(request()->path(), 'UKW/Booking/AlatTulis') ? 'active' : '' }}"
                         href="{{ route('ukw.BookingAlatTulis.index') }}">
                         <i data-feather='archive'></i>
                         <span class="menu-item text-truncate">

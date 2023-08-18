@@ -169,9 +169,14 @@ Route::middleware(['auth', 'role:Admin UKW|Super Admin'])->prefix('UKW')->name('
         Route::delete('/tmp-delete', [TempfileController::class, 'tmpSupplyDelete'])->name('supply-tmp-delete');
     });
 
-    Route::prefix('Booking/UKW')->group(function() {
-        Route::resource('/BookingAlatTulis', AlatTulisBookingController::class);
-        Route::resource('/Amount', A4AmountController::class);
+    Route::prefix('Booking')->group(function() {
+        Route::prefix('/AlatTulis')->group(function() {
+            Route::get('/History', [AlatTulisBookingController::class, 'indexHistory'])->name('BookingAlatTulis.indexHistory');
+            Route::get('/PDF/{BookingAlatTulis}', [AlatTulisBookingController::class, 'generatePDF'])->name('BookingAlatTulis.generatePDF');
+            Route::resource('/BookingAlatTulis', AlatTulisBookingController::class);
+
+            Route::resource('/Amount', A4AmountController::class);
+        });
     });
 
 

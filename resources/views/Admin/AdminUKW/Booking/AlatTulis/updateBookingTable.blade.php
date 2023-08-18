@@ -46,6 +46,7 @@
                                             </div>
                                         <th>Name</th>
                                         <th width="5%" class="text-center">Quantity</th>
+                                        <th width="5%" class="text-center">Catatan</th>
                                     </tr>
                                 </thead>
                                 @foreach ($booking->inventories as $index => $inventory)
@@ -102,13 +103,17 @@
                                                         </svg></button></span>
                                             </div>
                                         </td>
+                                        <td width="25%">
+                                            <input type="text" class=" form-control"
+                                                name="remarkNotes[{{ $inventory->id }}]">
+                                        </td>
                                     </tr>
                                 @endforeach
                             </table>
                             <hr>
 
                             <div class="mb-1">
-                                <label class="form-label" for="remark">Remarks</label>
+                                <label class="form-label" for="remark">Remarks ( Untuk Email )</label>
                                 <textarea class="form-control" id="remark" name="remark" rows="3" placeholder="Remarks for not approve"></textarea>
                             </div>
 
