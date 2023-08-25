@@ -1,30 +1,20 @@
 <?php
 
-use Carbon\Carbon;
-use App\Models\Booking;
-use App\Models\Inventory;
-use App\Models\UkwBooking;
-use App\Models\BookingStatus;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Models\UserPaperBookingAmount;
 use App\Http\Controllers\TempfileController;
 use App\Http\Controllers\UserHomeController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\SuperAdmin\UnitController;
 use App\Http\Controllers\SuperAdmin\UserController;
-use App\Http\Controllers\Admin\Booking\UKW\A4Amount;
 use App\Http\Controllers\SuperAdmin\RolesController;
 use App\Http\Controllers\SuperAdmin\SAHomeController;
 use App\Http\Controllers\User\Booking\CartController;
 use App\Http\Controllers\Booking\UKWBookingController;
 use App\Http\Controllers\SuperAdmin\PositionController;
-use App\Http\Controllers\UserBookingDashboardController;
 use App\Http\Controllers\SuperAdmin\PermissionController;
-use App\Http\Controllers\Booking\UpsmCarBookingController;
 use App\Http\Controllers\Admin\Inventory\UKW\FileController;
 use App\Http\Controllers\Admin\Inventory\UPSM\CarController;
-use App\Http\Controllers\Admin\Inventory\UIT\CableController;
 use App\Http\Controllers\Admin\Inventory\UKW\PaperController;
 use App\Http\Controllers\Admin\Booking\UKW\A4AmountController;
 use App\Http\Controllers\Admin\Inventory\UKW\A4PaperController;
@@ -50,6 +40,7 @@ use App\Http\Controllers\Admin\Inventory\UIT\Hardware\PrinterController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\KeyboardController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\ProjectorController;
 use App\Http\Controllers\Admin\Inventory\UIT\Cable\CableController as CableCableController;
+use App\Http\Controllers\User\Reservation\RuangBookingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,7 +52,6 @@ use App\Http\Controllers\Admin\Inventory\UIT\Cable\CableController as CableCable
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
 
 
 Route::middleware(['auth'])->group(function () {
@@ -178,9 +168,6 @@ Route::middleware(['auth', 'role:Admin UKW|Super Admin'])->prefix('UKW')->name('
             Route::resource('/Amount', A4AmountController::class);
         });
     });
-
-
-
 });
 
 
@@ -210,6 +197,15 @@ Route::middleware(['auth', 'role:User'])->prefix('/User')->group(function () {
         Route::prefix('/TempahanKereta')->group(function() {
             Route::get('/Tempah', [CarReservationController::class, 'index'])->name('TempahKereta.index');
             Route::post('/Tempah', [CarReservationController::class, 'store'])->name('TempahKereta.store');
+        });
+
+        Route::prefix('/Ruang')->group(function() {
+            Route::get('/Tempah', [RuangBookingController::class, 'index'])->name('TempahRuang.index');
+            Route::get('/ViewTempahan', [RuangBookingController::class, 'viewTempahan'])->name('TempahRuang.viewTempahan');
+            Route::get('/Tempah/{Ruang}', [RuangBookingController::class, 'create'])->name('TempahRuang.booking');
+            Route::post('/Tempah/{Ruang}', [RuangBookingController::class, 'store'])->name('TempahRuang.store');
+            Route::get('/Tempahan/RuangTempah', [RuangBookingController::class, 'ruangTempah'])->name('TempahRuang.view');
+            Route::get('/disabledTimeRange', [RuangBookingController::class, 'getDisabledTimeRanges'])->name('TempahRuang.disabled.time.ranges');
         });
     });
 

@@ -76,7 +76,7 @@
                         </a>
                     </div>
                     <div class="col-md-3">
-                        <a href="#" class="image-card">
+                        <a href="{{ route('TempahRuang.index') }}" class="image-card">
                             <img src="{{ asset('img/classroom.jpg') }}" alt="Image 3">
                             <div class="image-overlay">Tempahan Ruang</div>
                         </a>

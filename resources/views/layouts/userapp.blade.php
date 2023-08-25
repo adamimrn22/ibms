@@ -193,11 +193,27 @@
                         </a>
                     </li>
 
-                    <li
-                        class="nav-item  my-1 my-lg-0 {{ Str::contains(request()->path(), '/UPSM/TempahRuang') ? 'active' : '' }}">
-                        <a class="nav-link d-flex align-items-center" href="index.html">
-                            <span>Tempahan Ruang Kelas</span>
-                        </a>
+                    <li class="dropdown nav-item {{ Str::contains(request()->path(), '/UPSM/Ruang') ? 'active' : '' }}"
+                        data-menu="dropdown"><a class="dropdown-toggle nav-link d-flex align-items-center"
+                            data-bs-toggle="dropdown">
+                            <span>Tempahan Ruang Kelas</span></a>
+
+                        <ul class="dropdown-menu" data-bs-popper="none">
+                            <li data-menu="">
+                                <a class="dropdown-item d-flex align-items-center"
+                                    href="{{ route('TempahRuang.index') }}">
+                                    <span>Permohonan Ruang Kelas</span>
+                                </a>
+                            </li>
+
+                            <li data-menu="">
+                                <a class="dropdown-item d-flex align-items-center"
+                                    href="{{ route('TempahRuang.viewTempahan') }}">
+                                    <span>Tempahan Ruang Kelas</span>
+                                </a>
+                            </li>
+
+                        </ul>
                     </li>
 
                     <li

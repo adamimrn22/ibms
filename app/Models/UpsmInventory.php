@@ -21,6 +21,11 @@ class UpsmInventory extends Model
         return $this->belongsTo(Subcategory::class, 'subcategory_id', 'id');
     }
 
+    public function bookingRoom()
+    {
+        return $this->belongsTo(UpsmRuangBooking::class);
+    }
+
     public function status(){
         return $this->hasOne(Status::class,  'id' ,'status_id',);
     }
