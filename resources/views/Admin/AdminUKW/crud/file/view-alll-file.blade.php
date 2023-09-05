@@ -4,7 +4,8 @@
 @endsection
 @section('layout')
     <x-app-content>
-
+        <x-ukw.inventory-stock-low />
+        <x-ukw.export-inventory />
         <!-- table -->
         <x-ukw.card-table :id="'searchFile'" :placeholder="'Search File'" :data='$data'>
             @include('Admin.AdminUKW.table.fileTable')
@@ -29,4 +30,5 @@
 
     <script src="{{ asset('js/Admin/Inventory/UKW/File/viewAllFile.js') }}"></script>
     <script src="{{ asset('js/Admin/Inventory/UKW/File/deleteFile.js') }}"></script>
+    <script src="{{ asset('js/Admin/Inventory/UKW/exportAlatTulisStock.js') }}"></script>
 @endsection

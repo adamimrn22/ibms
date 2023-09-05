@@ -10,6 +10,10 @@
             cursor: pointer;
             text-decoration: underline;
         }
+
+        .modal {
+            text-align: center;
+        }
     </style>
 @endsection
 
@@ -30,9 +34,7 @@
 
     <div class="card mt-1">
         <div class="m-1">
-
             <div class="card ">
-
                 <div class="card-header">
                     <h4 class="card-title">Pinjaman Alat Tulis</h4>
                 </div>
@@ -68,7 +70,6 @@
                             </a>
                         </li>
                     </ul>
-
                 </div>
                 <hr>
 
@@ -90,6 +91,8 @@
             @include('User.AlatTulis.cart')
         </div>
     </div>
+
+    @include('User.AlatTulis.alatTulisItem.imageModal')
 @endsection
 
 @section('script')
@@ -230,6 +233,35 @@
                 });
             });
 
+            $('.btn-show-image').on('click', function() {
+                const itemId = $(this).data('item-id');
+                console.log(itemId)
+
+                $.ajax({
+                    url: "{{ route('AlatTulis.image') }}",
+                    type: 'GET',
+                    data: {
+                        id: itemId, // Pass the item ID to the AJAX request
+                        _token: '{{ csrf_token() }}',
+                    },
+                    success: function(response) {
+                        if (response.error) {
+                            $('#img-error').text(response.error);
+                        } else {
+                            let img = response.image;
+                            let imgPath =
+                                `{{ asset('storage/supply/${img.parent_folder}/${img.path}') }}`
+                            $('#image-preview').attr('src', imgPath);
+                            $('#img-error').text('');
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#img-error').text(
+                            'Ralat berlaku semasa memproses permintaan anda.');
+                    }
+                });
+
+            });
         });
     </script>
 @endsection

@@ -22,7 +22,7 @@
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">Others</h4>
-                <a href="{{ route('uit.Others.index') }}"
+                <a href="{{ route('uit.Software.index') }}"
                     class="btn btn-outline-primary waves-effect {{ str_contains(request()->path(), 'Others') ? 'active' : '' }}">View</a>
             </div>
         </div>

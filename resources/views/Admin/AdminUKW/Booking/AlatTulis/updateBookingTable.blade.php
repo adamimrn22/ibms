@@ -62,7 +62,12 @@
                                             </div>
                                         </td>
                                         <td>
-                                            {{ $inventory->name }}
+                                            <button type="button"
+                                                class="btn btn-outline-primary waves-effect btn-show-image"
+                                                data-bs-toggle="modal" data-bs-target="#imageModal"
+                                                data-item-id="{{ $inventory->id }}">
+                                                {{ $inventory->name }}
+                                            </button>
                                             <input type="hidden" name="subcategory[{{ $inventory->id }}]"
                                                 value="{{ $inventory->subcategory_id }}">
                                         </td>
@@ -112,11 +117,6 @@
                             </table>
                             <hr>
 
-                            <div class="mb-1">
-                                <label class="form-label" for="remark">Remarks ( Untuk Email )</label>
-                                <textarea class="form-control" id="remark" name="remark" rows="3" placeholder="Remarks for not approve"></textarea>
-                            </div>
-
                             <div class="d-flex flex-row-reverse p-2">
                                 <button id="submitBtn" type="submit" name="updateBooking" value="1"
                                     class="btn btn-success waves-effect waves-float waves-light mx-1"
@@ -130,6 +130,8 @@
             </form>
         </div>
     </x-app-content>
+
+    @include('User.AlatTulis.alatTulisItem.imageModal')
 @endsection
 
 @section('script')
@@ -179,6 +181,35 @@
                 if (currentValue > 1) {
                     input.val(currentValue - 1);
                 }
+            });
+
+            $('.btn-show-image').on('click', function() {
+                const itemId = $(this).data('item-id');
+
+                $.ajax({
+                    url: "{{ route('ukw.BookingAlatTulis.image') }}",
+                    type: 'GET',
+                    data: {
+                        id: itemId, // Pass the item ID to the AJAX request
+                        _token: '{{ csrf_token() }}',
+                    },
+                    success: function(response) {
+                        if (response.error) {
+                            $('#img-error').text(response.error);
+                        } else {
+                            let img = response.image;
+                            let imgPath =
+                                `{{ asset('storage/supply/${img.parent_folder}/${img.path}') }}`
+                            $('#image-preview').attr('src', imgPath);
+                            $('#img-error').text('');
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#img-error').text(
+                            'Ralat berlaku semasa memproses permintaan anda.');
+                    }
+                });
+
             });
 
             updateApproveButtonState();

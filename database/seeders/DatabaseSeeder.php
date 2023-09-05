@@ -26,8 +26,7 @@ class DatabaseSeeder extends Seeder
         // $this->call(AdminSeeder::class);
         // $this->call(PermissionSeeder::class);
 
-
-        UpsmRuangBooking::factory(8)->create()->each(function ($booking) {
+        UpsmRuangBooking::factory(50)->create()->each(function ($booking) {
             $booking->detail()->save(UpsmRuangBookingDetails::factory()->make());
         });
         // $role = Role::findByName('User');

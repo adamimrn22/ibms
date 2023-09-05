@@ -4,6 +4,8 @@
 @endsection
 @section('layout')
     <x-app-content>
+        <x-ukw.inventory-stock-low />
+        <x-ukw.export-inventory />
         <x-ukw.card-table :id="'searchPaper'" :placeholder="'Search Paper'" :data='$data'>
             @include('Admin.AdminUKW.table.paperTable')
         </x-ukw.card-table>
@@ -26,4 +28,5 @@
 
     <script src="{{ asset('js/Admin/Inventory/UKW/Paper/viewAllPaper.js') }}"></script>
     <script src="{{ asset('js/Admin/Inventory/UKW/Paper/deletePaper.js') }}"></script>
+    <script src="{{ asset('js/Admin/Inventory/UKW/exportAlatTulisStock.js') }}"></script>
 @endsection

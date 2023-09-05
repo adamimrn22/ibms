@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
 use App\Http\Controllers\Booking\UKWBookingController;
+use App\Models\UkwInventoryImage;
 
 class BookingAlatTulisController extends Controller
 {
@@ -101,16 +102,20 @@ class BookingAlatTulisController extends Controller
                     'booking_id' => $booking->id
                 ]);
 
-                $role = Role::findByName('ADMIN UKW');
-                $userWithRole = $role->users()->first();
+                // emailing admin ukw email
+                // $role = Role::findByName('ADMIN UKW');
+                // $adminRole = $role->users()->first();
 
-                if ($userWithRole) {
-                    $adminEmail = $userWithRole->email;
-                    Mail::to($user->email)->queue(new UserBookingUKW($user, $booking->reference));
-                    Mail::to($adminEmail)->queue(new NewAlatTulisBooking($user, $booking->reference));
-                }
+                // if ($adminRole) {
+                //     $adminEmail = $adminRole->email;
+                //     Mail::to($user->email)->queue(new UserBookingUKW($user, $booking->reference));
+                //     Mail::to($adminEmail)->queue(new NewAlatTulisBooking($user, $booking->reference));
+                // }
 
-                // adminEmailReference::select('email')->where('unit_id', 3)->first();
+                // Sebab akak nik nak guna email but email table is unique
+                // change if there is a new email to use or use above method
+                Mail::to('farah@kolejspace.edu.my')->queue(new NewAlatTulisBooking($user, $booking->reference));
+                Mail::to($user->email)->queue(new UserBookingUKW($user, $booking->reference));
 
                 session()->forget('cart');
                 session(['paper_decrement_amount' => 0]);
@@ -129,8 +134,6 @@ class BookingAlatTulisController extends Controller
     public function paperIndex(Request $request)
     {
         $cartInfo = $this->getCartInfo();
-
-        // dd($cartInfo);
         return $this->handleAlatTulisIndex($request, 18, 'User.AlatTulis.table.paperTable', 'User.AlatTulis.alatTulisItem.paperBooking', $cartInfo);
     }
 
@@ -185,7 +188,6 @@ class BookingAlatTulisController extends Controller
         $subQuery = UkwBooking::selectRaw('MAX(id) as id')
                     ->groupBy('reference')->where('status_id', 1);
 
-        // Apply groupBy
         $query->whereIn('id', $subQuery);
 
         return $query->paginate($perPage);
@@ -194,13 +196,12 @@ class BookingAlatTulisController extends Controller
     public function getAvailableAlatTulis($query, $subcategory, $perPage, $searchTerm)
     {
         $query->where('subcategory_id', '=', $subcategory)->where('status_id', 9);
-        // For search filtering
+
         if ($searchTerm) {
                 $query->where('subcategory_id', '=', $subcategory)
                     ->where('status_id', 9)
                     ->where('name', 'LIKE', "%{$searchTerm}%");
         }
-        // Apply pagination
         return $query->paginate($perPage);
     }
 
@@ -219,5 +220,16 @@ class BookingAlatTulisController extends Controller
             'totalQuantity' => $totalQuantity,
             'cart' => $cart,
         ];
+    }
+
+    public function viewAlatTulisImage(Request $request)
+    {
+        try {
+            $id = $request->input('id');
+            $image = UkwInventoryImage::where('inventories_id', $id)->first();
+            return response()->json(['image' => $image]);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => 'Ralat berlaku semasa memproses permintaan anda.']);
+        }
     }
 }

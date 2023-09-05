@@ -30,5 +30,8 @@ class UpsmInventory extends Model
         return $this->hasOne(Status::class,  'id' ,'status_id',);
     }
 
-
+    public function scopeOfRoom($query, $type)
+    {
+        return $query->where('subcategory_id', $type);
+    }
 }

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('reference')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('status_id')->nullable();
-            $table->text('remark')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')

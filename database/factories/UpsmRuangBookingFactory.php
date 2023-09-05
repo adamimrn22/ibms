@@ -27,7 +27,7 @@ class UpsmRuangBookingFactory extends Factory
             'time_end' => $this->faker->time,
             'room_id' => $this->faker->randomElement($roomID),
             'user_id' => 3,
-            'status_id' => $this->faker->randomElement([1,2,3]),
+            'status_id' => 2, //$this->faker->randomElement([1,2,3])
             'created_at' => now(),
             'updated_at' => now()
         ];

@@ -4,8 +4,6 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
     <link rel="stylesheet" href="{{ asset('app-asset/vendors/css/pickers/pickadate/pickadate.css') }}">
     <link rel="stylesheet" href="{{ asset('app-asset/css/plugins/forms/pickers/form-pickadate.css') }}">
-    {{-- <link rel="stylesheet" href="{{ asset('app-asset/vendors/css/pickers/pickadate/classic.time.css') }}">
-    <link rel="stylesheet" href="{{ asset('app-asset/vendors/css/pickers/pickadate/default.time.css') }}"> --}}
 @endsection
 
 @section('section')
@@ -14,9 +12,7 @@
             <h3 class="card-title"> Permohonan Tempahan Ruang ( {{ $room->name }} ) </h3>
         </div>
         <div class="card-body">
-
             <div class="row">
-
                 <div class="col-md-6 col-12">
                     <table width="100%">
                         <thead class="bg-tertiary text-uppercase text-sm" style="background-color: #f3f2f7">
@@ -86,10 +82,8 @@
                 @csrf
                 <div class="row">
                     <x-form.form-group>
-                        <x-form.label :for="'dateUse'" :title="'Tarikh Mula Guna '" />
-                        {{-- <input type="text" id="dateUse" name="dateUse" class="form-control flatpickr-basic flatpickr-input"
-                        placeholder="YYYY-MM-DD"> --}}
-                        <input type="text" class="form-control pickadate-book_start picker__input"
+                        <x-form.label :for="'pickadate-book_start'" :title="'Tarikh Mula Guna '" />
+                        <input type="text" class="form-control pickadate-book_start picker__input" name="date_start"
                             placeholder="18 June, 2020" readonly="" id="P892070796" aria-haspopup="true"
                             aria-readonly="false" aria-owns="P892070796_root">
                         @error('dateUse')
@@ -98,21 +92,8 @@
                     </x-form.form-group>
 
                     <x-form.form-group>
-                        <x-form.label :for="'dateUse'" :title="'Tarikh Habis Guna '" />
-                        {{-- <input type="text" id="dateUse" name="dateUse" class="form-control flatpickr-basic flatpickr-input"
-                        placeholder="YYYY-MM-DD"> --}}
-                        <input type="text" class="form-control pickadate-e picker__input" placeholder="18 June, 2020"
-                            readonly="" id="P892070796" aria-haspopup="true" aria-readonly="false"
-                            aria-owns="P892070796_root">
-                        @error('dateUse')
-                            <label class="error">{{ $message }}</label>
-                        @enderror
-                    </x-form.form-group>
-
-                    <x-form.form-group>
-                        <x-form.label :for="'dateUse'" :title="'Tarikh Habis Guna '" />
-
-                        <input type="text" class="form-control pickadate-book_sftart picker__input"
+                        <x-form.label :for="'pickadate-book_end'" :title="'Tarikh Habis Guna '" />
+                        <input type="text" class="form-control pickadate-book_end picker__input" name="date_end"
                             placeholder="18 June, 2020" readonly="" id="P892070796" aria-haspopup="true"
                             aria-readonly="false" aria-owns="P892070796_root">
                         @error('dateUse')
@@ -121,32 +102,80 @@
                     </x-form.form-group>
 
                     <x-form.form-group>
-                        <x-form.label :for="'dateUse'" :title="'Tarikh Habis Guna '" />
-                        {{-- <input type="text" id="dateUse" name="dateUse" class="form-control flatpickr-basic flatpickr-input"
-                        placeholder="YYYY-MM-DD"> --}}
+                        <x-form.label :for="' pickatime-start'" :title="'Waktu Mula Guna '" />
                         <input type="text" id="pt-default" class="form-control pickatime-start  picker__input"
-                            placeholder="8:00 AM" readonly="" aria-haspopup="true" aria-readonly="false"
+                            name="time_start" placeholder="8:00 AM" readonly="" aria-haspopup="true"
+                            aria-readonly="false" aria-owns="pt-default_root">
+
+                        @error('dateUse')
+                            <label class="error">{{ $message }}</label>
+                        @enderror
+                    </x-form.form-group>
+
+                    <x-form.form-group>
+                        <x-form.label :for="'pickatime-end '" :title="'Waktu Habis Guna '" />
+                        <input type="text" id="pt-default" class="form-control pickatime-end  picker__input"
+                            name="time_end" placeholder="8:00 AM" readonly="" aria-haspopup="true" aria-readonly="false"
                             aria-owns="pt-default_root">
                         @error('dateUse')
                             <label class="error">{{ $message }}</label>
                         @enderror
                     </x-form.form-group>
 
+                    <x-form.form-group :colClass="'col-md-12'">
+                        <x-form.label :for="'objective'" :title="'Tujuan'" />
+                        <textarea class="form-control textarea" id="objective" name="objective" rows="3" placeholder="Tujuan Guna"></textarea>
+                    </x-form.form-group>
+
+                    <x-form.form-group :colClass="'col-md-12'">
+                        <div style="display:inline-block">
+                            <p>Keperluan</p>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="laptop" name="laptop">
+                                <label class="form-check-label" for="laptop">Komputer Riba</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="lcd" name="lcd">
+                                <label class="form-check-label" for="lcd">LCD</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="tempahanMakanan" name="tempahanMakanan">
+                                <label class="form-check-label" for="tempahanMakanan">Tempahan
+                                    Makanan</label>
+                            </div>
+                        </div>
+                        <div style="display:none" class="ms-5" id="tempahanMakananWaktu">
+                            <p>Waktu </p>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="pagiRadio" name="eatTime"
+                                    value="PAGI">
+                                <label class="form-check-label" for="pagiRadio">Pagi</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="tengahHariRadio" name="eatTime"
+                                    value="TENGAH HARI">
+                                <label class="form-check-label" for="tengahHariRadio">Tengah Hari</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="petangRadio" name="eatTime"
+                                    value="PETANG">
+                                <label class="form-check-label" for="petangRadio">Petang</label>
+                            </div>
+                        </div>
+                    </x-form.form-group>
                 </div>
-
-                <x-form.btn class="btn-primary" :id="'bookBtn'" :title="'Tempah'" :type="'submit'" />
-            </form>
-            {{--
-                <x-form.form-group>
-                    <label for="time" class="form-label">
-                        Jumlah Waktu Guna
-                    </label>
-                    <input type="text" id="time" name="time" class="form-control " readonly>
-                </x-form.form-group> --}}
-
-            {{-- <input type="text" id="pt-default" class="form-control pickatime-start  picker__input" placeholder="8:00 AM"
-                readonly="" aria-haspopup="true" aria-readonly="false" aria-owns="pt-default_root"> --}}
         </div>
+
+        <div class="m-1 d-flex justify-content-end">
+            <button type="button" value="0" onclick="goBack()" class="btn btn-outline-danger  ">
+                Batal
+            </button>
+            <button value="1" name="checkOutBtn" class="btn btn-primary ms-1">
+                Tempah Ruang
+            </button>
+        </div>
+
+        </form>
     </div>
 @endsection
 
@@ -157,64 +186,43 @@
     <script src="{{ asset('app-asset/vendors/js/pickers/pickadate/picker.date.js') }}"></script>
 
     <script>
-        //     $(document).ready(function() {
+        function goBack() {
+            window.history.back();
+        }
 
-        //         const bookedDateRanges = [{
-        //                 start: '20/8/2023',
-        //                 end: '22/8/2023'
-        //             },
-        //             {
-        //                 start: '25/8/2023',
-        //                 end: '28/8/2023'
-        //             }
-        //         ];
-        //         const bookedTimeRanges = [{
-        //                 start: '08:00',
-        //                 end: '12:00'
-        //             },
-        //             {
-        //                 start: '14:00',
-        //                 end: '16:00'
-        //             }
-        //         ]; // Example booked time ranges
+        $(document).ready(function() {
 
-        //         // Initialize the date picker
-        //         const datepicker = $('.pickadate-book_start').pickadate({
-        //             formatSubmit: 'dd/mm/yyyy',
-        //             // ... other options
-        //         }).pickadate('picker');
+            $("#tempahanMakanan").on("change", function() {
+                if ($(this).prop("checked")) {
+                    $("#tempahanMakananWaktu").css("display", "inline-block");
+                } else {
+                    $("#tempahanMakananWaktu").css("display", "none");
+                }
+            });
 
-        //         // Initialize the time picker
-        //         const timepicker = $('.pickatime-start').pickatime({
-        //             interval: 30
-        //         }).pickatime('picker');
+            // Initialize the date picker
+            $('.pickadate-book_start').pickadate({
+                formatSubmit: 'dd/mm/yyyy',
+            }).pickadate('picker');
 
-        //         // Disable booked dates in the date picker
-        //         bookedDateRanges.forEach(range => {
-        //             const [startDay, startMonth, startYear] = range.start.split('/').map(Number);
-        //             const [endDay, endMonth, endYear] = range.end.split('/').map(Number);
-        //             datepicker.set('disable', [{
-        //                 from: [startYear, startMonth - 1, startDay],
-        //                 to: [endYear, endMonth - 1, endDay]
-        //             }]);
-        //         });
+            $('.pickadate-book_end').pickadate({
+                formatSubmit: 'dd/mm/yyyy',
+            }).pickadate('picker');
 
-        //         // Disable booked time ranges in the time picker
-        //         bookedTimeRanges.forEach(range => {
-        //             const [startHour, startMinute] = range.start.split(':').map(Number);
-        //             const [endHour, endMinute] = range.end.split(':').map(Number);
-        //             timepicker.set('disable', [{
-        //                     from: [0, 0],
-        //                     to: [startHour, startMinute - 1]
-        //                 },
-        //                 {
-        //                     from: [endHour, endMinute + 1],
-        //                     to: [23, 59]
-        //                 }
-        //             ]);
-        //         });
 
-        //     });
-        //
+            $('.pickatime-start').pickatime({
+                interval: 30,
+                min: [7, 0], // Minimum time: 8:00 AM
+                max: [23, 30] // Maximum time: 11:30 PM
+            });
+
+            $('.pickatime-end').pickatime({
+                interval: 30,
+                min: [7, 0], // Minimum time: 8:00 AM
+                max: [23, 30] // Maximum time: 11:30 PM
+            }).pickatime('picker');
+
+
+        });
     </script>
 @endsection

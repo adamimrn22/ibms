@@ -1,18 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Inventory\UIT;
+namespace App\Http\Controllers\User\Booking;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\UitBookingItem;
+use Illuminate\Support\Facades\Auth;
 
-class OthersController extends Controller
+class UitPeripheralController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return view('User.PinjamanIT.permohonanPinjaman');
     }
 
     /**
@@ -20,7 +22,6 @@ class OthersController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -28,7 +29,19 @@ class OthersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'objective' => 'required'
+        ]);
+
+        $user = Auth::user();
+
+        UitBookingItem::create([
+            'objective' => $validatedData['objective'],
+            'user_id' => $user->id,
+            'created_at' => now()
+        ]);
+
+        return redirect()->route('user.homepage')->with(['success' => 'Permohonan Telah Berjaya']);
     }
 
     /**

@@ -121,6 +121,8 @@
                             KUANTITI YANG DILULUSKAN</th>
                         <th style="padding: 8px;text-align: center;color: #727580;margin: 0;box-sizing: border-box;">
                             STATUS</th>
+                        <th style="padding: 8px;text-align: center;color: #727580;margin: 0;box-sizing: border-box;">
+                            Catatan</th>
                     </tr>
                 </thead>
                 <tbody style="padding: 0;margin: 0;box-sizing: border-box;">
@@ -143,20 +145,12 @@
                                 @endphp
                                 {{ $statusName }}
                             </td>
+                            <td style="padding: 8px;text-align: right;color: #727580;margin: 0;box-sizing: border-box;">
+                                {{ $inventory->pivot->remarkNotes }}
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
-                <tfoot>
-                    <tr style="padding: 0;margin: 0;box-sizing: border-box;">
-                        <th style="padding: 8px;text-align: right;color: #727580;margin: 0;box-sizing: border-box;">
-                            REMARKS
-                        </th>
-                        <td colspan="3"
-                            style="padding: 5px;text-align: center;color: #727580;margin: 0;box-sizing: border-box;">
-                            {{ $booking->remark }}
-                        </td>
-                    </tr>
-                </tfoot>
             </table>
 
             <p style="text-align: end;padding: 0;margin: 1rem 0;box-sizing: border-box;color: #727580;"

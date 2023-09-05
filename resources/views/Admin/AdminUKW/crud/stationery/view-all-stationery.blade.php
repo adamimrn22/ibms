@@ -4,7 +4,8 @@
 @endsection
 @section('layout')
     <x-app-content>
-
+        <x-ukw.inventory-stock-low />
+        <x-ukw.export-inventory />
         <x-ukw.card-table :id="'searchStationery'" :placeholder="'Search Stationery'" :data='$data'>
             @include('Admin.AdminUKW.table.stationeryTable')
         </x-ukw.card-table>
@@ -28,4 +29,5 @@
 
     <script src="{{ asset('js/Admin/Inventory/UKW/Stationery/viewAllStationery.js') }}"></script>
     <script src="{{ asset('js/Admin/Inventory/UKW/Stationery/deleteStationery.js') }}"></script>
+    <script src="{{ asset('js/Admin/Inventory/UKW/exportAlatTulisStock.js') }}"></script>
 @endsection

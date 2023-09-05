@@ -11,6 +11,7 @@
                     <th width="10%">Unit</th>
                     <th class="text-center">Current Amount</th>
                     <th class="text-center">Default Amount</th>
+                    <th>Remarks</th>
                 </tr>
             </thead>
             <tbody>
@@ -20,34 +21,43 @@
                             {{ $index + 1 }}
                         </td>
                         <td>
-                            <input type="hidden" class="form-control" name="user[]" value="{{ $user->user_id }}">
-                            {{ $user->user->username }}
+                            <input type="hidden" class="form-control" name="user[]" value="{{ $user->id }}">
+                            {{ $user->username }}
                         </td>
                         <td>
-                            {{ $user->user->first_name . ' ' . $user->user->last_name }}
+                            {{ $user->first_name . ' ' . $user->last_name }}
                         </td>
                         <td>
-                            {{ $user->user->unit->name }}
+                            {{ $user->unit->name }}
                         </td>
-                        <td width="10%">
-                            <input type="text" class="form-control" name="amount[]" value="{{ $user->amount }}">
-                        </td>
-                        <td width="10%">
-                            <input type="text" class="form-control" name="default_amount[]"
-                                value="{{ $user->default_amount }}">
-                        </td>
+                        @if ($user->amount === null)
+                            <td width="10%">
+                                <input type="text" class="form-control" name="amount[]" value="0">
+                            </td>
+                            <td width="10%">
+                                <input type="text" class="form-control" name="default_amount[]"
+                                    value="{{ $user->last_month_default_amount ?? 0 }}">
+                            </td>
+                            <td class="text-warning">Amount staff tidak dimasukkan pada bulan ini</td>
+                        @else
+                            <td width="10%">
+                                <input type="text" class="form-control" name="amount[]" value="{{ $user->amount }}">
+                            </td>
+                            <td width="10%">
+                                <input type="text" class="form-control" name="default_amount[]"
+                                    value="{{ $user->default_amount }}">
+                            </td>
+                            <td></td>
+                        @endif
                     </tr>
                 @empty
                     <tr>
-                        <td>
-                            No Data
-                        </td>
-
+                        <td colspan="7">No Data</td>
                     </tr>
                 @endforelse
-
-
             </tbody>
+
+
         </table>
     </div>
     <div class="m-1 d-flex justify-content-end">

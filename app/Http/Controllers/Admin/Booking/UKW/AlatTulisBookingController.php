@@ -121,11 +121,6 @@ class AlatTulisBookingController extends Controller
             $bookingItemSubCategory = $request->input('subcategory', []);
             $approvedQuantity = $request->input('approvedQuantity', []);
             $remarkNotes = $request->input('remarkNotes', []);
-            $remark = $request->input('remark');
-
-            if(empty($remark)){
-                $remark = 'Tiada Remarks';
-            }
 
             $updatedAttributes = [];
 
@@ -133,7 +128,6 @@ class AlatTulisBookingController extends Controller
                 {
                     $booking->update([
                         'status_id' => 2,
-                        'remark' => $remark,
                         'updated_at' => now()
                     ]);
 
@@ -195,7 +189,6 @@ class AlatTulisBookingController extends Controller
 
                     $booking->update([
                         'status_id' => 3,
-                        'remark' => $remark,
                         'updated_at' => now()
                     ]);
 

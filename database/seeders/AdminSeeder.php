@@ -63,7 +63,7 @@ class AdminSeeder extends Seeder
             'first_name' => 'System',
             'last_name' => 'Developer',
             'username' => 'SysDev',
-            'email' => 'adam@kolejspace.edu.my',
+            'email' => 'ibms@kolejspace.edu.my',
             'email_verified_at' => now(),
             'isActive' => true,
             'unit_id' => $unitId,

@@ -14,7 +14,10 @@
                         {{ $data->firstItem() + $index }}
                     </td>
                     <td width="60%">
-                        {{ strtoupper($file->name) }}
+                        <button type="button" class="btn btn-outline-primary waves-effect btn-show-image"
+                            data-bs-toggle="modal" data-bs-target="#imageModal" data-item-id="{{ $file->id }}">
+                            {{ strtoupper($file->name) }}
+                        </button>
                     </td>
                     <td width="25%">
                         <button class="btn btn-sm btn-primary btn-book" data-item-id="{{ $file->id }}">

@@ -70,7 +70,7 @@
                         </a>
                     </div>
                     <div class="col-md-3">
-                        <a href="#" class="image-card">
+                        <a href="{{ route('PinjamanUit.index') }}" class="image-card">
                             <img src="{{ asset('img/it.jpg') }}" alt="Image 2">
                             <div class="image-overlay">Pinjaman IT</div>
                         </a>

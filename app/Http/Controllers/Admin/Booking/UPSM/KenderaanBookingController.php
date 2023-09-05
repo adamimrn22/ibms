@@ -145,7 +145,7 @@ class KenderaanBookingController extends Controller
                 ->header('Content-Disposition', "inline; filename={$booking->reference}_" . Carbon::parse($booking->created_at)->format('Y-m-d') . ".pdf");
     }
 
-    public function applyPaginationFilterSearch($type, $query, $perPage, $searchTerm, $status = null)
+    private function applyPaginationFilterSearch($type, $query, $perPage, $searchTerm, $status = null)
     {
         if($type){
             $query->where('status_id', 1);

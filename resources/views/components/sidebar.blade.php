@@ -73,7 +73,7 @@
 
                 <li class="mb-1 nav-item ">
                     <a class="d-flex align-items-center {{ Str::contains(request()->path(), 'UPSM/Booking/Ruang') ? 'active' : '' }}"
-                        href="{{ route('upsm.Classroom.index') }}">
+                        href="{{ route('upsm.ruangTempah.index') }}">
                         <i data-feather='archive'></i>
                         <span class="menu-item text-truncate">
                             Tempahan Ruang
@@ -94,7 +94,7 @@
 
             @hasanyrole(['Admin UKW'])
                 <li class="mb-1 nav-item ">
-                    <a class="d-flex align-items-center {{ Str::contains(request()->path(), 'UKW/Booking/AlatTulis') ? 'active' : '' }}"
+                    <a class="d-flex align-items-center {{ Str::endsWith(request()->path(), 'AlatTulis') ? 'active' : '' }}"
                         href="{{ route('ukw.BookingAlatTulis.index') }}">
                         <i data-feather='archive'></i>
                         <span class="menu-item text-truncate">
@@ -114,7 +114,7 @@
                 </li>
 
                 <li class="mb-1 nav-item ">
-                    <a class="d-flex align-items-center {{ Str::contains(request()->path(), 'UKW/Booking/Amount') ? 'active' : '' }}"
+                    <a class="d-flex align-items-center {{ Str::endsWith(request()->path(), '/Amount') ? 'active' : '' }}"
                         href="{{ route('ukw.Amount.index') }}">
                         <i data-feather='archive'></i>
                         <span class="menu-item text-truncate">

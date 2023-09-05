@@ -16,15 +16,24 @@ class A4AmountController extends Controller
     {
         $roleName = 'User';
 
-        $users = UserPaperBookingAmount::with('user')
-        ->whereHas('user.roles', function ($query) use ($roleName) {
+        $users = User::leftJoin('user_paper_booking_amounts', function ($join) {
+            $join->on('users.id', '=', 'user_paper_booking_amounts.user_id')
+                ->where('month', now()->month)
+                ->where('year', now()->year);
+        })
+        ->with('roles')
+        ->whereHas('roles', function ($query) use ($roleName) {
             $query->where('name', $roleName);
         })
-        ->where('month', now()->month)
-        ->where('year', now()->year)
+        ->select('users.*', 'user_paper_booking_amounts.amount', 'user_paper_booking_amounts.default_amount')
         ->get();
 
-        return view('Admin.AdminUKW.Booking.UserA4Amount.viewAmount', compact('users'));
+
+        // Retrieve distinct years and months
+        $distinctYears = UserPaperBookingAmount::distinct()->pluck('year');
+        $distinctMonths = UserPaperBookingAmount::distinct()->pluck('month');
+
+        return view('Admin.AdminUKW.Booking.UserA4Amount.viewAmount', compact('users', 'distinctYears', 'distinctMonths'));
     }
 
     /**

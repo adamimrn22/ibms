@@ -18,7 +18,7 @@ class UkwInventory extends Model
 
     public function subcategory()
     {
-        return $this->belongsTo(Subcategory::class, 'subcategory_id', 'id');
+        return $this->belongsTo(Subcategory::class, 'subcategory_id');
     }
 
     public function status(){

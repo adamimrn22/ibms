@@ -89,16 +89,6 @@
 
             <ul class="nav navbar-nav align-items-center ms-auto">
 
-                {{-- <li class="nav-item dropdown dropdown-cart me-25"><a class="nav-link" href="#"
-                        data-bs-toggle="dropdown"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart ficon">
-                            <circle cx="9" cy="21" r="1"></circle>
-                            <circle cx="20" cy="21" r="1"></circle>
-                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                        </svg><span class="badge rounded-pill bg-primary badge-up cart-item-count">6</span></a>
-
-                </li> --}}
 
                 <li class="nav-item dropdown dropdown-user"><a class="nav-link dropdown-toggle dropdown-user-link"
                         id="dropdown-user" href="#" data-bs-toggle="dropdown" aria-haspopup="true"
@@ -180,15 +170,32 @@
                         </a>
                     </li>
 
-                    <li
-                        class="nav-item  my-1 my-lg-0 {{ Str::contains(request()->path(), 'UKW/AlatTulis') ? 'active' : '' }}">
-                        <a class="nav-link d-flex align-items-center " href="{{ route('AlatTulis.index') }}">
+                    <li class="dropdown nav-item {{ Str::contains(request()->path(), 'UKW/AlatTulis') ? 'active' : '' }}"
+                        data-menu="dropdown">
+                        <a class="dropdown-toggle nav-link d-flex align-items-center" data-bs-toggle="dropdown">
                             <span>Pinjaman Alat Tulis</span>
                         </a>
+
+                        <ul class="dropdown-menu" data-bs-popper="none">
+                            <li data-menu="">
+                                <a class="dropdown-item d-flex align-items-center"
+                                    href="{{ route('AlatTulis.paper') }}">
+                                    <span>Pesan Pinjaman Alat Tulis</span>
+                                </a>
+                            </li>
+
+                            <li data-menu="">
+                                <a class="dropdown-item d-flex align-items-center"
+                                    href="{{ route('AlatTulis.index') }}">
+                                    <span>Pinjaman Alat Tulis Dashboard</span>
+                                </a>
+                            </li>
+
+                        </ul>
                     </li>
 
                     <li class="nav-item  my-1 my-lg-0">
-                        <a class="nav-link d-flex align-items-center" href="index.html">
+                        <a class="nav-link d-flex align-items-center" href="{{ route('PinjamanUit.index') }}">
                             <span>Pinjaman Barang IT</span>
                         </a>
                     </li>

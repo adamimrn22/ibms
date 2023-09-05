@@ -33,6 +33,8 @@ use App\Http\Controllers\Admin\Inventory\UIT\Cable\EthernetController;
 use App\Http\Controllers\Admin\Inventory\UIT\Cable\PsuCableController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\MouseController;
 use App\Http\Controllers\Admin\Booking\UPSM\KenderaanBookingController;
+use App\Http\Controllers\Admin\Booking\UPSM\RuangBookingController as UPSMRuangBookingController;
+use App\Http\Controllers\Admin\ExportController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\LaptopController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\DesktopController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\MonitorController;
@@ -40,7 +42,13 @@ use App\Http\Controllers\Admin\Inventory\UIT\Hardware\PrinterController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\KeyboardController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\ProjectorController;
 use App\Http\Controllers\Admin\Inventory\UIT\Cable\CableController as CableCableController;
+use App\Http\Controllers\Admin\Inventory\UIT\Hardware\ExtensionController;
+use App\Http\Controllers\Admin\Inventory\UIT\Others\MiscellaneousController;
+use App\Http\Controllers\Admin\Inventory\UIT\Others\SoftwareController;
+use App\Http\Controllers\Admin\Inventory\UIT\OthersController;
+use App\Http\Controllers\User\Booking\UitPeripheralController;
 use App\Http\Controllers\User\Reservation\RuangBookingController;
+use App\Models\UpsmRuangBooking;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,7 +102,6 @@ Route::middleware(['auth', 'role:Super Admin'])->prefix('superadmin')->name('sup
 
 Route::middleware(['auth', 'role:Admin UIT|Admin UPSM|Admin UKW|Super Admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
-
 });
 
 
@@ -108,6 +115,7 @@ Route::middleware(['auth', 'role:Admin UIT|Super Admin'])->prefix('UIT')->name('
             Route::resource('/Keyboard', KeyboardController::class);
             Route::resource('/Printer', PrinterController::class);
             Route::resource('/Projector', ProjectorController::class);
+            Route::resource('/Extension-cord', ExtensionController::class);
         });
         Route::prefix('/Cable')->group(function () {
             Route::resource('/Cable', CableCableController::class);
@@ -118,8 +126,12 @@ Route::middleware(['auth', 'role:Admin UIT|Super Admin'])->prefix('UIT')->name('
             Route::resource('/Usb', UsbController::class);
             Route::resource('/Psu', PsuCableController::class);
         });
-        Route::resource('/Others', CableCableController::class);
+        Route::prefix('/Others')->group(function () {
+            Route::resource('/Software', SoftwareController::class);
+            Route::resource('/Miscellaneous', MiscellaneousController::class);
+        });
     });
+
 });
 
 Route::middleware(['auth', 'role:Admin UPSM|Super Admin'])->prefix('UPSM')->name('upsm.')->group(function () {
@@ -139,17 +151,28 @@ Route::middleware(['auth', 'role:Admin UPSM|Super Admin'])->prefix('UPSM')->name
             Route::put('/{Kenderaan}/edit', [KenderaanBookingController::class, 'update'])->name('BookingKenderaan.update');
             Route::get('/PDF/{Kenderaan}', [KenderaanBookingController::class, 'generatePDF'])->name('BookingKenderaan.generatePDF');
         });
+
+        Route::prefix('/Ruang')->group(function() {
+            Route::get('/', [UPSMRuangBookingController::class, 'index'])->name('ruangTempah.index');
+            Route::get('/TempahHistory', [UPSMRuangBookingController::class, 'indexHistory'])->name('ruangTempah.indexHistory');
+            Route::get('/{Ruang}', [UPSMRuangBookingController::class, 'edit'])->name('ruangTempah.edit');
+            Route::get('/Tempahan/RuangTempah', [RuangBookingController::class, 'ruangTempah'])->name('ruangTempah.view');
+            Route::put('/Update/{Ruang}', [UPSMRuangBookingController::class, 'update'])->name('ruangTempah.update');
+        });
     });
 });
 
 Route::middleware(['auth', 'role:Admin UKW|Super Admin'])->prefix('UKW')->name('ukw.')->group(function () {
 
     Route::prefix('/Inventory')->group(function() {
+        Route::get('/AlatTulisQuantityStock/{id}', [StationeryController::class, 'getQuantity']);
+        Route::post('/AlatTulisQuantityStock/{id}', [StationeryController::class, 'updateQuantity']);
+
         Route::resource('/File', FileController::class);
         Route::resource('/Paper', PaperController::class);
         Route::resource('/Stationery', StationeryController::class);
 
-        Route::get('AlatTulis', [UKWBookingController::class, 'index'])->name('AlatTulis.index');
+        // Route::get('AlatTulis', [UKWBookingController::class, 'index'])->name('AlatTulis.index');
         Route::get('/A4 Paper', [A4PaperController::class, 'index'])->name('A4 Paper.index');
         Route::delete('/A4_Paper/{Paper}', [A4PaperController::class, 'destroy']);
 
@@ -164,10 +187,14 @@ Route::middleware(['auth', 'role:Admin UKW|Super Admin'])->prefix('UKW')->name('
             Route::get('/History', [AlatTulisBookingController::class, 'indexHistory'])->name('BookingAlatTulis.indexHistory');
             Route::get('/PDF/{BookingAlatTulis}', [AlatTulisBookingController::class, 'generatePDF'])->name('BookingAlatTulis.generatePDF');
             Route::resource('/BookingAlatTulis', AlatTulisBookingController::class);
+            Route::get('/AlatTulis/Images', [BookingAlatTulisController::class, 'viewAlatTulisImage'])->name('BookingAlatTulis.image');
 
             Route::resource('/Amount', A4AmountController::class);
         });
     });
+
+    Route::get('/ExportAmount', [ExportController::class, 'exportUserA4Amount'])->name('export.a4Amount');
+    Route::get('/ExportStockAlatTulis', [ExportController::class, 'exportAlatTulisAmount'])->name('export.stockAlatTulis');
 });
 
 
@@ -182,6 +209,7 @@ Route::middleware(['auth', 'role:User'])->prefix('/User')->group(function () {
         Route::get('AlatTulis/Stationery', [BookingAlatTulisController::class, 'stationeryIndex'])->name('AlatTulis.stationery');
         Route::get('AlatTulis/A4', [BookingAlatTulisController::class, 'a4Index'])->name('AlatTulis.a4');
         Route::get('AlatTulis/checkout', [BookingAlatTulisController::class, 'checkoutItem'])->name('AlatTulis.checkoutItem');
+        Route::get('AlatTulis/Images', [BookingAlatTulisController::class, 'viewAlatTulisImage'])->name('AlatTulis.image');
         Route::post('AlatTulis/checkout', [BookingAlatTulisController::class, 'checkout'])->name('AlatTulis.checkout');
 
         Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
@@ -201,12 +229,16 @@ Route::middleware(['auth', 'role:User'])->prefix('/User')->group(function () {
 
         Route::prefix('/Ruang')->group(function() {
             Route::get('/Tempah', [RuangBookingController::class, 'index'])->name('TempahRuang.index');
-            Route::get('/ViewTempahan', [RuangBookingController::class, 'viewTempahan'])->name('TempahRuang.viewTempahan');
+             Route::get('/ViewTempahan', [RuangBookingController::class, 'viewTempahan'])->name('TempahRuang.viewTempahan');
             Route::get('/Tempah/{Ruang}', [RuangBookingController::class, 'create'])->name('TempahRuang.booking');
             Route::post('/Tempah/{Ruang}', [RuangBookingController::class, 'store'])->name('TempahRuang.store');
             Route::get('/Tempahan/RuangTempah', [RuangBookingController::class, 'ruangTempah'])->name('TempahRuang.view');
             Route::get('/disabledTimeRange', [RuangBookingController::class, 'getDisabledTimeRanges'])->name('TempahRuang.disabled.time.ranges');
         });
+    });
+
+    Route::prefix('/Booking/UIT')->group(function() {
+        Route::resource('PinjamanUit', UitPeripheralController::class);
     });
 
 });

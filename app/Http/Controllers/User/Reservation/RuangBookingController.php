@@ -47,17 +47,25 @@ class RuangBookingController extends Controller
         $dateFrom = $request->input('date_from');
         $dateTo = $request->input('date_to');
 
+        $rooms = UpsmInventory::ofRoom(16)->get();
+        $roomType = $request->input('room_type');
+
         $bookings = UpsmRuangBooking::with('room')
-            ->whereBetween('date_book', [$dateFrom, $dateTo])
-            ->orderBy('date_book')
-            ->get();
+        ->where(function ($query) use ($dateFrom, $dateTo) {
+            // Condition 1: Booking starts within the given range
+            $query->whereBetween('date_book_start', [$dateFrom, $dateTo]);
+            // Condition 2: Booking ends within the given range
+            $query->orWhereBetween('date_book_end', [$dateFrom, $dateTo]);
 
-        $rooms = UpsmInventory::where('subcategory_id', 16)->get();
+        })
+        ->when($roomType, function ($query) use ($roomType) {
+            $query->whereHas('room', function ($subquery) use ($roomType) {
+                $subquery->where('room_id', $roomType);
+            });
+        })
+        ->paginate(10);
 
-        $uniqueDates = $bookings->pluck('date_book')->unique();
-        $uniqueRoomNames = $bookings->pluck('room.name')->unique();
-
-        return view('User.TempahanRuang.viewBetweenTempahan',  compact('bookings', 'uniqueDates', 'uniqueRoomNames', 'rooms'));
+        return view('User.TempahanRuang.viewBetweenTempahan',  compact('bookings', 'rooms', 'dateFrom', 'dateTo'));
     }
 
     /**
@@ -88,32 +96,46 @@ class RuangBookingController extends Controller
      */
     public function store(Request $request, string $roomId)
     {
-        $room = UpsmInventory::findOrFail($roomId);
+        $laptopChecked = $request->has('laptop'); // true if checked, false if unchecked
+        $lcdChecked = $request->has('lcd');
+        $tempahanMakananChecked = $request->has('tempahanMakanan');
 
-        $startTime = Carbon::createFromFormat('Y-m-d H:i:s', '2023-08-05 00:42:38');
-        $endTime = Carbon::createFromFormat('Y-m-d H:i:s', '2023-09-09 09:42:37');
+        $date_start = Carbon::parse($request->input('date_start'))->format('Y/m/d');
+        $date_end =  Carbon::parse($request->input('date_end'))->format('Y/m/d');
+        $time_start =  Carbon::parse($request->input('time_start'))->format('H:i:s');
+        $time_end = Carbon::parse($request->input('time_end'))->format('H:i:s');
+
+        $objective = $request->input('objective');
+        $eatTime = $request->input('eatTime');
+
         $user = Auth::user();
 
-        $booking = new UpsmRuangBooking([
-            'reference' => 'BK011',
-            'date_book_start' => $startTime->toDateString(),
-            'date_book_end' => $endTime->toDateString(),
-            'time_start' => $startTime->toTimeString(),
-            'time_end' => $endTime->toTimeString(),
-            'room_id' => $room->id,
-            'user_id' => $user->id, // Replace with the actual user ID
-            'status_id' => 1, // Replace with the actual status ID
+        $lastBooking = UpsmRuangBooking::latest()->where('reference', 'LIKE', 'UPSMRTBK%')->first();
+        $lastReferenceNumber = $lastBooking ? intval(substr($lastBooking->reference, 8)) : 0; // Changed index from 6 to 8
+        $newReferenceNumber = $lastReferenceNumber + 1;
+        $reference = 'UPSMRTBK' . str_pad($newReferenceNumber, 4, '0', STR_PAD_LEFT);
+
+        $detail = [
+            'objective' => $objective,
+            'laptop' => $laptopChecked,
+            'lcd' => $lcdChecked,
+            'food' => $tempahanMakananChecked,
+            'food_time' => $eatTime
+        ];
+
+        $booking = UpsmRuangBooking::create([
+            'reference' => $reference,
+            'date_book_start' => $date_start,
+            'date_book_end' => $date_end,
+            'time_start' => $time_start,
+            'time_end' => $time_end,
+            'room_id' => $roomId,
+            'user_id' => $user->id,
+            'status_id' => 1,
         ]);
 
-        if (!$booking->isAvailable($startTime, $endTime)) {
-            // Room is not available for the specified timeframe
-            // Return an error response to the user'
-            dd('unavailable');
-        } else {
-            // Create the booking
-            // $booking->save();
-            dd('available');
-        }
+        $booking->detail()->create($detail);
+
     }
 
     /**

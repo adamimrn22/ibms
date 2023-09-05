@@ -22,38 +22,29 @@ class UpsmRuangBooking extends Model
         return $this->hasOne(UpsmInventory::class, 'id', 'room_id');
     }
 
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
     public function status()
     {
         return $this->hasOne(BookingStatus::class, 'id', 'status_id');
     }
 
-    public function isAvailable($startTime, $endTime)
+    // this doesnt work dont know how to do maybe someone will do it
+    public function isAvailable($startDatetime, $endDatetime)
     {
         $roomId = $this->room_id;
 
         $existingBookings = DB::table('upsm_ruang_bookings')
-            ->where('room_id', $roomId)
-            ->where(function ($query) use ($startTime, $endTime) {
-                $query->where(function ($query) use ($startTime, $endTime) {
-                    $query->where('date_book_start', '<=', $endTime->toDateString())
-                        ->where('date_book_end', '>=', $startTime->toDateString())
-                        ->where(function ($query) use ($startTime, $endTime) {
-                            $query->where('time_start', '<=', $endTime->toTimeString())
-                                ->where('time_end', '>=', $startTime->toTimeString());
-                        });
-                })
-                ->orWhere(function ($query) use ($startTime, $endTime) {
-                    $query->where('date_book_start', '=', $startTime->toDateString())
-                        ->where('time_start', '<=', $endTime->toTimeString());
-                })
-                ->orWhere(function ($query) use ($startTime, $endTime) {
-                    $query->where('date_book_end', '=', $endTime->toDateString())
-                        ->where('time_end', '>=', $startTime->toTimeString());
-                });
-            })
-            ->count();
+        ->where('room_id', $roomId)
+        ->whereDate('date_book_start', '<=', $startDatetime)
+        ->whereDate('date_book_end', '>=', $endDatetime)
+        ->count();
 
         return $existingBookings === 0;
+
     }
 
 }
