@@ -13,6 +13,7 @@
         <!-- table -->
     </x-app-content>
 
+    <x-ukw.quantity-modal />
     <x-uit.delete-modal :modalID="'deleteFile'" :deleteFormId="'deleteFileForm'" />
 @endsection
 
@@ -31,4 +32,5 @@
     <script src="{{ asset('js/Admin/Inventory/UKW/File/viewAllFile.js') }}"></script>
     <script src="{{ asset('js/Admin/Inventory/UKW/File/deleteFile.js') }}"></script>
     <script src="{{ asset('js/Admin/Inventory/UKW/exportAlatTulisStock.js') }}"></script>
+    <script src="{{ asset('js/Admin/Inventory/UKW/updateQuantityStock.js') }}"></script>
 @endsection

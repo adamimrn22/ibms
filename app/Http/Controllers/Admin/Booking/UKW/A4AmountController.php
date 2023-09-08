@@ -14,20 +14,7 @@ class A4AmountController extends Controller
      */
     public function index()
     {
-        $roleName = 'User';
-
-        $users = User::leftJoin('user_paper_booking_amounts', function ($join) {
-            $join->on('users.id', '=', 'user_paper_booking_amounts.user_id')
-                ->where('month', now()->month)
-                ->where('year', now()->year);
-        })
-        ->with('roles')
-        ->whereHas('roles', function ($query) use ($roleName) {
-            $query->where('name', $roleName);
-        })
-        ->select('users.*', 'user_paper_booking_amounts.amount', 'user_paper_booking_amounts.default_amount')
-        ->get();
-
+        $users = $this->userData('User');
 
         // Retrieve distinct years and months
         $distinctYears = UserPaperBookingAmount::distinct()->pluck('year');
@@ -49,47 +36,32 @@ class A4AmountController extends Controller
      */
     public function store(Request $request)
     {
-        $updateBtn = $request->input('update');
-        $users =  User::role('user')->get();
 
-        foreach ($users as $index => $user) {
-            $amount = $request->input('amount')[$index];
-            $default_amount = $request->input('default_amount')[$index];
+        $validatedData = $request->validate([
+            'user.*' => 'required|exists:users,id',
+            'amount.*' => 'nullable|numeric',
+            'default_amount.*' => 'nullable|numeric',
+        ]);
 
-            if ($updateBtn == 1) {
-                // Update all records except where unit is 6
-                if ($user->unit_id != 8) {
-                    UserPaperBookingAmount::updateOrCreate(
-                        [
-                            'user_id' => $user->id,
-                            'month' => now()->month,
-                            'year' => now()->year,
-                        ],
-                        [
-                            'amount' => $amount,
-                            'default_amount' => $default_amount,
-                        ]
-                    );
-                }
-            } else if ($updateBtn == 0) {
-                // Update only if unit is 6
-                if ($user->unit_id == 8) {
-                    UserPaperBookingAmount::updateOrCreate(
-                        [
-                            'user_id' => $user->id,
-                            'month' => now()->month,
-                            'year' => now()->year,
-                        ],
-                        [
-                            'amount' => $amount,
-                            'default_amount' => $default_amount,
-                        ]
-                    );
-                }
-            }
+        foreach ($validatedData['user'] as $userId => $userValue) {
+            $amount = $validatedData['amount'][$userId] ?? 0;
+            $default_amount = $validatedData['default_amount'][$userId] ?? 0;
+
+            UserPaperBookingAmount::updateOrCreate(
+                [
+                    'user_id' => $userId,
+                    'month' => now()->month,
+                    'year' => now()->year,
+                ],
+                [
+                    'amount' => $amount,
+                    'default_amount' => $default_amount,
+                ]
+            );
+
         }
-
-        return redirect()->route('ukw.Amount.index')->with(['success' => 'Success']);
+        $users = $this->userData('User');
+        return view('Admin.AdminUKW.Booking.UserA4Amount.amount-table-body', compact('users'))->render();
     }
 
     /**
@@ -111,9 +83,63 @@ class A4AmountController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        try {
+
+            $updateBtn = $request->input('resetStaffButton');
+
+            if ($updateBtn == 1) {
+                $users = User::role('user')->with('paperAmount')->where('unit_id', '!=', 8)->get();
+                foreach ($users as $user) {
+                    $default_amount = $user->paperAmount->default_amount;
+
+                    UserPaperBookingAmount::updateOrCreate(
+                        [
+                            'user_id' => $user->id,
+                            'month' => now()->month,
+                            'year' => now()->year,
+                        ],
+                        [
+                            'amount' => $default_amount,
+                        ]
+                    );
+                }
+
+                $users = $this->userData('User');
+                return response()->json([
+                    'tbody' =>  view('Admin.AdminUKW.Booking.UserA4Amount.amount-table-body', compact('users'))->render(),
+                    'success' => 'A4 Amount for Staff This Month Has Been Reseted'
+                ]);
+
+
+            }else if ($updateBtn == 0) {
+                $users = User::role('user')->with('paperAmount')->where('unit_id', '=', 8)->get();
+                foreach ($users as $user) {
+                    $default_amount = $user->paperAmount->default_amount;
+                    UserPaperBookingAmount::updateOrCreate(
+                        [
+                            'user_id' => $user->id,
+                            'month' => now()->month,
+                            'year' => now()->year,
+                        ],
+                        [
+                            'amount' => $default_amount,
+                        ]
+                    );
+                }
+
+                $users = $this->userData('User');
+                return response()->json([
+                    'tbody' =>  view('Admin.AdminUKW.Booking.UserA4Amount.amount-table-body', compact('users'))->render(),
+                    'success' => 'A4 Amount for Pensyarah Has Been Reseted '
+                ]);
+
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['error' => 'An error occurred'], 500);
+        }
+
     }
 
     /**
@@ -122,5 +148,23 @@ class A4AmountController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    private function userData($roleName)
+    {
+        $user = User::leftJoin('user_paper_booking_amounts', function ($join) {
+            $join->on('users.id', '=', 'user_paper_booking_amounts.user_id')
+                ->where('month', now()->month)
+                ->where('year', now()->year);
+        })
+        ->with('roles')
+        ->where('isActive', 1)
+        ->whereHas('roles', function ($query) use ($roleName) {
+            $query->where('name', $roleName);
+        })
+        ->select('users.*', 'user_paper_booking_amounts.amount', 'user_paper_booking_amounts.default_amount')
+        ->get();
+
+        return $user;
     }
 }

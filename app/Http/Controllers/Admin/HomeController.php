@@ -21,13 +21,14 @@ class HomeController extends Controller
             return $this->UkwViews();
         }else if ($roles[0] === 'Admin UPSM'){
             return $this->UpsmViews();
+        }else if ($roles[0] === 'Admin UIT'){
+            return $this->uitViews();
         }
-        return view('Admin.dashboard');
+        abort(404);
     }
 
     private function UpsmViews()
     {
-
         $currentMonth = now()->format('Y-m');
         $roomCounts = DB::table('upsm_ruang_bookings')
             ->select('upsm_inventories.name as room_name', DB::raw('COUNT(*) as count'))
@@ -88,5 +89,10 @@ class HomeController extends Controller
         }
 
         return view('Admin.AdminUKW.ukw-dashboard', compact('labels', 'data', 'totalQuantity', 'lowerStock', 'chartData'));
+    }
+
+    private function uitViews()
+    {
+        return view('Admin.AdminUIT.uit-dashboard');
     }
 }

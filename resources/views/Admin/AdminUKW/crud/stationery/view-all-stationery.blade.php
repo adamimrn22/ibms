@@ -9,9 +9,9 @@
         <x-ukw.card-table :id="'searchStationery'" :placeholder="'Search Stationery'" :data='$data'>
             @include('Admin.AdminUKW.table.stationeryTable')
         </x-ukw.card-table>
-
     </x-app-content>
 
+    <x-ukw.quantity-modal />
     <x-uit.delete-modal :modalID="'deleteStationery'" :deleteFormId="'deleteStationeryForm'" />
 @endsection
 
@@ -30,4 +30,5 @@
     <script src="{{ asset('js/Admin/Inventory/UKW/Stationery/viewAllStationery.js') }}"></script>
     <script src="{{ asset('js/Admin/Inventory/UKW/Stationery/deleteStationery.js') }}"></script>
     <script src="{{ asset('js/Admin/Inventory/UKW/exportAlatTulisStock.js') }}"></script>
+    <script src="{{ asset('js/Admin/Inventory/UKW/updateQuantityStock.js') }}"></script>
 @endsection

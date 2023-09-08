@@ -1,6 +1,7 @@
 @extends('layouts.userapp')
 
 @section('csslink')
+    <link rel="stylesheet" href="{{ asset('app-asset/css/grid-product.css') }}">
     <style>
         .removeBtn {
             color: #ef4444;
@@ -10,6 +11,18 @@
             cursor: pointer;
             text-decoration: underline;
         }
+
+        .product-image {
+            width: 200px;
+            min-height: 280px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .btn-full-width {
+            width: 100%;
+        }
+
 
         .modal {
             text-align: center;
@@ -32,51 +45,77 @@
         </div>
     </div>
 
-    <div class="card mt-1">
-        <div class="m-1">
-            <div class="card ">
-                <div class="card-header">
-                    <h4 class="card-title">Pinjaman Alat Tulis</h4>
+    <div class="d-md-flex justify-content-between">
+        <!-- Filter Section (Left) -->
+        <div class="p-3 mb-3 mb-md-0" style="min-width: 15%;">
+            <h4 class="h3 border-bottom-primary pb-1">Filter</h4>
+            <div style="width: 200px;">
+                <h6 class="mt-1">Sub Kategori</h6>
+                <div class="my-1">
+                    <div class="form-check form-check-primary mb-1">
+                        <input type="checkbox" class="form-check-input category-checkbox" id="all" value="All"
+                            checked>
+                        <label class="form-check-label ms-1" for="all">All</label>
+                    </div>
+                    <div class="form-check form-check-primary mb-1">
+                        <input type="checkbox" class="form-check-input category-checkbox" id="a4Paper" value="22">
+                        <label class="form-check-label ms-1" for="a4Paper">A4 Paper</label>
+                    </div>
+                    <div class="form-check form-check-primary mb-1">
+                        <input type="checkbox" class="form-check-input category-checkbox" id="Paper" value="18">
+                        <label class="form-check-label ms-1" for="Paper">Paper</label>
+                    </div>
+                    <div class="form-check form-check-primary mb-1">
+                        <input type="checkbox" class="form-check-input category-checkbox" id="File" value="19">
+                        <label class="form-check-label ms-1" for="File">File</label>
+                    </div>
+                    <div class="form-check form-check-primary mb-1">
+                        <input type="checkbox" class="form-check-input category-checkbox" id="alatTulis" value="20">
+                        <label class="form-check-label ms-1" for="alatTulis">Alatan Tulis</label>
+                    </div>
                 </div>
-
-                <div class="card-header">
-                    <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link
-                                    {{ request()->routeIs('AlatTulis.paper') ? 'active' : '' }}"
-                                href="{{ route('AlatTulis.paper') }}" role="tab">
-                                Kertas
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link
-                                    {{ request()->routeIs('AlatTulis.a4') ? 'active' : '' }}"
-                                href="{{ route('AlatTulis.a4') }}" role="tab">
-                                A4 Paper
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link
-                                    {{ request()->routeIs('AlatTulis.file') ? 'active' : '' }}"
-                                href="{{ route('AlatTulis.file') }}" role="tab">
-                                Fail
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link
-                                    {{ request()->routeIs('AlatTulis.stationery') ? 'active' : '' }}"
-                                href="{{ route('AlatTulis.stationery') }}" role="tab">
-                                Barang Alat Tulis
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <hr>
-
-                @yield('tableSection')
-
             </div>
+        </div>
 
+        <!-- Product Grid (Right) -->
+        <div class="d-flex flex-fill ms-md-1 px-1">
+            <div class="row">
+                <div class="mb-1 py-1 d-flex justify-content-between border-top border-bottom">
+                    <div class="col-sm-12 col-md-4">
+                        <div class="input-group">
+                            <input type="text" id="searchItem" placeholder="Cari Alatan Tulis.." class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-6">
+                        <div class="d-flex justify-content-end">
+                            <label class="d-inline-flex align-items-center">
+                                Show
+                                <select id="recordFilter" class="form-select mx-1 px-2">
+                                    <option value="7" selected>7</option>
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="75">75</option>
+                                    <option value="100">100</option>
+                                </select> entries
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row p-0 m-0" id="productCol">
+                    @include('User.AlatTulis.alatTulisItem.product-grid')
+                </div>
+
+                <div class="d-flex align-items-center justify-content-center" style="min-height: 500px">
+                    <div id="roleSpinner" align="center" class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+
+                @include('components.product-pagination')
+            </div>
         </div>
     </div>
 
@@ -98,9 +137,11 @@
 @section('script')
     @yield('scripts')
 
+    <script src="{{ asset('js/User/AlatTulis/viewAlatTulis.js') }}"></script>
     <script>
         $(document).ready(function() {
-            $('.btn-book').on('click', function() {
+
+            $(document).on('click', '.btn-book', function() {
                 const itemId = $(this).data('item-id');
 
                 $.ajax({
@@ -118,7 +159,7 @@
                             toastr.options = {
                                 closeButton: true,
                                 positionClass: 'toast-top-left',
-                                timeOut: 500,
+                                timeOut: 1500,
                             };
 
                             toastr.success(' Item telah ditambahkan ke troli.', 'Success');
@@ -152,7 +193,6 @@
             $(document).on('click', '.btn-decrement', function() {
                 const itemId = $(this).closest('td').data('item-id');
 
-                console.log(itemId)
                 $.ajax({
                     url: `{{ route('cart.decrement', ['itemId' => ':itemId']) }}`.replace(
                         ':itemId',
@@ -174,7 +214,6 @@
             $(document).on('click', '.btn-increment', function() {
                 const itemId = $(this).closest('td').data('item-id');
 
-                console.log(itemId)
                 $.ajax({
                     url: `{{ route('cart.increment', ['itemId' => ':itemId']) }}`.replace(
                         ':itemId',
@@ -233,9 +272,8 @@
                 });
             });
 
-            $('.btn-show-image').on('click', function() {
+            $(document).on('click', '.btn-show-image', function() {
                 const itemId = $(this).data('item-id');
-                console.log(itemId)
 
                 $.ajax({
                     url: "{{ route('AlatTulis.image') }}",

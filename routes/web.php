@@ -47,7 +47,9 @@ use App\Http\Controllers\Admin\Inventory\UIT\Others\MiscellaneousController;
 use App\Http\Controllers\Admin\Inventory\UIT\Others\SoftwareController;
 use App\Http\Controllers\Admin\Inventory\UIT\OthersController;
 use App\Http\Controllers\User\Booking\UitPeripheralController;
+use App\Http\Controllers\User\BookingAlatTulisTestController;
 use App\Http\Controllers\User\Reservation\RuangBookingController;
+use App\Models\Booking;
 use App\Models\UpsmRuangBooking;
 
 /*
@@ -165,8 +167,8 @@ Route::middleware(['auth', 'role:Admin UPSM|Super Admin'])->prefix('UPSM')->name
 Route::middleware(['auth', 'role:Admin UKW|Super Admin'])->prefix('UKW')->name('ukw.')->group(function () {
 
     Route::prefix('/Inventory')->group(function() {
-        Route::get('/AlatTulisQuantityStock/{id}', [StationeryController::class, 'getQuantity']);
-        Route::post('/AlatTulisQuantityStock/{id}', [StationeryController::class, 'updateQuantity']);
+        Route::get('/GetAlatTulisQuantityStock/{id}', [SuppliesController::class, 'getQuantity'])->name('getAlatTulisStock');
+        Route::post('/AlatTulisQuantityStock/{id}', [SuppliesController::class, 'updateQuantity'])->name('updateAlatTulisStock');
 
         Route::resource('/File', FileController::class);
         Route::resource('/Paper', PaperController::class);
@@ -189,7 +191,12 @@ Route::middleware(['auth', 'role:Admin UKW|Super Admin'])->prefix('UKW')->name('
             Route::resource('/BookingAlatTulis', AlatTulisBookingController::class);
             Route::get('/AlatTulis/Images', [BookingAlatTulisController::class, 'viewAlatTulisImage'])->name('BookingAlatTulis.image');
 
-            Route::resource('/Amount', A4AmountController::class);
+
+            Route::put('/Amount/ResetStaff', [A4AmountController::class, 'update'])->name('Amount.update');
+            Route::post('/Amount', [A4AmountController::class, 'store'])->name('Amount.store');
+            Route::get('/Amount', [A4AmountController::class, 'index'])->name('Amount.index');
+
+            // Route::resource('/Amount', A4AmountController::class);
         });
     });
 
@@ -201,13 +208,9 @@ Route::middleware(['auth', 'role:Admin UKW|Super Admin'])->prefix('UKW')->name('
 Route::middleware(['auth', 'role:User'])->prefix('/User')->group(function () {
     Route::get('/', [UserHomeController::class, 'index'])->name('user.homepage');
     Route::prefix('/Booking/UKW')->group(function() {
-
         Route::get('AlatTulis', [BookingAlatTulisController::class, 'index'])->name('AlatTulis.index');
+        Route::get('ViewAlatTulis', [BookingAlatTulisController::class, 'itemIndex'])->name('AlatTulis.itemIndex');
         Route::get('AlatTulis/Booking/{Booking}', [BookingAlatTulisController::class, 'show'])->name('AlatTulis.show');
-        Route::get('AlatTulis/Paper', [BookingAlatTulisController::class, 'paperIndex'])->name('AlatTulis.paper');
-        Route::get('AlatTulis/File', [BookingAlatTulisController::class, 'fileIndex'])->name('AlatTulis.file');
-        Route::get('AlatTulis/Stationery', [BookingAlatTulisController::class, 'stationeryIndex'])->name('AlatTulis.stationery');
-        Route::get('AlatTulis/A4', [BookingAlatTulisController::class, 'a4Index'])->name('AlatTulis.a4');
         Route::get('AlatTulis/checkout', [BookingAlatTulisController::class, 'checkoutItem'])->name('AlatTulis.checkoutItem');
         Route::get('AlatTulis/Images', [BookingAlatTulisController::class, 'viewAlatTulisImage'])->name('AlatTulis.image');
         Route::post('AlatTulis/checkout', [BookingAlatTulisController::class, 'checkout'])->name('AlatTulis.checkout');

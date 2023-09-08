@@ -9,7 +9,6 @@ $(document).ready(function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
     };
-    let searchTimer;
 
     // Spinner container
     const spinnerContainer = $('#roleSpinner');

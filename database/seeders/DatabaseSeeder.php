@@ -4,10 +4,12 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\User;
+use Illuminate\Database\Seeder;
 use App\Models\UpsmRuangBooking;
+use Spatie\Permission\Models\Role;
 use App\Models\UpsmRuangBookingDetails;
 use Database\Factories\ruangBookingFactory;
-use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -26,14 +28,14 @@ class DatabaseSeeder extends Seeder
         // $this->call(AdminSeeder::class);
         // $this->call(PermissionSeeder::class);
 
-        UpsmRuangBooking::factory(50)->create()->each(function ($booking) {
-            $booking->detail()->save(UpsmRuangBookingDetails::factory()->make());
-        });
-        // $role = Role::findByName('User');
-
-
-        // User::factory(50)->create()->each(function ($user) use ($role) {
-        //     $user->assignRole($role);
+        // UpsmRuangBooking::factory(50)->create()->each(function ($booking) {
+        //     $booking->detail()->save(UpsmRuangBookingDetails::factory()->make());
         // });
+        $role = Role::findByName('User');
+
+
+        User::factory(50)->create()->each(function ($user) use ($role) {
+            $user->assignRole($role);
+        });
     }
 }

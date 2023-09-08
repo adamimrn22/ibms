@@ -82,10 +82,12 @@ class UserController extends Controller
             $user->assignRole($validatedData['userRole']);
             $user->syncPermissions();
 
+            $amount = $this->userUnitAmount($user->unit_id);
+
             UserPaperBookingAmount::create([
                 'user_id' => $user->id,
-                'amount' => 3,
-                'default_amount' => 3,
+                'amount' => $amount,
+                'default_amount' => $amount,
                 'month' => date("m"),
                 'year' => date("Y")
             ]);
@@ -180,5 +182,32 @@ class UserController extends Controller
         })->count();
 
         return compact('totalUserCount', 'userActiveCount', 'userNotActiveCount', 'totalUserWithRoles');
+    }
+
+    private function userUnitAmount($unit)
+    {
+        switch ($unit) {
+            case 1:
+            case 2:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 9:
+            case 10:
+                $amount = 2;
+                break;
+            case 3:
+                $amount = 3;
+                break;
+            case 8:
+                $amount = 1;
+                break;
+            default:
+                $amount = 2;
+                break;
+        }
+
+        return $amount;
     }
 }

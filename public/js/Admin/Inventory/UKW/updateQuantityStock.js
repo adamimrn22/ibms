@@ -1,7 +1,13 @@
 $(document).ready(function () {
     let baseUrl = $('meta[name="base-url"]').attr('content');
 
-    $('.btn-update-quantity').on('click', function (e) {
+    const ajaxSettings = {
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+    };
+
+    $('body').on('click', '.btn-update-quantity', function (e) {
         let id = $(this).data('item-id');
         $('#itemAlatTulisID').val(id);
         $('#updateQuantityModal').modal('show');
@@ -13,23 +19,24 @@ $(document).ready(function () {
         let id = $('#itemAlatTulisID').val();
 
         $.ajax({
+            ...ajaxSettings,
             type: "GET",
-            url: `${baseUrl}/UKW/Inventory/AlatTulisQuantityStock/${id}`,
+            url: `${baseUrl}/UKW/Inventory/GetAlatTulisQuantityStock/${id}`,
+            beforeSend: function () {
+                $('#updateBtn').prop('disabled', true);
+            },
             success: function (response) {
                 $('#quantity').val(response.quantity);
                 $('#subcategory').val(response.subcategory);
+                $('#updateBtn').prop('disabled', false);
             },
             error: function (xhr) {
                 alert('error occured');
+                console.error(xhr.responseJSON)
             }
         });
     });
 
-    const ajaxSettings = {
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-    };
     let quantityModalForm = $('#updateQuantityModalForm');
     if (quantityModalForm.length) {
         quantityModalForm.validate({
@@ -48,7 +55,6 @@ $(document).ready(function () {
             let id = $('#itemAlatTulisID').val();
             let subcategory = $('#subcategory').val();
 
-            console.log(subcategory);
             $.ajax({
                 ...ajaxSettings,
                 type: 'POST',
@@ -59,8 +65,8 @@ $(document).ready(function () {
                 },
                 success: function (response) {
                     // Handle the success response here
-                    $('#paperTable').html(response.table).show();
-
+                    $(`#${response.idTable}`).html(response.table).show();
+                    toastr.success(response.success, 'Success');
                     // // Hide the modal
                     $('#updateQuantityModal').modal('hide');
                 },

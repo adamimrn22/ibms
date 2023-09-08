@@ -16,7 +16,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary waves-effect waves-float waves-light">Update</button>
+                    <button class="btn btn-primary waves-effect waves-float waves-light" id="updateBtn"
+                        disabled>Update</button>
                 </div>
             </form>
         </div>

@@ -5,6 +5,7 @@
                 <th>No.</th>
                 <th>Name</th>
                 <th>Current Quantity</th>
+                <th>Update Quantity</th>
                 <th></th>
             </tr>
         </thead>
@@ -22,15 +23,22 @@
                     <td>
                         {{ $paper->current_quantity }}
                     </td>
-
+                    <td>
+                        <button type="button" class="btn btn-outline-primary waves-effect btn-update-quantity"
+                            data-bs-toggle="modal" data-bs-target="#updateQuantityModal"
+                            data-item-id="{{ $paper->id }}">
+                            Update Quantity
+                        </button>
+                    </td>
                     <td>
                         <div class="dropdown">
                             <button type="button"
                                 class="btn btn-sm dropdown-toggle hide-arrow py-0 waves-effect waves-float waves-light"
                                 data-bs-toggle="dropdown">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="feather feather-more-vertical">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="feather feather-more-vertical">
                                     <circle cx="12" cy="12" r="1"></circle>
                                     <circle cx="12" cy="5" r="1"></circle>
                                     <circle cx="12" cy="19" r="1"></circle>

@@ -136,5 +136,79 @@ class SuppliesController extends Controller
         }
     }
 
+    public function getQuantity(string $id)
+    {
+        try {
+           $quantity = UkwInventory::where('id', $id)->select('current_quantity', 'subcategory_id')->first();
 
+           return response()->json([
+                'quantity' => $quantity->current_quantity,
+                'subcategory' => $quantity->subcategory_id
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()]);
+        }
+    }
+
+    public function updateQuantity(Request $request, string $id)
+    {
+        $quantity = $request->input('quantity');
+        $subcategory = $request->input('subcategory');
+
+        UkwInventory::where('id', $id)->update(['current_quantity' => $quantity]);
+        $query = UkwInventory::query();
+
+        $tableCategory = $this->tableCategory($subcategory);
+
+        $data = $this->FilterSearch($query, 7, $subcategory);
+
+        return response()->json([
+            'table' => view($tableCategory->table, compact('data'))->render(),
+            'idTable' => $tableCategory->id,
+            'success' => 'Quantity Successfully Updated',
+            'pagination' => view('components.Pagination', compact('data'))->render(),
+        ]);
+    }
+
+    private function tableCategory($subcategory)
+    {
+        switch ($subcategory) {
+            case 18:
+                $table = 'Admin.AdminUKW.table.paperTable';
+                $idTable = 'paperTable';
+                break;
+
+            case 19:
+                $table = 'Admin.AdminUKW.table.fileTable';
+                $idTable = 'fileTable';
+                break;
+
+            case 20:
+                $table = 'Admin.AdminUKW.table.stationeryTable';
+                $idTable = 'stationeryTable';
+                break;
+
+            case 22:
+                $table = 'Admin.AdminUKW.table.a4paperTable';
+                $idTable = 'paperTable';
+                break;
+
+            default:
+                abort(404);
+                break;
+        }
+
+        return (object) [
+           'table' => $table,
+           'id' => $idTable
+        ];
+    }
+
+    public function FilterSearch($query, $perPage, $subcategory)
+    {
+        $query->where('subcategory_id', '=', $subcategory);
+
+        // Apply pagination
+        return $query->paginate($perPage);
+    }
 }

@@ -8,14 +8,11 @@ use App\Mail\UserBookingUKW;
 use App\Models\UkwInventory;
 use Illuminate\Http\Request;
 use App\Mail\NewAlatTulisBooking;
-use Spatie\Permission\Models\Role;
-use App\Models\adminEmailReference;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
-use App\Http\Controllers\Booking\UKWBookingController;
 use App\Models\UkwInventoryImage;
 
 class BookingAlatTulisController extends Controller
@@ -32,6 +29,32 @@ class BookingAlatTulisController extends Controller
         $data = $this->applyPaginationFilterSearch($query, $perPage, $user);
 
         return view('User.AlatTulis.alat-tulis-dashboard', compact('user', 'data'));
+    }
+
+    public function itemIndex(Request $request)
+    {
+        $perPage = $request->input('records', 7);
+        $searchTerm = $request->input('search');
+        $status = $request->input('status');
+        $subcategory = $request->input('subcategory');
+
+        $query = UkwInventory::query()->with('images');
+
+        $cartInfo = $this->getCartInfo();
+
+        $cart = $cartInfo['cart'];
+        $totalQuantity = $cartInfo['totalQuantity'];
+
+        $data = $this->getAvailableAlatTulis($query, $subcategory, $perPage, $searchTerm);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'grid' => view('User.AlatTulis.alatTulisItem.product-grid', compact('data'))->render(),
+                'pagination' => view('components.Pagination', compact('data'))->render(),
+            ]);
+        }
+
+        return view('User.AlatTulis.alatTulisItem.view-alat-tulis', compact('data', 'cart', 'totalQuantity'));
     }
 
     public function show(string $encryptReference)
@@ -112,7 +135,7 @@ class BookingAlatTulisController extends Controller
                 //     Mail::to($adminEmail)->queue(new NewAlatTulisBooking($user, $booking->reference));
                 // }
 
-                // Sebab akak nik nak guna email but email table is unique
+                // Sebab akak nik nak guna email dia but email table is unique
                 // change if there is a new email to use or use above method
                 Mail::to('farah@kolejspace.edu.my')->queue(new NewAlatTulisBooking($user, $booking->reference));
                 Mail::to($user->email)->queue(new UserBookingUKW($user, $booking->reference));
@@ -131,55 +154,6 @@ class BookingAlatTulisController extends Controller
         return redirect()->route('AlatTulis.index')->with(['batal' => 'Permohonan anda telah Dibatalkan!']);
     }
 
-    public function paperIndex(Request $request)
-    {
-        $cartInfo = $this->getCartInfo();
-        return $this->handleAlatTulisIndex($request, 18, 'User.AlatTulis.table.paperTable', 'User.AlatTulis.alatTulisItem.paperBooking', $cartInfo);
-    }
-
-    public function fileIndex(Request $request)
-    {
-        $cartInfo = $this->getCartInfo();
-
-        return $this->handleAlatTulisIndex($request, 19, 'User.AlatTulis.table.fileBookingTable', 'User.AlatTulis.alatTulisItem.fileBooking', $cartInfo);
-    }
-
-    public function stationeryIndex(Request $request)
-    {
-        $cartInfo = $this->getCartInfo();
-
-        return $this->handleAlatTulisIndex($request, 20, 'User.AlatTulis.table.stationeryBookingTable', 'User.AlatTulis.alatTulisItem.stationeryBooking', $cartInfo);
-    }
-
-    public function a4Index(Request $request)
-    {
-        $cartInfo = $this->getCartInfo();
-
-        return $this->handleAlatTulisIndex($request, 22, 'User.AlatTulis.table.a4BookingTable', 'User.AlatTulis.alatTulisItem.a4Booking', $cartInfo);
-    }
-
-    private function handleAlatTulisIndex(Request $request, $inventoryId, $tableView, $bookingView, $cartInfo)
-    {
-        $perPage = $request->input('records', 7);
-        $searchTerm = $request->input('search');
-        $status = $request->input('status');
-        $query = UkwInventory::query();
-
-        $data = $this->getAvailableAlatTulis($query, $inventoryId, $perPage, $searchTerm, $status);
-
-        if ($request->ajax()) {
-            return response()->json([
-                'table' => view($tableView, compact('data'))->render(),
-                'pagination' => view('components.Pagination', compact('data'))->render(),
-            ]);
-        }
-
-        $cart = $cartInfo['cart'];
-        $totalQuantity = $cartInfo['totalQuantity'];
-
-        return view($bookingView, compact('data', 'cart', 'totalQuantity'));
-    }
-
 
     public function applyPaginationFilterSearch($query, $perPage, $user)
     {
@@ -193,15 +167,26 @@ class BookingAlatTulisController extends Controller
         return $query->paginate($perPage);
     }
 
-    public function getAvailableAlatTulis($query, $subcategory, $perPage, $searchTerm)
+    private function getAvailableAlatTulis($query, $subcategory = '', $perPage, $searchTerm)
     {
-        $query->where('subcategory_id', '=', $subcategory)->where('status_id', 9);
 
-        if ($searchTerm) {
-                $query->where('subcategory_id', '=', $subcategory)
-                    ->where('status_id', 9)
-                    ->where('name', 'LIKE', "%{$searchTerm}%");
+        if($subcategory !== null && $subcategory !== 'All'){
+            $query->where('subcategory_id', '=', $subcategory)->where('status_id', 9);
+        }else {
+            $query->where('status_id', 9);
         }
+
+        if (!empty($searchTerm) && !empty($subcategory) && $subcategory !== 'All') {
+            // Your search condition here
+            $query->where('subcategory_id', '=', $subcategory)
+                ->where('status_id', 9)
+                ->where('name', 'LIKE', "%{$searchTerm}%");
+        } else {
+            // Default condition when no search or subcategory filter is applied
+            $query->where('status_id', 9)
+                ->where('name', 'LIKE', "%{$searchTerm}%");
+        }
+
         return $query->paginate($perPage);
     }
 

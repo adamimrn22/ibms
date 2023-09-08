@@ -11,6 +11,7 @@
         </x-ukw.card-table>
     </x-app-content>
 
+    <x-ukw.quantity-modal />
     <x-uit.delete-modal :modalID="'deletePaper'" :deleteFormId="'deletePaperForm'" />
 @endsection
 
@@ -29,4 +30,5 @@
     <script src="{{ asset('js/Admin/Inventory/UKW/Paper/viewAllPaper.js') }}"></script>
     <script src="{{ asset('js/Admin/Inventory/UKW/Paper/deletePaper.js') }}"></script>
     <script src="{{ asset('js/Admin/Inventory/UKW/exportAlatTulisStock.js') }}"></script>
+    <script src="{{ asset('js/Admin/Inventory/UKW/updateQuantityStock.js') }}"></script>
 @endsection

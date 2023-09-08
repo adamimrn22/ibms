@@ -1,0 +1,16 @@
+.row>.col-size {
+    @media screen and (min-width: 700px) and (max-width: 1000px) {
+
+        /* Rules for screens between 700px and 1000px */
+        @media screen and (min-width: 700px) and (max-width: 1000px) {
+            width: 250px;
+            min-height: 150px;
+            margin: 0 5px;
+        }
+    }
+
+    @media screen and (min-width: 1001px) {
+        width: 350px;
+        margin: 0 5px;
+    }
+}

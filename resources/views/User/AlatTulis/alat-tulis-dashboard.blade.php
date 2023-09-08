@@ -37,7 +37,7 @@
 
     <div class="card ">
         <div class="m-2">
-            <a href="{{ route('AlatTulis.paper') }}" class="btn btn-primary">
+            <a href="{{ route('AlatTulis.itemIndex') }}" class="btn btn-primary">
                 Pesan pinjaman Alatan Tulis
             </a>
 

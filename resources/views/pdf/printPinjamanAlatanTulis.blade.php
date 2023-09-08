@@ -19,6 +19,10 @@
             border-spacing: 0;
         }
 
+        .text-underline {
+            text-decoration: underline;
+        }
+
         th,
         th,
         td {
@@ -170,7 +174,13 @@
                 <table style="width: 100%;">
                     <tr>
                         <td style="text-align: left; font-size:10pt" width="35%">
-                            <p style="font-size: 9pt; text-align:left">Permohonan : disokong / tidak disokong* </p>
+                            <p style="font-size: 9pt; text-align:left">Permohonan : <span
+                                    class="{{ $booking->status_id == 2 ? 'text-underline' : '' }}">disokong</span> /
+                                <span class="{{ $booking->status_id == 3 ? 'text-underline' : '' }}">
+                                    tidak disokong
+                                </span>
+                                *
+                            </p>
                         </td>
                     </tr>
                 </table>

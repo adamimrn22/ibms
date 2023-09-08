@@ -170,7 +170,7 @@
                         </a>
                     </li>
 
-                    <li class="dropdown nav-item {{ Str::contains(request()->path(), 'UKW/AlatTulis') ? 'active' : '' }}"
+                    <li class="dropdown nav-item {{ Str::contains(request()->path(), 'UKW/AlatTulis') || Str::contains(request()->path(), 'UKW/ViewAlatTulis') ? 'active' : '' }}"
                         data-menu="dropdown">
                         <a class="dropdown-toggle nav-link d-flex align-items-center" data-bs-toggle="dropdown">
                             <span>Pinjaman Alat Tulis</span>
@@ -179,7 +179,7 @@
                         <ul class="dropdown-menu" data-bs-popper="none">
                             <li data-menu="">
                                 <a class="dropdown-item d-flex align-items-center"
-                                    href="{{ route('AlatTulis.paper') }}">
+                                    href="{{ route('AlatTulis.itemIndex') }}">
                                     <span>Pesan Pinjaman Alat Tulis</span>
                                 </a>
                             </li>
