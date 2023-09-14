@@ -58,6 +58,7 @@
                 </div>
             </div>
         </div>
+
     </x-app-content>
 @endsection
 

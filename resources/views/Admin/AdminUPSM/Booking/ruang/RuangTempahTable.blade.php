@@ -6,7 +6,7 @@
                 <th>Tempahan ID</th>
                 <th>Ditempah oleh</th>
                 <th>STAFF ID</th>
-                <th>Tarikh</th>
+                <th>Tarikh Tempahan</th>
                 <th>Status</th>
                 <th></th>
             </tr>

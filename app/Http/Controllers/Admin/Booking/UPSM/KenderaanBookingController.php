@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\UpsmInventory;
 use App\Models\UpsmVehicleBooking;
 use App\Http\Controllers\Controller;
+use App\Mail\TempahanKereta\PesananKeretaBatal;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
 use App\Mail\TempahanKereta\PesananKeretaLulus;
@@ -104,6 +105,13 @@ class KenderaanBookingController extends Controller
                     'status_id' => 3,
                     'remark' => $remark,
                     'updated_at' => now(),
+                ]);
+
+                Mail::to($booking->staff[0]->email)->queue(new PesananKeretaBatal($booking));
+
+                return redirect()->route('upsm.BookingKenderaan.indexHistory')->with([
+                    'success'  => 'Booking ' . $booking->reference . ' telah direject',
+                    'bookingID' => $booking->id
                 ]);
             }
         }

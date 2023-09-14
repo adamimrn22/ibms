@@ -1,6 +1,6 @@
 @forelse ($data as $index => $item)
     <div class="col-12 col-md-4 col-size bg-white rounded border p-2 mb-1 margin-col">
-        <div>
+        <div class="item-container">
             <div class="image-container my-1 text-center">
                 <img src="{{ asset('storage/supply/' . $item->images->parent_folder . '/' . $item->images->path) }}"
                     class="img-fluid product-image btn-show-image" alt="gambar alat tulis" data-bs-toggle="modal"
@@ -13,6 +13,7 @@
             </button>
         </div>
     </div>
+
 @empty
     <div class="col-12 text-center my-auto p-2  ">
         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mood-sad" width="64"

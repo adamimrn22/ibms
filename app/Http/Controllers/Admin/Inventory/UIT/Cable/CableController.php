@@ -59,7 +59,7 @@ class CableController extends Controller
                 'created_at' => now()
             ]);
 
-            return redirect()->route('uit.' . ucfirst(strtolower($name)) . '.index')->with('success', ucfirst(strtolower($name)) . 'Succesfully Created');
+            return redirect()->route('uit.' . ucfirst(strtolower($name)) . '.index')->with('success', ucfirst(strtolower($name)) . ' Succesfully Created');
         } catch (\Throwable $th) {
             $errorMessage = $th->getMessage(); // Get the error message
             return redirect()->back()->with('error', strval($errorMessage));

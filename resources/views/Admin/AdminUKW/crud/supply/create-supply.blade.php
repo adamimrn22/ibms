@@ -127,7 +127,7 @@
             allowMultiple: false, // Allow multiple file uploads
             maxFiles: 1, // Limit the maximum number of files to 5 (adjust as needed)
             acceptedFileTypes: ['image/jpeg', 'image/png'], // Accepted file types
-            maxFileSize: '2MB', // Maximum file size
+            maxFileSize: '5MB', // Maximum file size
         });
 
         FilePond.setOptions({

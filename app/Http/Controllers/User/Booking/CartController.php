@@ -21,35 +21,41 @@ class CartController extends Controller
 
         if (!empty($product)) {
 
-
             if ($product->subcategory_id == 22) {
                 $result = $this->checkUserPaperLimit();
 
                 if ($result['error']) {
                     return response()->json(['error' => $result['message']]);
                 }
-
-                // Increment the paper_decrement_amount session key
-                session(['paper_decrement_amount' => session('paper_decrement_amount', 0) + 1]);
-
             }
 
             if(isset($cart[$itemId])) {
 
                 if ($cart[$itemId]['quantity'] >= $product->current_quantity) {
-                    return response()->json(['error' => 'Kuantiti telah mencapai had']);
+                    return response()->json(['error' => 'Alatan Tulis telah kehabisan stok']);
+                }
+
+                if($cart[$itemId]['subcategory'] == 22){
+                    // Increment the paper_decrement_amount session key
+                    session(['paper_decrement_amount' => session('paper_decrement_amount', 0) + 1]);
                 }
 
                 $cart[$itemId]['quantity']++;
 
             } else {
-                $cart[$itemId] = [
+
+                $item = $cart[$itemId] = [
                     "id" => $itemId,
                     "name" => $product->name,
                     "quantity" => 1,
                     "subcategory" => $product->subcategory_id,
                     "image" =>  $product->images->parent_folder . '/' . $product->images->path
                 ];
+
+                if($item['subcategory'] == 22){
+                    session(['paper_decrement_amount' => session('paper_decrement_amount', 0) + 1]);
+                }
+
             }
 
             session()->put('cart', $cart);
@@ -75,7 +81,6 @@ class CartController extends Controller
             }
         }
 
-        // dd(view('User.AlatTulis.cart', compact('cart'))->render());
         return response()->json([
             'totalQuantity' => $totalQuantity,
             'cart' => view('User.AlatTulis.cart', compact('cart'))->render()
@@ -118,7 +123,7 @@ class CartController extends Controller
             // Check if the cart quantity is already equal to or greater than the current quantity
             if ($cart[$itemId]['quantity'] >= $quantity->current_quantity) {
                 // If so, do not increment and return
-                return response()->json(['error' => 'Kuantiti telah mencapai had']);
+                return response()->json(['error' => 'Alatan Tulis telah kehabisan stok']);
             }
 
             // Check if the product is in the "a4" category
@@ -128,14 +133,9 @@ class CartController extends Controller
                 if ($result['error']) {
                     return response()->json(['error' => $result['message']]);
                 }
-
-                // Increment the paper_decrement_amount session key
                 session(['paper_decrement_amount' => session('paper_decrement_amount', 0) + 1]);
             }
-
-            // Increment the quantity
             $cart[$itemId]['quantity']++;
-
             session()->put('cart', $cart);
 
             return response()->json(['message' => 'Item quantity incremented']);

@@ -72,7 +72,7 @@ class MiscellaneousController extends Controller
             'location' => $validatedData['location'],
             'price' => $validatedData['price'],
             'status_id' => $validatedData['status'],
-            'subcategory_id' => 13,
+            'subcategory_id' => 14,
         ]);
 
         return redirect()->route('uit.Miscellaneous.index')->with([

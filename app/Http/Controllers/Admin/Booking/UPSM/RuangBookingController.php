@@ -102,7 +102,7 @@ class RuangBookingController extends Controller
             ]);
         }
 
-        return redirect()->route('upsm.ruangTempah.index')->with(['success' => 'Booking successfully updated']);
+        return redirect()->route('upsm.ruangTempah.indexHistory')->with(['success' => 'Booking successfully updated']);
     }
 
     /**

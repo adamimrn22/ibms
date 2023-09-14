@@ -28,8 +28,8 @@ class RuangBookingController extends Controller
         $perPage = $request->input('records', 7);
         $searchTerm = $request->input('search');
         $status = $request->input('status');
-        $query = UpsmRuangBooking::query()->with('detail', 'room', 'status');
         $user = Auth::user();
+        $query = UpsmRuangBooking::query()->with('detail', 'room', 'status')->where('user_id', $user->id);
         $data = $this->applyPaginationFilterSearch($query, $searchTerm, $perPage, $user->id);
 
         if ($request->ajax()) {
@@ -136,6 +136,9 @@ class RuangBookingController extends Controller
 
         $booking->detail()->create($detail);
 
+        return redirect()->route('TempahRuang.index')->with([
+            'success' => 'Booking Created'
+        ]);
     }
 
     /**
@@ -174,12 +177,13 @@ class RuangBookingController extends Controller
     {
         // For search filtering
         if ($searchTerm) {
-            $query->where(function ($subQuery) use ($searchTerm) {
+            $query->where('user_id', $user_id)
+            ->where(function ($subQuery) use ($searchTerm) {
                 $subQuery->whereHas('detail', function ($detailQuery) use ($searchTerm) {
                     $detailQuery->where('objective', 'LIKE', "%{$searchTerm}%");
                 })
                 ->orWhere('reference', 'LIKE', "%{$searchTerm}%");
-            })->where('user_id', $user_id);
+            });
         }
 
         // Apply pagination

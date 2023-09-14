@@ -2,23 +2,30 @@
 
 namespace App\Mail\TempahanKereta;
 
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class PesananKeretaBatal extends Mailable
 {
     use Queueable, SerializesModels;
 
+    protected $booking;
+    protected $randomString;
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($booking)
     {
-        //
+        $this->booking = $booking;
+        //for gmail due to trimming
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $this->randomString = substr(str_shuffle($characters), 0, 10);
     }
 
     /**
@@ -37,7 +44,12 @@ class PesananKeretaBatal extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'pdf.pesanan-reject',
+            with: [
+                'orderID' => $this->booking->reference,
+                'date' => Carbon::parse($this->booking->created_at)->formatLocalized('%B %d, %Y %I:%M %p'),
+                'randomness' => $this->randomString,
+            ]
         );
     }
 

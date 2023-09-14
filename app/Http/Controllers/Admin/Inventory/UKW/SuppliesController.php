@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Inventory\UKW;
 
+use Illuminate\Support\Str;
 use App\Models\UkwInventory;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
@@ -49,16 +50,16 @@ class SuppliesController extends Controller
 
             if($tmp_file) {
 
-                Storage::copy('supply/tmp/' . $tmp_file->folder . '/' . $tmp_file->file, 'supply/'. str_replace(' ', '_', $validatedData['name']) . '/' . $tmp_file->folder . '/' . $tmp_file->file);
+                $cleanedFileName =  Str::slug($validatedData['name']);
+                Storage::copy('supply/tmp/' . $tmp_file->folder . '/' . $tmp_file->file, 'supply/'. $cleanedFileName . '/' . $tmp_file->folder . '/' . $tmp_file->file);
 
                 $supply = UkwInventory::create($validatedData);
 
                 UkwInventoryImage::create([
                     'inventories_id' => $supply->id,
-                    'parent_folder' => str_replace(' ', '_', $validatedData['name']),
+                    'parent_folder' => $cleanedFileName,
                     'path' => $tmp_file->folder . '/' . $tmp_file->file
                 ]);
-
 
                 Storage::deleteDirectory('supply/tmp/');
                 $tmp_file->delete();
@@ -66,7 +67,7 @@ class SuppliesController extends Controller
             return redirect()->route('ukw.' .$name . '.index')->with('success', $name . ' Created');
         } catch (\Throwable $th) {
             $errorMessage = $th->getMessage(); // Get the error message
-            return redirect()->back()->with('error', strval($errorMessage));
+            return redirect()->back()->with('error', $errorMessage);
         }
     }
     /**
@@ -114,19 +115,21 @@ class SuppliesController extends Controller
             $tmp_file = TemporaryFile::where('parent_folder', 'supply')->first();
 
             if(!empty($tmp_file) ) {
+                $cleanedFileName =  Str::slug($validatedData['name']);
+
                 $images = UkwInventoryImage::where('inventories_id', $id)->first();
                 Storage::deleteDirectory('supply/' .$images->parent_folder);
                 UkwInventoryImage::where('inventories_id', $id)->delete();
 
-                Storage::copy('supply/tmp/' . $tmp_file->folder . '/' . $tmp_file->file, 'supply/'. str_replace(' ', '_', $validatedData['name'] ) . '/' . $tmp_file->folder . '/' . $tmp_file->file);
+                Storage::copy('supply/tmp/' . $tmp_file->folder . '/' . $tmp_file->file, 'supply/'. $cleanedFileName . '/' . $tmp_file->folder . '/' . $tmp_file->file);
 
                 UkwInventoryImage::create([
                     'inventories_id' => $id,
-                    'parent_folder' => str_replace(' ', '_', $validatedData['name'] ),
+                    'parent_folder' => $cleanedFileName,
                     'path' => $tmp_file->folder . '/' . $tmp_file->file
                 ]);
 
-                Storage::deleteDirectory('supply/tmp/' . $tmp_file->folder);
+                Storage::deleteDirectory('supply/tmp/');
                 $tmp_file->delete();
             }
             return redirect()->route('ukw.' .$name . '.index')->with('success', $name . ' Updated');

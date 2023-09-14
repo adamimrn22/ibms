@@ -33,7 +33,7 @@ class BookingAlatTulisController extends Controller
 
     public function itemIndex(Request $request)
     {
-        $perPage = $request->input('records', 7);
+        $perPage = $request->input('records', 9);
         $searchTerm = $request->input('search');
         $status = $request->input('status');
         $subcategory = $request->input('subcategory');

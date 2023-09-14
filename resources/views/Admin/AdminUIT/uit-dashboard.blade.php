@@ -5,36 +5,13 @@
 @section('layout')
     <x-app-content>
         <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Current Amount Booking This Month</h4>
-                    </div>
-                    <div class="card-body">
-                        <div style="height:350px">
-                            <div class="chartjs-size-monitor">
-                                <div class="chartjs-size-monitor-expand">
-                                    <div class=""></div>
-                                </div>
-                                <div class="chartjs-size-monitor-shrink">
-                                    <div class=""></div>
-                                </div>
-                            </div><canvas class="polar-area-chart-ex chartjs chartjs-render-monitor" data-height="350"
-                                width="459" height="350" style="display: block; width: 459px; height: 350px;"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {{-- <div class=" col-12">
+            <!--Bar Chart Start -->
+            <div class="col-xl-6 col-12">
                 <div class="card">
                     <div
                         class="card-header d-flex justify-content-between align-items-sm-center align-items-start flex-sm-row flex-column">
                         <div class="header-left">
-                            <p class="card-subtitle text-muted mb-25">Balance Stock Alat Tulis</p>
-                            <h6 class="card-title">{{ $totalQuantity }} Stock</h6>
-                        </div>
-                        <div class="header-right d-flex align-items-center mt-sm-0 mt-1">
-
+                            <h4 class="card-title">Hardware Inventories</h4>
                         </div>
                     </div>
                     <div class="card-body">
@@ -46,14 +23,117 @@
                                 <div class="chartjs-size-monitor-shrink">
                                     <div class=""></div>
                                 </div>
-                            </div>
-                            <canvas class="horizontal-bar-chart-ex chartjs chartjs-render-monitor" data-height="400"
+                            </div><canvas class="bar-chart-ex chartjs chartjs-render-monitor" data-height="400"
                                 width="459" height="400" style="display: block; width: 459px; height: 400px;"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
-            --}}
+            <!-- Bar Chart End -->
+
+            <!-- Horizontal Bar Chart Start -->
+            <div class="col-xl-6 col-12">
+                <div class="card">
+                    <div
+                        class="card-header d-flex justify-content-between align-items-sm-center align-items-start flex-sm-row flex-column">
+                        <div class="header-left">
+                            <h4 class="card-title">Cable Inventories</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div style="height:400px">
+                            <div class="chartjs-size-monitor">
+                                <div class="chartjs-size-monitor-expand">
+                                    <div class=""></div>
+                                </div>
+                                <div class="chartjs-size-monitor-shrink">
+                                    <div class=""></div>
+                                </div>
+                            </div><canvas class="horizontal-bar-chart-ex chartjs chartjs-render-monitor" data-height="400"
+                                width="459" height="400" style="display: block; width: 459px; height: 400px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Horizontal Bar Chart End -->
+        </div>
+
+        <div class="row match-height">
+            <!-- Company Table Card -->
+            <div class="col-lg-8 col-12">
+                <div class="card card-company-table">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Asset ID</th>
+                                        <th>Name</th>
+                                        <th>Category</th>
+                                        <th>Location</th>
+                                        <th>Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div>
+                                                <div class="fw-bolder">Dixons</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>test</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-light-primary ">Technology</span>
+                                        </td>
+                                        <td class="text-nowrap">
+                                            <div class="d-flex flex-column">
+                                                <span class="fw-bolder mb-25">23.4k</span>
+                                                <span class="font-small-2 text-muted">in 24 hours</span>
+                                            </div>
+                                        </td>
+                                        <td>$891.2</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/ Company Table Card -->
+
+            <!-- Developer Meetup Card -->
+            <div class="col-lg-4 col-md-6 col-12">
+                <div class="card card-developer-meetup">
+                    <div class="card-body">
+                        <div class="meetup-header d-flex align-items-center">
+                            <div class="my-auto">
+                                <h4 class="card-title mb-25">Highest Booking</h4>
+                                <p class="card-text mb-0">Staff with the most expensive booking</p>
+                            </div>
+                        </div>
+                        <div class="mb-1">
+                            <div class="avatar float-start bg-light-primary rounded me-1">
+                                <div class="avatar-content">
+                                    1
+                                </div>
+                            </div>
+                            <div class="more-info">
+                                <h6 class="mb-0">Adam Imran Bin Alwi</h6>
+                                <small>Penolong Eksekutif | RM 50</small>
+                            </div>
+                            <div class="more-info">
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <!--/ Developer Meetup Card -->
+
         </div>
     </x-app-content>
 @endsection
@@ -71,14 +151,21 @@
     @endif
 
     <script src="{{ asset('app-asset/vendors/js/charts/chart.min.js') }}"></script>
-    {{-- <script>
+    <script>
         $(window).on('load', function() {
 
-            var labels = @json($labels); // Convert the PHP array to a JavaScript array
-            var data = @json($data); // Convert the PHP array to a JavaScript array
+            var hardwareData = @json($hardwareCategory);
+            var hardwareLabels = hardwareData.map(function(item) {
+                return item.subcategory;
+            });
+
+            var hardwareInventories = hardwareData.map(function(item) {
+                return item.inventory_count;
+            });
+
 
             var chartWrapper = $('.chartjs'),
-                horizontalBarChartEx = $('.horizontal-bar-chart-ex'),
+                barChartEx = $('.bar-chart-ex'),
                 polarAreaChartEx = $('.polar-area-chart-ex');
 
             // Color Variables
@@ -105,27 +192,17 @@
                 });
             }
 
-            // Horizontal Bar Chart
+            // Bar Chart
             // --------------------------------------------------------------------
-            if (horizontalBarChartEx.length) {
-                new Chart(horizontalBarChartEx, {
-                    type: 'horizontalBar',
+            if (barChartEx.length) {
+                var barChartExample = new Chart(barChartEx, {
+                    type: 'bar',
                     options: {
                         elements: {
                             rectangle: {
                                 borderWidth: 2,
-                                borderSkipped: 'right'
+                                borderSkipped: 'bottom'
                             }
-                        },
-                        tooltips: {
-                            // Updated default tooltip UI
-                            shadowOffsetX: 1,
-                            shadowOffsetY: 1,
-                            shadowBlur: 8,
-                            shadowColor: tooltipShadow,
-                            backgroundColor: window.colors.solid.white,
-                            titleFontColor: window.colors.solid.black,
-                            bodyFontColor: window.colors.solid.black
                         },
                         responsive: true,
                         maintainAspectRatio: false,
@@ -133,78 +210,6 @@
                         legend: {
                             display: false
                         },
-                        layout: {
-                            padding: {
-                                bottom: -30,
-                                left: -25
-                            }
-                        },
-                        scales: {
-                            xAxes: [{
-                                display: true,
-                                gridLines: {
-                                    zeroLineColor: grid_line_color,
-                                    borderColor: 'transparent',
-                                    color: grid_line_color
-                                },
-                                scaleLabel: {
-                                    display: true
-                                },
-                                ticks: {
-                                    min: 0,
-                                    fontColor: labelColor
-                                }
-                            }],
-                            yAxes: [{
-                                display: true,
-                                gridLines: {
-                                    display: false
-                                },
-                                scaleLabel: {
-                                    display: true
-                                },
-                                ticks: {
-                                    fontColor: labelColor
-                                }
-                            }]
-                        }
-                    },
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            data: data,
-                            barThickness: 15,
-                            backgroundColor: window.colors.solid.info,
-                            borderColor: 'transparent'
-                        }]
-                    }
-                });
-
-            }
-
-            // Polar Area Chart
-            // --------------------------------------------------------------------
-            if (polarAreaChartEx.length) {
-                let chartData = {!! json_encode($chartData) !!};
-
-                let labels = chartData.map(item => item.label);
-                let data = chartData.map(item => item.value);
-
-                var polarExample = new Chart(polarAreaChartEx, {
-                    type: 'polarArea',
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        responsiveAnimationDuration: 500,
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                usePointStyle: true,
-                                padding: 15,
-                                boxWidth: 15,
-                                fontColor: labelColor
-                            }
-                        },
                         tooltips: {
                             // Updated default tooltip UI
                             shadowOffsetX: 1,
@@ -215,51 +220,52 @@
                             titleFontColor: window.colors.solid.black,
                             bodyFontColor: window.colors.solid.black
                         },
-                        scale: {
-                            min: 0,
-                            scaleShowLine: true,
-                            scaleLineWidth: 1,
-                            ticks: {
-                                display: false,
-                                fontColor: labelColor
-                            },
-                            reverse: false,
-                            gridLines: {
-                                display: false
-                            },
-                            r: {
-                                pointLabels: {
+                        scales: {
+                            xAxes: [{
+                                display: true,
+                                gridLines: {
                                     display: true,
-                                    centerPointLabels: true,
-                                    font: {
-                                        size: 12
-                                    }
+                                    color: grid_line_color,
+                                    zeroLineColor: grid_line_color
+                                },
+                                scaleLabel: {
+                                    display: false
+                                },
+                                ticks: {
+                                    fontColor: labelColor
                                 }
-                            }
-                        },
-                        animation: {
-                            animateRotate: false
+                            }],
+                            yAxes: [{
+                                display: true,
+                                gridLines: {
+                                    color: grid_line_color,
+                                    zeroLineColor: grid_line_color
+                                },
+                                ticks: {
+                                    stepSize: 100,
+                                    min: 0,
+                                    max: 400,
+                                    fontColor: labelColor
+                                }
+                            }]
                         }
                     },
                     data: {
-                        labels: labels,
+                        labels: hardwareLabels,
                         datasets: [{
-                            label: 'Total Booking Counts By Unit',
-                            backgroundColor: [
-                                primaryColorShade,
-                                warningColorShade,
-                                window.colors.solid.primary,
-                                infoColorShade,
-                                greyColor,
-                                successColorShade
-                            ],
-                            data: data,
-                            borderWidth: 0
+                            data: hardwareInventories,
+                            barThickness: 15,
+                            backgroundColor: successColorShade,
+                            borderColor: 'transparent'
                         }]
                     }
                 });
             }
 
+            // Polar Area Chart
+            // --------------------------------------------------------------------
+
+
         });
-    </script> --}}
+    </script>
 @endsection

@@ -5,7 +5,7 @@
         </td>
         <td>
             <input type="hidden" class="form-control" name="user[{{ $user->id }}]" value="{{ $user->id }}">
-            {{ $user->id }}
+            {{ $user->username }}
         </td>
         <td>
             {{ $user->first_name . ' ' . $user->last_name }}

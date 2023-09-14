@@ -23,6 +23,24 @@
             width: 100%;
         }
 
+        .item-container {
+            height: 100%;
+            /* Set a fixed height for the item container */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .item-container h5 {
+            overflow: hidden;
+            white-space: nowrap;
+            /* Prevent text from wrapping */
+            text-overflow: ellipsis;
+            /* Show ellipsis (...) for overflow text */
+            margin: 0;
+            padding: 0;
+        }
+
 
         .modal {
             text-align: center;
@@ -92,25 +110,25 @@
                             <label class="d-inline-flex align-items-center">
                                 Show
                                 <select id="recordFilter" class="form-select mx-1 px-2">
-                                    <option value="7" selected>7</option>
-                                    <option value="10">10</option>
-                                    <option value="25">25</option>
-                                    <option value="50">50</option>
-                                    <option value="75">75</option>
-                                    <option value="100">100</option>
+                                    <option value="9" selected>9</option>
+                                    <option value="18">10</option>
+                                    <option value="27">25</option>
+                                    <option value="36">50</option>
+                                    <option value="63">75</option>
+                                    <option value="108">100</option>
                                 </select> entries
                             </label>
                         </div>
                     </div>
                 </div>
 
-                <div class="row p-0 m-0" id="productCol">
+                <div class="row p-0 m-0" style="position: relative" id="productCol">
                     @include('User.AlatTulis.alatTulisItem.product-grid')
-                </div>
 
-                <div class="d-flex align-items-center justify-content-center" style="min-height: 500px">
-                    <div id="roleSpinner" align="center" class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
+                    <div class="d-flex align-items-center justify-content-center ">
+                        <div id="roleSpinner" align="center" class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
                     </div>
                 </div>
 
@@ -153,6 +171,7 @@
                     },
                     success: function(response) {
                         if (response.error) {
+                            console.log(response.int)
                             toastr.error(response.error, 'Amaran')
                         } else {
 
@@ -161,7 +180,7 @@
                                 positionClass: 'toast-top-left',
                                 timeOut: 1500,
                             };
-
+                            console.log(response.int)
                             toastr.success(' Item telah ditambahkan ke troli.', 'Success');
                             loadCartSection();
                         }

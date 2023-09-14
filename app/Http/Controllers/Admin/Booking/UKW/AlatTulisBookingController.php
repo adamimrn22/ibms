@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Booking\UKW;
 use Carbon\Carbon;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use App\Models\User;
 use App\Models\UkwBooking;
 use App\Models\UkwInventory;
 use Illuminate\Http\Request;
@@ -60,7 +61,7 @@ class AlatTulisBookingController extends Controller
     {
         $id = Crypt::decryptString($encryptID);
         $booking = UkwBooking::with('user', 'inventories')->find($id);
-// dd($booking);
+
         if (!$booking) {
             abort(404); // Booking not found
         }
@@ -146,13 +147,38 @@ class AlatTulisBookingController extends Controller
                                     ->first();
 
                                 if ($userPaperBooking) {
-                                    if ($userPaperBooking->amount > 0) {
-                                        $userPaperBooking->subtractAmount( $approvedQuantity[$itemID] );
 
-                                        $attributes['approved_quantity'] = $approvedQuantity[$itemID];
-                                        $attributes['remarkNotes'] = $remarkNotes[$itemID];
-                                        $attributes['status_id'] = 2;
-                                        $attributes['updated_at'] = now();
+                                    if ($userPaperBooking->amount > 0) {
+                                        $approvedAmount = $approvedQuantity[$itemID];
+                                        // Get the unit of the user whose booking is approved
+                                        $unit = $booking->user->unit_id;
+
+                                        if($unit == 8){
+                                            $userPaperBooking->subtractAmount( $approvedQuantity[$itemID] );
+
+                                            $attributes['approved_quantity'] = $approvedQuantity[$itemID];
+                                            $attributes['remarkNotes'] = $remarkNotes[$itemID];
+                                            $attributes['status_id'] = 2;
+                                            $attributes['updated_at'] = now();
+                                        }else {
+                                            $usersWithSameUnit = User::where('unit_id', $unit)->get();
+                                            // Subtract the approved amount from each user in the same unit
+                                            foreach ($usersWithSameUnit as $user) {
+                                                $userA4 = UserPaperBookingAmount::where('year', $currentYear)
+                                                    ->where('month', $currentMonth)
+                                                    ->where('user_id', $user->id)
+                                                    ->first();
+
+                                                if ($userA4) {
+                                                    $userA4->subtractAmount($approvedAmount);
+                                                }
+                                            }
+
+                                            $attributes['approved_quantity'] = $approvedQuantity[$itemID];
+                                            $attributes['remarkNotes'] = $remarkNotes[$itemID];
+                                            $attributes['status_id'] = 2;
+                                            $attributes['updated_at'] = now();
+                                        }
                                     }else {
                                         $attributes['approved_quantity'] = 0;
                                         $attributes['remarkNotes'] = $remarkNotes[$itemID];
@@ -212,7 +238,8 @@ class AlatTulisBookingController extends Controller
             ]);
 
         } catch (\Throwable $th) {
-            return redirect()->route('ukw.BookingAlatTulis.index')->with(['error' => strval($th->getMessage())]);
+            dd($th->getMessage());
+            // return redirect()->route('ukw.BookingAlatTulis.index')->with(['error' => strval($th->getMessage())]);
         }
     }
 

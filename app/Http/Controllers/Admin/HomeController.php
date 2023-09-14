@@ -62,7 +62,7 @@ class HomeController extends Controller
 
         $bookingCounts = DB::table('ukw_bookings')
         ->join('users', 'ukw_bookings.user_id', '=', 'users.id')
-        ->where('ukw_bookings.status_id', '=', 2) // Adjust the status filter as needed
+        ->where('ukw_bookings.status_id', '=', 2)
         ->whereRaw('DATE_FORMAT(ukw_bookings.updated_at, "%Y-%m") = ?', [$currentMonth])
         ->groupBy('users.unit_id')
         ->select('users.unit_id', DB::raw('COUNT(*) as booking_count'))
@@ -93,6 +93,47 @@ class HomeController extends Controller
 
     private function uitViews()
     {
-        return view('Admin.AdminUIT.uit-dashboard');
+        // $allCategory = DB::table('category')
+        // ->select(
+        //     'category.category_name AS category',
+        //     DB::raw('COUNT(uit_inventories.id) AS inventory_count')
+        // )
+        // ->leftJoin('subcategory', 'category.id', '=', 'subcategory.category_id')
+        // ->leftJoin('uit_inventories', 'subcategory.id', '=', 'uit_inventories.subcategory_id')
+        // ->groupBy('category.category_name')
+        // ->where('category.unit_id', '=', 1)
+        // ->get();
+
+        $hardwareCategory = DB::table('category')
+        ->select(
+            'subcategory.subcategory_name AS subcategory',
+            DB::raw('COUNT(uit_inventories.id) AS inventory_count')
+        )
+        ->leftJoin('subcategory', 'category.id', '=', 'subcategory.category_id')
+        ->leftJoin('uit_inventories', 'subcategory.id', '=', 'uit_inventories.subcategory_id')
+        ->where('category.category_name', '=', 'Hardware')
+        ->groupBy('subcategory.subcategory_name')
+        ->get();
+
+        $cableCategory = DB::table('category')
+        ->select(
+            'subcategory.subcategory_name AS subcategory',
+            DB::raw('COUNT(uit_inventories.id) AS inventory_count')
+        )
+        ->leftJoin('subcategory', 'category.id', '=', 'subcategory.category_id')
+        ->leftJoin('uit_inventories', 'subcategory.id', '=', 'uit_inventories.subcategory_id')
+        ->where('category.category_name', '=', 'Cable')
+        ->groupBy('subcategory.subcategory_name')
+        ->get();
+
+        $highestPrice = DB::table('uit_inventories')
+        ->select('name', 'price')
+        ->orderBy('price', 'desc')
+        ->limit(5)
+        ->get();
+
+
+        // dd($results);
+        return view('Admin.AdminUIT.uit-dashboard', compact('hardwareCategory', 'cableCategory', 'highestPrice'));
     }
 }
