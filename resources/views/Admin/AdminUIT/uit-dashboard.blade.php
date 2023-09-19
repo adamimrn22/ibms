@@ -67,11 +67,9 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>Asset ID</th>
-                                        <th>Name</th>
-                                        <th>Category</th>
-                                        <th>Location</th>
-                                        <th>Price</th>
+                                        <th>Category Name</th>
+                                        <th>Total Inventories</th>
+                                        <th>Total Price</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -82,17 +80,9 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <span>test</span>
-                                        </td>
-                                        <td>
                                             <span class="badge bg-light-primary ">Technology</span>
                                         </td>
-                                        <td class="text-nowrap">
-                                            <div class="d-flex flex-column">
-                                                <span class="fw-bolder mb-25">23.4k</span>
-                                                <span class="font-small-2 text-muted">in 24 hours</span>
-                                            </div>
-                                        </td>
+
                                         <td>$891.2</td>
                                     </tr>
                                 </tbody>
@@ -109,8 +99,8 @@
                     <div class="card-body">
                         <div class="meetup-header d-flex align-items-center">
                             <div class="my-auto">
-                                <h4 class="card-title mb-25">Highest Booking</h4>
-                                <p class="card-text mb-0">Staff with the most expensive booking</p>
+                                <h4 class="card-title mb-25">Highest Inventory</h4>
+                                <p class="card-text mb-0">Inventory with the most expensive price</p>
                             </div>
                         </div>
                         <div class="mb-1">
@@ -120,8 +110,8 @@
                                 </div>
                             </div>
                             <div class="more-info">
-                                <h6 class="mb-0">Adam Imran Bin Alwi</h6>
-                                <small>Penolong Eksekutif | RM 50</small>
+                                <h6 class="mb-0">Macbook Pro</h6>
+                                <small>Laptop</small>
                             </div>
                             <div class="more-info">
 

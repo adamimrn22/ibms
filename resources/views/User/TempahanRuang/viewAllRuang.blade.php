@@ -3,6 +3,7 @@
 @section('csslink')
     <link rel="stylesheet" href="{{ asset('app-asset/vendors/css/pickers/flatpickr/flatpickr.min.css') }}">
     <link rel="stylesheet" href="{{ asset('app-asset/css/plugins/forms/pickers/form-flat-pickr.css') }}">
+    <link rel="stylesheet" href="{{ asset('app-asset/vendors/css/forms/select/select2.min.css') }}">
 @endsection
 @section('section')
     <div class="mt-1">
@@ -19,22 +20,24 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <th width="25%">Tarikh</th>
-                                <td width="25%">
-                                    <label class="form-label">Dari</label>
-                                    <input class="flatpickr-basic flatpickr-input" type="text" name="dateFrom"
-                                        id="dateFrom">
-                                </td>
-                                <td width="25%">
-                                    <label class="form-label ms-2">Hingga</label>
-                                    <input class="ms-2 flatpickr-basic flatpickr-input" type="text" name="dateTo"
-                                        id="dateTo">
-                                </td>
-                                <td width="25%" align="right">
-                                    <button class="btn btn-gradient-primary btn-sm mt-2" id="filterButton">
-                                        Lihat jadual ruang
-                                    </button>
-                                </td>
+                                <form method="GET" action="/test" target="_blank">
+                                    @csrf
+                                    <td>
+                                        <select style="overflow:hidden" id="roomTypeFilter" name="room_type"
+                                            class="select2 form-select form-select ">
+                                            @foreach ($rooms as $roomSelect)
+                                                <option value="{{ $roomSelect->id }}|{{ $roomSelect->name }}">
+                                                    {{ $roomSelect->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td width="25%" align="right">
+                                        <button class="btn btn-gradient-primary btn-sm  " id="filterButton">
+                                            Lihat jadual ruang
+                                        </button>
+                                    </td>
+                                </form>
                             </tr>
                         </tbody>
                     </table>
@@ -101,15 +104,6 @@
             altInput: true,
             altFormat: "F j, Y",
             dateFormat: "Y-m-d",
-        });
-
-        document.getElementById('filterButton').addEventListener('click', function() {
-            const dateFrom = document.getElementById('dateFrom').value;
-            const dateTo = document.getElementById('dateTo').value;
-
-            // Open bookings page in a new tab with date range query parameters
-            const url = `/User/Booking/UPSM/Ruang/Tempahan/RuangTempah?date_from=${dateFrom}&date_to=${dateTo}`;
-            window.open(url, '_blank');
         });
     </script>
 @endsection

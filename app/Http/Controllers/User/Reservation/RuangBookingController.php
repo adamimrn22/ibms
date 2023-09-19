@@ -44,28 +44,37 @@ class RuangBookingController extends Controller
 
     public function ruangTempah(Request $request)
     {
-        $dateFrom = $request->input('date_from');
-        $dateTo = $request->input('date_to');
+        $roomRaw = $request->input('room_type');
+        $roomInput = explode("|", $roomRaw);
+        $roomSelectedID = $roomInput[0];
+        $roomName = $roomInput[1];
 
-        $rooms = UpsmInventory::ofRoom(16)->get();
-        $roomType = $request->input('room_type');
+        $bookData = UpsmRuangBooking::with('detail', 'room')->where('room_id', $roomSelectedID)->get();
+        $rooms = UpsmInventory::where('subcategory_id', '=', 16)->where('status_id', '=', 6)->get();
 
-        $bookings = UpsmRuangBooking::with('room')
-        ->where(function ($query) use ($dateFrom, $dateTo) {
-            // Condition 1: Booking starts within the given range
-            $query->whereBetween('date_book_start', [$dateFrom, $dateTo]);
-            // Condition 2: Booking ends within the given range
-            $query->orWhereBetween('date_book_end', [$dateFrom, $dateTo]);
+        return view('testbiew', compact('bookData', 'rooms', 'roomName', 'roomSelectedID'));
+        // $dateFrom = $request->input('date_from');
+        // $dateTo = $request->input('date_to');
 
-        })
-        ->when($roomType, function ($query) use ($roomType) {
-            $query->whereHas('room', function ($subquery) use ($roomType) {
-                $subquery->where('room_id', $roomType);
-            });
-        })
-        ->paginate(10);
+        // $rooms = UpsmInventory::ofRoom(16)->get();
+        // $roomType = $request->input('room_type');
 
-        return view('User.TempahanRuang.viewBetweenTempahan',  compact('bookings', 'rooms', 'dateFrom', 'dateTo'));
+        // $bookings = UpsmRuangBooking::with('room')
+        // ->where(function ($query) use ($dateFrom, $dateTo) {
+        //     // Condition 1: Booking starts within the given range
+        //     $query->whereBetween('date_book_start', [$dateFrom, $dateTo]);
+        //     // Condition 2: Booking ends within the given range
+        //     $query->orWhereBetween('date_book_end', [$dateFrom, $dateTo]);
+
+        // })
+        // ->when($roomType, function ($query) use ($roomType) {
+        //     $query->whereHas('room', function ($subquery) use ($roomType) {
+        //         $subquery->where('room_id', $roomType);
+        //     });
+        // })
+        // ->paginate(10);
+
+        // return view('User.TempahanRuang.viewBetweenTempahan',  compact('bookings', 'rooms', 'dateFrom', 'dateTo'));
     }
 
     /**

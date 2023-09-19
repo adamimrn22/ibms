@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin\Booking\UPSM;
 
-use App\Http\Controllers\Controller;
-use App\Models\UpsmRuangBooking;
 use Illuminate\Http\Request;
+use App\Models\UpsmInventory;
+use App\Models\UpsmRuangBooking;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
 
 class RuangBookingController extends Controller
@@ -81,8 +82,9 @@ class RuangBookingController extends Controller
     {
         $id = Crypt::decryptString($encryptID);
         $booking = UpsmRuangBooking::with('user', 'room', 'detail')->findOrFail($id);
+        $rooms = UpsmInventory::where('subcategory_id', '=', 16)->where('status_id', '=', 6)->get();
 
-        return view('Admin.AdminUPSM.Booking.ruang.ruangTempahUpdate', compact('booking'));
+        return view('Admin.AdminUPSM.Booking.ruang.ruangTempahUpdate', compact('booking', 'rooms'));
     }
 
     /**

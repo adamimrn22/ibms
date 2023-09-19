@@ -3,6 +3,7 @@
 namespace App\Mail\TempahanKereta;
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use App\Models\UpsmVehicleBooking;
@@ -34,9 +35,7 @@ class NewPesananKereta extends Mailable
         $formatDate = Carbon::parse($this->booking->created_at)->formatLocalized('%B %d, %Y %I:%M %p');
         $this->date =  $formatDate;
 
-        // gmail trim the mail this is for not making it trim
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $this->randomString = substr(str_shuffle($characters), 0, 10);
+        $this->randomString  = Str::random(20);
     }
 
     /**

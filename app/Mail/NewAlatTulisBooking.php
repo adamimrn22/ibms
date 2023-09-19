@@ -4,6 +4,7 @@ namespace App\Mail;
 
 use Carbon\Carbon;
 use App\Models\UkwBooking;
+use Illuminate\Support\Str;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -38,10 +39,8 @@ class NewAlatTulisBooking extends Mailable implements ShouldQueue
         $formatDate = Carbon::parse($this->booking->created_at)->formatLocalized('%B %d, %Y %I:%M %p');
         $this->date =  $formatDate;
 
-
         // gmail trim the mail this is for not making it trim
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $this->randomString = substr(str_shuffle($characters), 0, 10);
+        $this->randomString  = Str::random(20);
     }
 
     /**

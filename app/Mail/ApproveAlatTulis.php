@@ -2,8 +2,9 @@
 
 namespace App\Mail;
 
-use App\Models\UkwBooking;
 use Carbon\Carbon;
+use App\Models\UkwBooking;
+use Illuminate\Support\Str;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -43,10 +44,7 @@ class ApproveAlatTulis extends Mailable implements ShouldQueue
         $this->bookDate =  $formatBookDate;
         $this->approvedDate =  $formatApprovedDate;
 
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-        // gmail trim the mail this is for not making it trim
-        $this->randomString = substr(str_shuffle($characters), 0, 10);
+        $this->randomString  = Str::random(20);
     }
 
     /**

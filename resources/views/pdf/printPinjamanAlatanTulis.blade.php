@@ -166,7 +166,7 @@
         </thead>
     </table>
 
-    <p style="font-size: 9pt; text-align:center; margin: 0; padding:0">PENGESAHAN KETUA UNIT/PUSAT/JABATAN</p>
+    <p style="font-size: 9pt; text-align:center; margin: 0; padding:0">PENGESAHAN PEJABAT REKTOR</p>
 
     <table style=" border-top: none;">
         <tr>
@@ -211,43 +211,13 @@
         </tr>
     </table>
 
-    <table style="margin-top: 15pt; border: 1px  solid black; padding: 0 10pt;">
-        <thead style="font-size: 12pt; ">
-        </thead>
-    </table>
-    <p style="font-size: 9pt; text-align:center; margin: 0; padding:0">
-        PENGESAHAN BAHAGIAN KEWANGAN (BKW) <br>
-        Telah membekalkan barang seperti diatas
-    </p>
 
-    <table style=" border-top: none;">
-        <tr>
-            <td style="padding: 5px; vertical-align: top; width: 50%;">
-                <table style="width: 100%;">
-                    <tr>
-                        <td style="text-align: left; font-size:10pt" width="30%">Tandatangan/Cop</td>
-                        <td width="5%">:</td>
-                        <td style="text-align: left; font-size:8pt;border-bottom-style: dotted;"> </td>
-                    </tr>
-                </table>
-            </td>
-            <td style="padding: 5px; vertical-align: top; width: 50%;">
-                <table style="width: 70%;" align="right">
-                    <tr>
-                        <td style="text-align: left; font-size:10pt" width="30%">Tarikh</td>
-                        <td width="5%">:</td>
-                        <td style="text-align: left; font-size:8pt;border-bottom-style: dotted;"> </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
 
     <table style="margin-top: 15pt; border: 1px  solid black; padding: 0 10pt;">
         <thead style="font-size: 12pt; ">
         </thead>
     </table>
-    <p style="font-size: 9pt; text-align:center; margin: 0; padding:0">
+    <p style="font-size: 9pt; text-align:center; margin: 0; padding:0;">
         PENGESAHAN PENERIMAAN BARANG <br>
         Telah menerima barang seperti diatas
     </p>

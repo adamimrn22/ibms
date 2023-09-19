@@ -160,28 +160,33 @@
                         <h5 class="modal-title" id="exampleModalCenterTitle">Jadual Ruang</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <label class="form-label">Dari</label>
-                                        <input class="flatpickr-basic flatpickr-input" type="text" name="dateFrom"
-                                            id="dateFrom">
-                                    </td>
-                                    <td>
-                                        <label class="form-label ms-2">Hingga</label>
-                                        <input class="ms-2 flatpickr-basic flatpickr-input" type="text" name="dateTo"
-                                            id="dateTo">
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary waves-effect waves-float waves-light"
-                            id="filterButton">Lihat Jadual Ruang</button>
-                    </div>
+                    <form method="GET" action="/test" target="_blank">
+                        <div class="modal-body">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+
+                                        @csrf
+                                        <td>
+                                            <select style="overflow:hidden" id="roomTypeFilter" name="room_type"
+                                                class="select2 form-select form-select ">
+                                                @foreach ($rooms as $roomSelect)
+                                                    <option value="{{ $roomSelect->id }}|{{ $roomSelect->name }}">
+                                                        {{ $roomSelect->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary waves-effect waves-float waves-light" id="filterButton">Lihat
+                                Jadual Ruang</button>
+                        </div>
+
+                    </form>
                 </div>
             </div>
         </div>
@@ -216,16 +221,6 @@
             altInput: true,
             altFormat: "F j, Y",
             dateFormat: "Y-m-d",
-        });
-
-        $('#filterButton').click(function() {
-            const dateFrom = $('#dateFrom').val();
-            const dateTo = $('#dateTo').val();
-
-            // Open bookings page in a new tab with date range query parameters
-            const url = `/UPSM/Booking/Ruang/Tempahan/RuangTempah?date_from=${dateFrom}&date_to=${dateTo}`;
-            $('#exampleModalCenter').modal('hide');
-            window.open(url, '_blank');
         });
     </script>
 @endsection

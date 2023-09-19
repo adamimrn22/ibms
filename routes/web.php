@@ -1,28 +1,36 @@
 <?php
 
+use App\Models\Booking;
+use Illuminate\Http\Request;
+use App\Models\UpsmInventory;
+use App\Models\UpsmRuangBooking;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TempfileController;
 use App\Http\Controllers\UserHomeController;
 use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Admin\ExportController;
 use App\Http\Controllers\SuperAdmin\UnitController;
 use App\Http\Controllers\SuperAdmin\UserController;
 use App\Http\Controllers\SuperAdmin\RolesController;
 use App\Http\Controllers\SuperAdmin\SAHomeController;
 use App\Http\Controllers\User\Booking\CartController;
-use App\Http\Controllers\Booking\UKWBookingController;
 use App\Http\Controllers\SuperAdmin\PositionController;
 use App\Http\Controllers\SuperAdmin\PermissionController;
 use App\Http\Controllers\Admin\Inventory\UKW\FileController;
 use App\Http\Controllers\Admin\Inventory\UPSM\CarController;
 use App\Http\Controllers\Admin\Inventory\UKW\PaperController;
+use App\Http\Controllers\User\BookingAlatTulisTestController;
 use App\Http\Controllers\Admin\Booking\UKW\A4AmountController;
+use App\Http\Controllers\Admin\Inventory\UIT\OthersController;
+use App\Http\Controllers\User\Booking\UitPeripheralController;
 use App\Http\Controllers\Admin\Inventory\UKW\A4PaperController;
 use App\Http\Controllers\Admin\Inventory\UKW\SuppliesController;
 use App\Http\Controllers\Admin\Inventory\UIT\Cable\DviController;
 use App\Http\Controllers\Admin\Inventory\UIT\Cable\UsbController;
 use App\Http\Controllers\Admin\Inventory\UIT\Cable\VgaController;
 use App\Http\Controllers\User\Booking\BookingAlatTulisController;
+use App\Http\Controllers\User\Reservation\RuangBookingController;
 use App\Http\Controllers\Admin\Inventory\UIT\Cable\HdmiController;
 use App\Http\Controllers\Admin\Inventory\UKW\StationeryController;
 use App\Http\Controllers\Admin\Inventory\UPSM\ClassroomController;
@@ -33,24 +41,17 @@ use App\Http\Controllers\Admin\Inventory\UIT\Cable\EthernetController;
 use App\Http\Controllers\Admin\Inventory\UIT\Cable\PsuCableController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\MouseController;
 use App\Http\Controllers\Admin\Booking\UPSM\KenderaanBookingController;
-use App\Http\Controllers\Admin\Booking\UPSM\RuangBookingController as UPSMRuangBookingController;
-use App\Http\Controllers\Admin\ExportController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\LaptopController;
+use App\Http\Controllers\Admin\Inventory\UIT\Others\SoftwareController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\DesktopController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\MonitorController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\PrinterController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\KeyboardController;
-use App\Http\Controllers\Admin\Inventory\UIT\Hardware\ProjectorController;
-use App\Http\Controllers\Admin\Inventory\UIT\Cable\CableController as CableCableController;
 use App\Http\Controllers\Admin\Inventory\UIT\Hardware\ExtensionController;
+use App\Http\Controllers\Admin\Inventory\UIT\Hardware\ProjectorController;
 use App\Http\Controllers\Admin\Inventory\UIT\Others\MiscellaneousController;
-use App\Http\Controllers\Admin\Inventory\UIT\Others\SoftwareController;
-use App\Http\Controllers\Admin\Inventory\UIT\OthersController;
-use App\Http\Controllers\User\Booking\UitPeripheralController;
-use App\Http\Controllers\User\BookingAlatTulisTestController;
-use App\Http\Controllers\User\Reservation\RuangBookingController;
-use App\Models\Booking;
-use App\Models\UpsmRuangBooking;
+use App\Http\Controllers\Admin\Inventory\UIT\Cable\CableController as CableCableController;
+use App\Http\Controllers\Admin\Booking\UPSM\RuangBookingController as UPSMRuangBookingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -247,56 +248,17 @@ Route::middleware(['auth', 'role:User'])->prefix('/User')->group(function () {
 });
 
 
-Route::get('/test', function(){
+Route::get('/test', function(Request $request){
 
-    // $user = Auth::user();
+    $roomRaw = $request->input('room_type');
+    $roomInput = explode("|", $roomRaw);
+    $roomSelectedID = $roomInput[0];
+    $roomName = $roomInput[1];
 
-    // $booking = UkwBooking::with('inventories' )
-    // ->withSum('inventories', 'ukw_bookings_inventories.quantity')
-    // ->where('reference', 'UKWBK0001')->first();
+    $bookData = UpsmRuangBooking::with('detail', 'room')->where('room_id', $roomSelectedID)->get();
+    $rooms = UpsmInventory::where('subcategory_id', '=', 16)->where('status_id', '=', 6)->get();
 
-    // $totalQuantity =  $totalQuantity = $booking->inventories_sum_ukw_bookings_inventoriesquantity;
-
-    // $orderID = $booking->reference;
-
-    // $totalQuantity = $booking->inventories_sum_ukw_bookings_inventoriesquantity;
-
-
-    // $formatBookDate = Carbon::parse($booking->created_at)->formatLocalized('%B %d, %Y %I:%M %p');
-    // $formatApprovedDate = Carbon::parse($booking->updated_at)->formatLocalized('%B %d, %Y %I:%M %p');
-
-    // $bookDate =  $formatBookDate;
-    // $approvedDate =  $formatApprovedDate;
-
-    // return view('mail.bookingAlatTulis.approvedBooking', compact(
-    //     'user' ,
-    //     'booking' ,
-    //     'orderID' ,
-    //     'totalQuantity',
-    //     'bookDate',
-    //     'approvedDate',
-    // ));
+    return view('testbiew', compact('bookData', 'rooms', 'roomName', 'roomSelectedID'));
 });
-
-// Route::get('/test1', [UserBookingDashboardController::class, 'index']);
-// Route::get('/testAlatanTulis', [UserBookingDashboardController::class, 'testShow']);
-// Route::get('/checkoutTest', [UserBookingDashboardController::class, 'checkOut']);
-
-// Route::get('/test', function(){
-//     $user = Auth::user();
-//     return view('test.test1', compact('user'));
-// });
-
-
-
-// Route::get('/mail', function() {
-//     $user = Auth::user();
-//     $bookings = UkwBooking::with('inventory')->where('reference', 'UKWBK0001')->get();
-//     $orderID = $bookings[0]->reference;
-//     // dd($bookings[0]);
-//     $totalQuantity = $bookings->sum('quantity');
-//     $date = Carbon::parse($bookings[0]->created_at)->formatLocalized('%B %d, %Y %I:%M %p');
-//     return view('mail.ukwuserbooking', compact('user', 'bookings', 'date', 'orderID', 'totalQuantity'));
-// });
 
 require __DIR__ . '/auth.php';

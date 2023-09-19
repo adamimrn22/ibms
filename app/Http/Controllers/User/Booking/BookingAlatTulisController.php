@@ -137,7 +137,7 @@ class BookingAlatTulisController extends Controller
 
                 // Sebab akak nik nak guna email dia but email table is unique
                 // change if there is a new email to use or use above method
-                Mail::to('farah@kolejspace.edu.my')->queue(new NewAlatTulisBooking($user, $booking->reference));
+                Mail::to('izzatie@kolejspace.edu.my')->queue(new NewAlatTulisBooking($user, $booking->reference));
                 Mail::to($user->email)->queue(new UserBookingUKW($user, $booking->reference));
 
                 session()->forget('cart');

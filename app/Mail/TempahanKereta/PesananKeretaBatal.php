@@ -3,6 +3,7 @@
 namespace App\Mail\TempahanKereta;
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -24,8 +25,7 @@ class PesananKeretaBatal extends Mailable
     {
         $this->booking = $booking;
         //for gmail due to trimming
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $this->randomString = substr(str_shuffle($characters), 0, 10);
+        $this->randomString  = Str::random(20);
     }
 
     /**
