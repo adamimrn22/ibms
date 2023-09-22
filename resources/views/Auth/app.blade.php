@@ -46,16 +46,17 @@
                 <div class="auth-wrapper auth-cover">
                     <div class="auth-inner row m-0">
                         <a class="brand-logo" href="/">
-
                             <div>
-                                <img src="{{ asset('app-asset/images/logo/kolejspace.svg') }}" width="48"
-                                    alt="">
+                                <img src="{{ asset('app-asset/images/logo/kolejspace.svg') }}" width="84"
+                                    alt="kolej_logo">
+                                <img src="{{ asset('img/ussblogo.png') }}" class="mx-1" width="140"
+                                    alt="ussb_logo">
                             </div>
 
-                            <h2 class="brand-text ms-1">
+                            {{-- <h2 class="brand-text ms-1">
                                 <span style="color: #83103E">KOLEJ</span>
                                 <span style="color: #2E3192">SPACE</span>
-                            </h2>
+                            </h2> --}}
                         </a>
 
 

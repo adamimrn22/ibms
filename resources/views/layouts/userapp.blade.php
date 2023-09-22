@@ -61,6 +61,14 @@
 
         <div class="navbar-container d-flex content">
             <div class="bookmark-wrapper d-flex align-items-center">
+                <div>
+                    <a href="/">
+                        <img src="{{ asset('app-asset/images/logo/kolejspace.svg') }}" width="48" alt="kolej_logo">
+                        <img src="{{ asset('img/ussblogo.png') }}" class="mx-1" width="120" alt="ussb_logo">
+                    </a>
+                </div>
+
+
                 <ul class="nav navbar-nav d-xl-none">
                     <li class="nav-item">
                         <a class="nav-link menu-toggle" href="#">

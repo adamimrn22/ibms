@@ -160,18 +160,18 @@
                         <h5 class="modal-title" id="exampleModalCenterTitle">Jadual Ruang</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form method="GET" action="/test" target="_blank">
+                    <form method="GET" action="/jadualRuang" target="_blank">
                         <div class="modal-body">
                             <table class="table">
                                 <tbody>
                                     <tr>
-
                                         @csrf
                                         <td>
                                             <select style="overflow:hidden" id="roomTypeFilter" name="room_type"
                                                 class="select2 form-select form-select ">
                                                 @foreach ($rooms as $roomSelect)
-                                                    <option value="{{ $roomSelect->id }}|{{ $roomSelect->name }}">
+                                                    <option value="{{ $roomSelect->id }}|{{ $roomSelect->name }}"
+                                                        {{ $roomSelect->id == $booking->room->id ? 'selected' : '' }}>
                                                         {{ $roomSelect->name }}
                                                     </option>
                                                 @endforeach

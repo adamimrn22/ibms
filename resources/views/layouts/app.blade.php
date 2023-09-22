@@ -48,6 +48,7 @@
         href="{{ asset('app-asset/css/plugins/extensions/ext-component-toastr.css') }}">
     <!-- END: Page CSS-->
 
+
 </head>
 
 <!-- BEGIN: Body-->
@@ -145,6 +146,8 @@
     <script src="{{ asset('app-asset/vendors/js/extensions/toastr.min.js') }}"></script>
     <script src="{{ asset('app-asset/js/scripts/extensions/ext-component-toastr.js') }}"></script>
     @yield('script')
+    <script src="{{ asset('app-asset/vendors/js/pickers/flatpickr/flatpickr.min.js') }}"></script>
+
     <script>
         $(window).on('load', function() {
             if (feather) {
@@ -154,9 +157,27 @@
                 });
             }
         })
+
+        // Initialize Flatpickr
+        flatpickr("#dateFromRange", {
+            // Options can be customized as per your requirements
+            dateFormat: "Y-m-d",
+            // Additional options...
+
+            altInput: true,
+            altFormat: "F j, Y",
+            dateFormat: "Y-m-d",
+        });
+
+        flatpickr("#dateToRange", {
+            // Options can be customized as per your requirements
+            dateFormat: "Y-m-d",
+            // Additional options...
+
+            altInput: true,
+            altFormat: "F j, Y",
+            dateFormat: "Y-m-d",
+        });
     </script>
-
-
-
 </body>
 <!-- END: Body-->

@@ -85,6 +85,22 @@ Route::middleware(['auth'])->group(function () {
         }
     });
 
+
+    Route::get('/jadualRuang', [RuangBookingController::class, 'ruangTempah']);
+    // Route::get('/jadualRuang', function(Request $request){
+
+    //     $roomRaw = $request->input('room_type');
+    //     $roomInput = explode("|", $roomRaw);
+    //     $roomSelectedID = $roomInput[0];
+    //     $roomName = $roomInput[1];
+
+    //     $bookData = UpsmRuangBooking::with('detail', 'room')->where('room_id', $roomSelectedID)->get();
+    //     $rooms = UpsmInventory::where('subcategory_id', '=', 16)->where('status_id', '=', 6)->get();
+
+    //     return view('testbiew', compact('bookData', 'rooms', 'roomName', 'roomSelectedID'));
+    // });
+
+
 });
 
 Route::get('/dashboard', function () {
@@ -247,18 +263,5 @@ Route::middleware(['auth', 'role:User'])->prefix('/User')->group(function () {
 
 });
 
-
-Route::get('/test', function(Request $request){
-
-    $roomRaw = $request->input('room_type');
-    $roomInput = explode("|", $roomRaw);
-    $roomSelectedID = $roomInput[0];
-    $roomName = $roomInput[1];
-
-    $bookData = UpsmRuangBooking::with('detail', 'room')->where('room_id', $roomSelectedID)->get();
-    $rooms = UpsmInventory::where('subcategory_id', '=', 16)->where('status_id', '=', 6)->get();
-
-    return view('testbiew', compact('bookData', 'rooms', 'roomName', 'roomSelectedID'));
-});
 
 require __DIR__ . '/auth.php';

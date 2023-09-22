@@ -56,8 +56,6 @@ $(document).ready(function () {
 
     // Function to get the value of the checked checkbox
     function getCheckedCheckbox() {
-        let k = $('.category-checkbox:checked').val()
-        console.log(k)
         return $('.category-checkbox:checked').val() || ''; // Return the value of the checked checkbox or an empty string
     }
 

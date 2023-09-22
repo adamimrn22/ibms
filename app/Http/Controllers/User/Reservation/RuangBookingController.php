@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User\Reservation;
 
+use DateTime;
 use Carbon\Carbon;
 use App\Models\UkwInventory;
 use Illuminate\Http\Request;
@@ -45,36 +46,21 @@ class RuangBookingController extends Controller
     public function ruangTempah(Request $request)
     {
         $roomRaw = $request->input('room_type');
+        $dateFromRange = $request->input('dateFromRange');
+        $dateToRangeRaw =  new DateTime($request->input('dateToRange'));
+        $dateToRangeRaw->modify('+1 day');
+        $dateToRange = $dateToRangeRaw->format('Y-m-d');
         $roomInput = explode("|", $roomRaw);
         $roomSelectedID = $roomInput[0];
         $roomName = $roomInput[1];
 
-        $bookData = UpsmRuangBooking::with('detail', 'room')->where('room_id', $roomSelectedID)->get();
+        $bookData = UpsmRuangBooking::with('detail', 'room')
+                        ->where('room_id', $roomSelectedID)
+                        ->where('status_id', 2)
+                        ->get();
         $rooms = UpsmInventory::where('subcategory_id', '=', 16)->where('status_id', '=', 6)->get();
 
-        return view('testbiew', compact('bookData', 'rooms', 'roomName', 'roomSelectedID'));
-        // $dateFrom = $request->input('date_from');
-        // $dateTo = $request->input('date_to');
-
-        // $rooms = UpsmInventory::ofRoom(16)->get();
-        // $roomType = $request->input('room_type');
-
-        // $bookings = UpsmRuangBooking::with('room')
-        // ->where(function ($query) use ($dateFrom, $dateTo) {
-        //     // Condition 1: Booking starts within the given range
-        //     $query->whereBetween('date_book_start', [$dateFrom, $dateTo]);
-        //     // Condition 2: Booking ends within the given range
-        //     $query->orWhereBetween('date_book_end', [$dateFrom, $dateTo]);
-
-        // })
-        // ->when($roomType, function ($query) use ($roomType) {
-        //     $query->whereHas('room', function ($subquery) use ($roomType) {
-        //         $subquery->where('room_id', $roomType);
-        //     });
-        // })
-        // ->paginate(10);
-
-        // return view('User.TempahanRuang.viewBetweenTempahan',  compact('bookings', 'rooms', 'dateFrom', 'dateTo'));
+        return view('User.TempahanRuang.viewBetweenTempahan', compact('bookData', 'rooms', 'roomName', 'roomSelectedID', 'dateFromRange', 'dateToRange'));
     }
 
     /**

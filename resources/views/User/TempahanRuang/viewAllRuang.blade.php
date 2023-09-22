@@ -20,7 +20,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <form method="GET" action="/test" target="_blank">
+                                <form method="GET" action="/jadualRuang" target="_blank">
                                     @csrf
                                     <td>
                                         <select style="overflow:hidden" id="roomTypeFilter" name="room_type"

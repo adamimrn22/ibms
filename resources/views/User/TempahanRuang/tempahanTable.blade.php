@@ -43,7 +43,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td>Tiada tempahan ruang dibuat</td>
+                    <td colspan="8" class="text-center">Tiada tempahan ruang dibuat</td>
                 </tr>
             @endforelse
         </tbody>

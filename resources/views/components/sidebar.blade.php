@@ -61,6 +61,7 @@
             @endhasrole
 
             @hasanyrole(['Admin UPSM'])
+
                 <li class="mb-1 nav-item ">
                     <a class="d-flex align-items-center {{ Str::contains(request()->path(), 'UPSM/Booking/Kenderaan') ? 'active' : '' }}"
                         href="{{ route('upsm.BookingKenderaan.index') }}">
@@ -71,14 +72,40 @@
                     </a>
                 </li>
 
-                <li class="mb-1 nav-item ">
-                    <a class="d-flex align-items-center {{ Str::contains(request()->path(), 'UPSM/Booking/Ruang') ? 'active' : '' }}"
-                        href="{{ route('upsm.ruangTempah.index') }}">
+                <li class="nav-item has-sub mb-1" style="">
+                    <a class="d-flex align-items-center" href="#">
                         <i data-feather='archive'></i>
-                        <span class="menu-item text-truncate">
-                            Tempahan Ruang
-                        </span>
-                    </a>
+                        <span class="menu-title text-truncate" data-i18n="TempahanRuang">Tempahan Ruang</span></a>
+                    <ul class="menu-content">
+                        <li class="nav-item ">
+                            <a class="btn d-inline-flex align-items-center" data-bs-toggle="modal"
+                                data-bs-target="#exampleModalCenter">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-circle">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                </svg>
+
+                                <span class="menu-item text-truncate">
+                                    Lihat Jadual Ruang
+                                </span>
+                            </a>
+                        </li>
+                        <li class="mt-1 nav-item ">
+                            <a class="d-flex align-items-center {{ Str::contains(request()->path(), 'UPSM/Booking/Ruang') ? 'active' : '' }}"
+                                href="{{ route('upsm.ruangTempah.index') }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                </svg>
+                                <span class="menu-item text-truncate">
+                                    Tempahan Ruang
+                                </span>
+                            </a>
+                        </li>
+
+                    </ul>
                 </li>
 
                 <li class="mb-1 nav-item ">
@@ -301,3 +328,5 @@
         </div>
     </div>
 </div>
+
+<x-jadual-ruang-modal />

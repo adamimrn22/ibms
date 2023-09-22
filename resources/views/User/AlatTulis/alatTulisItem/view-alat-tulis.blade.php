@@ -171,7 +171,6 @@
                     },
                     success: function(response) {
                         if (response.error) {
-                            console.log(response.int)
                             toastr.error(response.error, 'Amaran')
                         } else {
 
@@ -180,7 +179,6 @@
                                 positionClass: 'toast-top-left',
                                 timeOut: 1500,
                             };
-                            console.log(response.int)
                             toastr.success(' Item telah ditambahkan ke troli.', 'Success');
                             loadCartSection();
                         }
